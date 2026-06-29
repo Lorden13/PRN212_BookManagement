@@ -1,0 +1,50 @@
+<UserControl x:Class="BookManagement.Controls.LoadingOverlay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BookManagement.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="400"
+             Visibility="{Binding RelativeSource={RelativeSource AncestorType=local:LoadingOverlay}, Path=IsLoading, Converter={StaticResource BoolToVisConverter}}">
+    <!-- Semi-transparent overlay -->
+    <Grid Style="{StaticResource DialogOverlayStyle}">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!-- Spinner -->
+            <Border Width="50" Height="50" BorderBrush="#E5E7EB" BorderThickness="4" CornerRadius="25" x:Name="Spinner">
+                <Border.RenderTransform>
+                    <RotateTransform x:Name="SpinnerRotate" Angle="0" CenterX="25" CenterY="25"/>
+                </Border.RenderTransform>
+                <Border.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard RepeatBehavior="Forever">
+                                <DoubleAnimation Storyboard.TargetName="SpinnerRotate" 
+                                                 Storyboard.TargetProperty="Angle" 
+                                                 From="0" To="360" 
+                                                 Duration="0:0:1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Border.Triggers>
+                
+                <!-- Highlight arc of the spinner -->
+                <Grid Margin="-4">
+                    <Path Data="M 25 0 A 25 25 0 0 1 50 25" 
+                          Stroke="{DynamicResource PrimaryPurpleBrush}" 
+                          StrokeThickness="4" 
+                          Stretch="None"/>
+                </Grid>
+            </Border>
+
+            <!-- Loading text -->
+            <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=local:LoadingOverlay}, Path=Message, FallbackValue='Đang tải dữ liệu...'}" 
+                       Foreground="#FFFFFF" 
+                       FontSize="14" 
+                       FontWeight="SemiBold" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,16,0,0"
+                       FontFamily="{DynamicResource MainFontFamily}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
