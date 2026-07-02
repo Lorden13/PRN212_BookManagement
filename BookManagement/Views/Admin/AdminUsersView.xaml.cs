@@ -8,5 +8,11 @@ namespace BookManagement.Views.Admin
         {
             InitializeComponent();
         }
+
+        private void Create_Click(object sender, RoutedEventArgs e)
+        {
+            CreateAdminWindow createWindow = new CreateAdminWindow();
+            createWindow.Show();
+        }
     }
 }

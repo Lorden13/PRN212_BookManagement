@@ -43,12 +43,8 @@
                     <ComboBox ItemsSource="{Binding Roles}" SelectedItem="{Binding SelectedRole}" Width="150" Style="{StaticResource ModernComboBox}"/>
                 </StackPanel>
 
-                <!-- Status Filter -->
-                <StackPanel Grid.Column="4" Orientation="Horizontal">
-                    <TextBlock Text="Trạng thái:" VerticalAlignment="Center" Margin="0,0,8,0" Style="{StaticResource TextBlockNormal}"/>
-                    <ComboBox ItemsSource="{Binding Statuses}" SelectedItem="{Binding SelectedStatus}" Width="150" Style="{StaticResource ModernComboBox}"/>
-                </StackPanel>
 
+                <Button Grid.Column="5" Style="{StaticResource OutlinedButton}" Content="Thêm" Height="36" Padding="16,0" x:Name="Create" Click="Create_Click"/>
                 <!-- Refresh -->
                 <Button Grid.Column="6" Style="{StaticResource OutlinedButton}" Content="Làm mới" Height="36" Padding="16,0" Command="{Binding RefreshCommand}"/>
             </Grid>
