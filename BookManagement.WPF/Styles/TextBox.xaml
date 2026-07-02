@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers="clr-namespace:BookManagement.Helpers">
     <!-- Styled TextBox -->
     <Style x:Key="ModernTextBox" TargetType="TextBox">
         <Setter Property="FontFamily" Value="{StaticResource MainFontFamily}"/>
@@ -37,9 +38,7 @@
                         <Grid>
                             <ScrollViewer x:Name="PART_ContentHost" Focusable="false" 
                                           HorizontalScrollBarVisibility="Hidden" 
-                                          VerticalScrollBarVisibility="Hidden"
-                                          VerticalAlignment="Center" 
-                                          Margin="{TemplateBinding Padding}"/>
+                                          VerticalScrollBarVisibility="Hidden"/>
                             <TextBlock x:Name="watermark" 
                                        Text="{TemplateBinding Tag}" 
                                        Foreground="{DynamicResource TextMutedBrush}" 
@@ -92,6 +91,7 @@
         <Setter Property="Height" Value="42"/>
         <Setter Property="SelectionBrush" Value="{DynamicResource PrimaryPurpleActiveBrush}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="helpers:PasswordBoxHelper.Attach" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="PasswordBox">
@@ -104,30 +104,21 @@
                         <Grid>
                             <ScrollViewer x:Name="PART_ContentHost" Focusable="false" 
                                           HorizontalScrollBarVisibility="Hidden" 
-                                          VerticalScrollBarVisibility="Hidden"
-                                          VerticalAlignment="Center" 
-                                          Margin="{TemplateBinding Padding}"/>
+                                          VerticalScrollBarVisibility="Hidden"/>
                             <TextBlock x:Name="watermark" 
                                        Text="{TemplateBinding Tag}" 
                                        Foreground="{DynamicResource TextMutedBrush}" 
                                        IsHitTestVisible="False" 
                                        VerticalAlignment="Center" 
                                        Margin="14,0,0,0" 
-                                       Visibility="Collapsed"
+                                       Visibility="Visible"
                                        FontFamily="{TemplateBinding FontFamily}"
                                        FontSize="{TemplateBinding FontSize}"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <!-- In PasswordBox we cannot easily bind Text to triggers since Text is not dependency property, 
-                             but we can handle Tag and use Password property checking in code behind, or we can use standard helper,
-                             or we can trigger watermark display using PasswordBox helper. Let's use simple trigger or custom style that hides watermark when focused or tag empty. 
-                             Wait, if we use a helper in code behind or trigger on PasswordBox having focus it's enough for a prototype, 
-                             or we can hook an attached property. Let's hook a simple focus watermark: when IsFocused is true, hide watermark. 
-                             This is simple and clean! -->
-                        <Trigger Property="IsFocused" Value="False">
-                            <!-- We will show watermark only when not focused and tag is set -->
-                            <Setter Property="Visibility" TargetName="watermark" Value="Visible"/>
+                        <Trigger Property="helpers:PasswordBoxHelper.HasPassword" Value="True">
+                            <Setter Property="Visibility" TargetName="watermark" Value="Collapsed"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource PrimaryPurpleHoverBrush}"/>
@@ -135,7 +126,6 @@
                         <Trigger Property="IsFocused" Value="True">
                             <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource PrimaryPurpleBrush}"/>
                             <Setter Property="Background" TargetName="border" Value="#FFFFFF"/>
-                            <Setter Property="Visibility" TargetName="watermark" Value="Collapsed"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Background" TargetName="border" Value="#F3F4F6"/>
