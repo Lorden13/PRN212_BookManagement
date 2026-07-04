@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "TIUX+rFhBoA=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Admin\\Documents\\Ky 5 FPT\\PRN201\\.NET FPT\\Project\\BookManagement.WPF\\BookManagement.WPF.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\8.0.0\\microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
