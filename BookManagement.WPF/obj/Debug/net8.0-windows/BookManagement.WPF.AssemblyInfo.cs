@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BookManagement.WPF")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b59b3933be5273bc2d08da68d163ae5b7a82294e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+72a4cf6ef4d64bf07759fbe9e27982f6fc38761c")]
 [assembly: System.Reflection.AssemblyProductAttribute("BookManagement.WPF")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BookManagement.WPF")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
