@@ -1,0 +1,67 @@
+<UserControl x:Class="BookManagement.Controls.FilterBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BookManagement.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="60" d:DesignWidth="600">
+    <Border Style="{StaticResource BaseCardStyle}" Padding="12,8" CornerRadius="8" Height="58">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>   <!-- Category Label -->
+                <ColumnDefinition Width="150"/>  <!-- Category ComboBox -->
+                <ColumnDefinition Width="Auto"/>   <!-- Sort Label -->
+                <ColumnDefinition Width="150"/>  <!-- Sort ComboBox -->
+                <ColumnDefinition Width="*"/>      <!-- Spacer -->
+                <ColumnDefinition Width="Auto"/>   <!-- Apply Button -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Category -->
+            <TextBlock Grid.Column="0" 
+                       Text="Thể loại:" 
+                       Foreground="{DynamicResource TextSecondaryBrush}" 
+                       VerticalAlignment="Center" 
+                       Margin="0,0,10,0" 
+                       FontSize="{StaticResource FontSizeSmall}"
+                       FontFamily="{DynamicResource MainFontFamily}"/>
+            
+            <ComboBox Grid.Column="1" 
+                      Style="{StaticResource ModernComboBox}" 
+                      SelectedIndex="0" 
+                      Height="34">
+                <ComboBoxItem Content="Tất cả"/>
+                <ComboBoxItem Content="Lập trình (Programming)"/>
+                <ComboBoxItem Content="Kinh tế (Finance)"/>
+                <ComboBoxItem Content="Kỹ năng sống"/>
+            </ComboBox>
+
+            <!-- Sort -->
+            <TextBlock Grid.Column="2" 
+                       Text="Sắp xếp:" 
+                       Foreground="{DynamicResource TextSecondaryBrush}" 
+                       VerticalAlignment="Center" 
+                       Margin="20,0,10,0" 
+                       FontSize="{StaticResource FontSizeSmall}"
+                       FontFamily="{DynamicResource MainFontFamily}"/>
+            
+            <ComboBox Grid.Column="3" 
+                      Style="{StaticResource ModernComboBox}" 
+                      SelectedIndex="0" 
+                      Height="34">
+                <ComboBoxItem Content="Mới nhất"/>
+                <ComboBoxItem Content="Giá tăng dần"/>
+                <ComboBoxItem Content="Giá giảm dần"/>
+                <ComboBoxItem Content="Xem nhiều nhất"/>
+            </ComboBox>
+
+            <!-- Reset Filters -->
+            <Button Grid.Column="5" 
+                    Style="{StaticResource SecondaryButton}" 
+                    Content="Lọc" 
+                    Height="34" 
+                    Padding="16,0"
+                    VerticalAlignment="Center"/>
+        </Grid>
+    </Border>
+</UserControl>

@@ -1,0 +1,121 @@
+<UserControl x:Class="BookManagement.Views.Admin.AdminReportsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:BookManagement.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="1000" d:DesignWidth="1200">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/> <!-- Revenue/Sales Cards -->
+                <RowDefinition Height="Auto"/> <!-- Sales Charts -->
+                <RowDefinition Height="*"/>    <!-- Top Lists -->
+            </Grid.RowDefinitions>
+
+            <!-- Revenue Cards -->
+            <UniformGrid Grid.Row="0" Columns="4" Margin="-10,0,-10,20">
+                <controls:StatisticCard Title="Tổng doanh thu" Value="{Binding TotalRevenue, StringFormat='${0:F2}'}" IconKey="IconCart" TrendText="Từ trước tới nay" TrendBrush="{DynamicResource SuccessBrush}"/>
+                <controls:StatisticCard Title="Số lượng ấn phẩm bán ra" Value="{Binding TotalBooksSold}" IconKey="IconBook" TrendText="Giao dịch thành công"/>
+                <controls:StatisticCard Title="Tổng số độc giả" Value="{Binding TotalReaders}" IconKey="IconUser" TrendText="Thành viên bạn đọc"/>
+                <controls:StatisticCard Title="Tổng số tác giả" Value="{Binding TotalAuthors}" IconKey="IconPen" TrendText="Đối tác tác giả"/>
+            </UniformGrid>
+
+            <!-- Charts (Mock) -->
+            <Grid Grid.Row="1" Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Sales Growth -->
+                <Border Grid.Column="0" Style="{StaticResource BaseCardStyle}" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="Xu hướng tăng trưởng Doanh thu (Mock)" Style="{StaticResource TextBlockBold}" FontSize="16" Margin="0,0,0,16"/>
+                        <Grid Height="180">
+                            <Path Data="M 10 120 L 80 90 L 150 110 L 220 70 L 290 50 L 360 20 L 360 150 L 10 150 Z" Fill="#EEF2FF" Stroke="{DynamicResource PrimaryPurpleBrush}" StrokeThickness="2" Stretch="Fill" Height="120" VerticalAlignment="Bottom"/>
+                            <TextBlock Text="Tháng 1" Style="{StaticResource TextBlockMuted}" FontSize="9" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                            <TextBlock Text="Tháng 6" Style="{StaticResource TextBlockMuted}" FontSize="9" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Top Categories -->
+                <Border Grid.Column="2" Style="{StaticResource BaseCardStyle}" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="Doanh thu theo nhóm thể loại (Mock)" Style="{StaticResource TextBlockBold}" FontSize="16" Margin="0,0,0,16"/>
+                        <ItemsControl ItemsSource="{Binding TopCategories}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,0,0,12">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="70"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding Name}" Style="{StaticResource TextBlockNormal}" VerticalAlignment="Center"/>
+                                        <ProgressBar Grid.Column="1" Value="{Binding Percentage}" Height="8" Foreground="{DynamicResource PrimaryPurpleBrush}" Background="#F3F4F6" BorderThickness="0" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding Metric}" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Bottom Row: Top Readers & Top Authors -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Top Readers -->
+                <Border Grid.Column="0" Style="{StaticResource BaseCardStyle}" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="Độc giả mua sách nhiều nhất" Style="{StaticResource TextBlockBold}" FontSize="16" Margin="0,0,0,16"/>
+                        <ItemsControl ItemsSource="{Binding TopReaders}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,0,0,12">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding Name}" Style="{StaticResource TextBlockNormal}" FontWeight="SemiBold"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Metric}" Style="{StaticResource TextBlockBold}" Foreground="{DynamicResource SuccessBrush}" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- Top Authors -->
+                <Border Grid.Column="2" Style="{StaticResource BaseCardStyle}" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="Tác giả có doanh thu lớn nhất" Style="{StaticResource TextBlockBold}" FontSize="16" Margin="0,0,0,16"/>
+                        <ItemsControl ItemsSource="{Binding TopAuthors}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,0,0,12">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding Name}" Style="{StaticResource TextBlockNormal}" FontWeight="SemiBold"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Metric}" Style="{StaticResource TextBlockBold}" Foreground="{DynamicResource PrimaryPurpleBrush}" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
