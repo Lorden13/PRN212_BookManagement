@@ -127,6 +127,13 @@
                         </Button>
                     </Grid>
 
+                    <!-- Forgot Password Link -->
+                    <TextBlock HorizontalAlignment="Right" Margin="0,-8,0,16" FontFamily="{StaticResource MainFontFamily}" FontSize="13">
+                        <Hyperlink Command="{Binding NavigateToForgotPasswordCommand}" Foreground="{DynamicResource PrimaryPurpleBrush}" TextDecorations="None">
+                            Forgot Password?
+                        </Hyperlink>
+                    </TextBlock>
+
                     <!-- Error Message -->
                     <TextBlock Text="{Binding ErrorMessage}" 
                                Foreground="{DynamicResource DangerBrush}" 
@@ -155,102 +162,184 @@
                 </StackPanel>
 
                 <!-- ==================== REGISTER FORM ==================== -->
-                <StackPanel Visibility="{Binding IsRegisterMode, Converter={StaticResource BoolToVisConverter}}">
-                    <!-- Register header -->
-                    <TextBlock Text="Đăng ký tài khoản" 
-                               Style="{StaticResource TextBlockLargeHeader}" 
-                               Margin="0,0,0,8"/>
-                    <TextBlock Text="Đăng ký vai trò Độc giả hoặc Tác giả để bắt đầu." 
-                               Style="{StaticResource TextBlockNormal}" 
-                               TextWrapping="Wrap" 
-                               Margin="0,0,0,24"/>
+                <ScrollViewer Visibility="{Binding IsRegisterMode, Converter={StaticResource BoolToVisConverter}}" 
+                              VerticalScrollBarVisibility="Auto" 
+                              HorizontalScrollBarVisibility="Disabled" 
+                              MaxHeight="500" 
+                              Padding="0,0,8,0">
+                    <StackPanel>
+                        <!-- Register header -->
+                        <TextBlock Text="Đăng ký tài khoản" 
+                                   Style="{StaticResource TextBlockLargeHeader}" 
+                                   Margin="0,0,0,8"/>
+                        <TextBlock Text="Đăng ký vai trò Độc giả hoặc Tác giả để bắt đầu." 
+                                   Style="{StaticResource TextBlockNormal}" 
+                                   TextWrapping="Wrap" 
+                                   Margin="0,0,0,24"/>
 
-                    <!-- Full Name Field -->
-                    <TextBlock Text="Họ và tên *" 
-                               Style="{StaticResource TextBlockSmallHeader}" 
-                               Margin="0,0,0,8"/>
-                    <TextBox Style="{StaticResource ModernTextBox}" 
-                             Text="{Binding RegisterFullName, UpdateSourceTrigger=PropertyChanged}" 
-                             Tag="Nhập họ và tên..." 
-                             Margin="0,0,0,16"/>
+                        <!-- Full Name Field -->
+                        <TextBlock Text="Họ và tên *"
+                                   Style="{StaticResource TextBlockSmallHeader}" 
+                                   Margin="0,0,0,8"/>
+                        <TextBox Style="{StaticResource ModernTextBox}" 
+                                 Text="{Binding RegisterFullName, UpdateSourceTrigger=PropertyChanged}" 
+                                 Tag="Nhập họ và tên..." 
+                                 Margin="0,0,0,16"/>
 
-                    <!-- Email Field -->
-                    <TextBlock Text="Email *" 
-                               Style="{StaticResource TextBlockSmallHeader}" 
-                               Margin="0,0,0,8"/>
-                    <TextBox Style="{StaticResource ModernTextBox}" 
-                             Text="{Binding RegisterEmail, UpdateSourceTrigger=PropertyChanged}" 
-                             Tag="Nhập địa chỉ email..." 
-                             Margin="0,0,0,16"/>
+                        <!-- Email Field -->
+                        <TextBlock Text="Email *"
+                                   Style="{StaticResource TextBlockSmallHeader}" 
+                                   Margin="0,0,0,8"/>
+                        <TextBox Style="{StaticResource ModernTextBox}" 
+                                 Text="{Binding RegisterEmail, UpdateSourceTrigger=PropertyChanged}" 
+                                 Tag="Nhập địa chỉ email..." 
+                                 Margin="0,0,0,16"/>
 
-                    <!-- Password Field -->
-                    <TextBlock Text="Mật khẩu *" 
-                               Style="{StaticResource TextBlockSmallHeader}" 
-                               Margin="0,0,0,8"/>
-                    <Grid Margin="0,0,0,16">
-                        <!-- Masked Password -->
-                        <PasswordBox x:Name="txtRegisterPassword" 
-                                     Style="{StaticResource ModernPasswordBox}" 
+                        <!-- Phone Number Field -->
+                        <TextBlock Text="Số điện thoại *"
+                                   Style="{StaticResource TextBlockSmallHeader}" 
+                                   Margin="0,0,0,8"/>
+                        <TextBox Style="{StaticResource ModernTextBox}" 
+                                 Text="{Binding RegisterPhone, UpdateSourceTrigger=PropertyChanged}" 
+                                 Tag="Nhập số điện thoại..." 
+                                 MaxLength="11" 
+                                 PreviewTextInput="NumberValidationTextBox" 
+                                 Margin="0,0,0,16"/>
+
+                        <!-- Address Field -->
+                        <TextBlock Text="Địa chỉ *"
+                                   Style="{StaticResource TextBlockSmallHeader}" 
+                                   Margin="0,0,0,8"/>
+                        <TextBox Style="{StaticResource ModernTextBox}" 
+                                 Text="{Binding RegisterAddress, UpdateSourceTrigger=PropertyChanged}" 
+                                 Tag="Nhập địa chỉ..." 
+                                 MaxLength="255" 
+                                 Margin="0,0,0,16"/>
+
+                        <!-- Password Field -->
+                        <TextBlock Text="Mật khẩu *"
+                                   Style="{StaticResource TextBlockSmallHeader}" 
+                                   Margin="0,0,0,8"/>
+                        <Grid Margin="0,0,0,16">
+                            <!-- Masked Password -->
+                            <PasswordBox x:Name="txtRegisterPassword" 
+                                         Style="{StaticResource ModernPasswordBox}" 
+                                         Tag="Nhập mật khẩu..." 
+                                         PasswordChanged="PasswordBox_PasswordChanged" 
+                                         Visibility="{Binding IsRegisterPasswordVisible, Converter={StaticResource BoolToVisInvertConverter}}"/>
+                            
+                            <!-- Plain Text Password -->
+                            <TextBox x:Name="txtRegisterPasswordPlain" 
+                                     Style="{StaticResource ModernTextBox}" 
                                      Tag="Nhập mật khẩu..." 
-                                     PasswordChanged="PasswordBox_PasswordChanged" 
-                                     Visibility="{Binding IsRegisterPasswordVisible, Converter={StaticResource BoolToVisInvertConverter}}"/>
-                        
-                        <!-- Plain Text Password -->
-                        <TextBox x:Name="txtRegisterPasswordPlain" 
-                                 Style="{StaticResource ModernTextBox}" 
-                                 Tag="Nhập mật khẩu..." 
-                                 Text="{Binding RegisterPassword, UpdateSourceTrigger=PropertyChanged}"
-                                 TextChanged="txtRegisterPasswordPlain_TextChanged"
-                                 Visibility="{Binding IsRegisterPasswordVisible, Converter={StaticResource BoolToVisConverter}}"/>
-                        
-                        <!-- Toggle Visibility Button -->
-                        <Button Style="{StaticResource IconButton}" 
-                                Command="{Binding ToggleRegisterPasswordVisibilityCommand}"
-                                HorizontalAlignment="Right" 
-                                VerticalAlignment="Center" 
-                                Margin="0,0,12,0"
-                                Cursor="Hand">
-                            <Path Fill="{DynamicResource TextSecondaryBrush}" 
-                                  Width="18" Height="18" 
-                                  Stretch="Uniform">
-                                <Path.Style>
-                                    <Style TargetType="Path">
-                                        <Setter Property="Data" Value="{StaticResource IconEye}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsRegisterPasswordVisible}" Value="True">
-                                                <Setter Property="Data" Value="{StaticResource IconEyeOff}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Path.Style>
-                            </Path>
-                        </Button>
-                    </Grid>
+                                     Text="{Binding RegisterPassword, UpdateSourceTrigger=PropertyChanged}"
+                                     TextChanged="txtRegisterPasswordPlain_TextChanged"
+                                     Visibility="{Binding IsRegisterPasswordVisible, Converter={StaticResource BoolToVisConverter}}"/>
+                            
+                            <!-- Toggle Visibility Button -->
+                            <Button Style="{StaticResource IconButton}" 
+                                    Command="{Binding ToggleRegisterPasswordVisibilityCommand}"
+                                    HorizontalAlignment="Right" 
+                                    VerticalAlignment="Center" 
+                                    Margin="0,0,12,0"
+                                    Cursor="Hand">
+                                <Path Fill="{DynamicResource TextSecondaryBrush}" 
+                                      Width="18" Height="18" 
+                                      Stretch="Uniform">
+                                    <Path.Style>
+                                        <Style TargetType="Path">
+                                            <Setter Property="Data" Value="{StaticResource IconEye}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsRegisterPasswordVisible}" Value="True">
+                                                    <Setter Property="Data" Value="{StaticResource IconEyeOff}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
+                            </Button>
+                        </Grid>
 
-                    <!-- Role ComboBox Field -->
-                    <TextBlock Text="Vai trò *" 
-                               Style="{StaticResource TextBlockSmallHeader}" 
-                               Margin="0,0,0,8"/>
-                    <ComboBox Style="{StaticResource ModernComboBox}"
-                              ItemsSource="{Binding Roles}"
-                              SelectedItem="{Binding RegisterRole, UpdateSourceTrigger=PropertyChanged}"
-                              Margin="0,0,0,24"/>
+                        <!-- Confirm Password Field -->
+                        <TextBlock Text="Xác nhận mật khẩu *"
+                                   Style="{StaticResource TextBlockSmallHeader}" 
+                                   Margin="0,0,0,8"/>
+                        <Grid Margin="0,0,0,16">
+                            <!-- Masked Password -->
+                            <PasswordBox x:Name="txtRegisterConfirmPassword" 
+                                         Style="{StaticResource ModernPasswordBox}" 
+                                         Tag="Nhập lại mật khẩu..." 
+                                         PasswordChanged="PasswordBox_PasswordChanged" 
+                                         Visibility="{Binding IsRegisterConfirmPasswordVisible, Converter={StaticResource BoolToVisInvertConverter}}"/>
+                            
+                            <!-- Plain Text Password -->
+                            <TextBox x:Name="txtRegisterConfirmPasswordPlain" 
+                                     Style="{StaticResource ModernTextBox}" 
+                                     Tag="Nhập lại mật khẩu..." 
+                                     Text="{Binding RegisterConfirmPassword, UpdateSourceTrigger=PropertyChanged}"
+                                     TextChanged="txtRegisterConfirmPasswordPlain_TextChanged"
+                                     Visibility="{Binding IsRegisterConfirmPasswordVisible, Converter={StaticResource BoolToVisConverter}}"/>
+                            
+                            <!-- Toggle Visibility Button -->
+                            <Button Style="{StaticResource IconButton}" 
+                                    Command="{Binding ToggleRegisterConfirmPasswordVisibilityCommand}"
+                                    HorizontalAlignment="Right" 
+                                    VerticalAlignment="Center" 
+                                    Margin="0,0,12,0"
+                                    Cursor="Hand">
+                                <Path Fill="{DynamicResource TextSecondaryBrush}" 
+                                      Width="18" Height="18" 
+                                      Stretch="Uniform">
+                                    <Path.Style>
+                                        <Style TargetType="Path">
+                                            <Setter Property="Data" Value="{StaticResource IconEye}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsRegisterConfirmPasswordVisible}" Value="True">
+                                                    <Setter Property="Data" Value="{StaticResource IconEyeOff}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
+                            </Button>
+                        </Grid>
 
-                    <!-- Register Button -->
-                    <Button Command="{Binding RegisterCommand}"
-                            Style="{StaticResource PrimaryButton}" 
-                            Content="Đăng ký"
-                            Height="46"
-                            Margin="0,0,0,16"/>
+                        <!-- Role ComboBox Field -->
+                        <TextBlock Text="Vai trò *"
+                                   Style="{StaticResource TextBlockSmallHeader}" 
+                                   Margin="0,0,0,8"/>
+                        <ComboBox Style="{StaticResource ModernComboBox}"
+                                  ItemsSource="{Binding Roles}"
+                                  SelectedItem="{Binding RegisterRole, UpdateSourceTrigger=PropertyChanged}"
+                                  Margin="0,0,0,24"/>
 
-                    <!-- Switch to Login Link -->
-                    <TextBlock HorizontalAlignment="Center" Margin="0,8,0,0" FontFamily="{StaticResource MainFontFamily}" FontSize="14">
-                        <Run Text="Đã có tài khoản?" Foreground="{DynamicResource TextSecondaryBrush}"/>
-                        <Hyperlink Command="{Binding SwitchToLoginCommand}" Foreground="{DynamicResource PrimaryPurpleBrush}" TextDecorations="None">
-                            <Bold>Đăng nhập</Bold>
-                        </Hyperlink>
-                    </TextBlock>
-                </StackPanel>
+                        <!-- Error Message -->
+                        <TextBlock Text="{Binding ErrorMessage}" 
+                                   Foreground="{DynamicResource DangerBrush}" 
+                                   FontSize="13"
+                                   FontWeight="SemiBold"
+                                   TextWrapping="Wrap"
+                                   HorizontalAlignment="Left"
+                                   Margin="0,8,0,16"
+                                   Visibility="{Binding ErrorMessage, Converter={StaticResource StringNullOrEmptyToVisConverter}}"
+                                   FontFamily="{StaticResource MainFontFamily}"/>
+
+                        <!-- Register Button -->
+                        <Button Command="{Binding RegisterCommand}"
+                                Style="{StaticResource PrimaryButton}" 
+                                Content="Đăng ký"
+                                Height="46"
+                                Margin="0,0,0,16"/>
+
+                        <!-- Switch to Login Link -->
+                        <TextBlock HorizontalAlignment="Center" Margin="0,8,0,0" FontFamily="{StaticResource MainFontFamily}" FontSize="14">
+                            <Run Text="Đã có tài khoản?" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <Hyperlink Command="{Binding SwitchToLoginCommand}" Foreground="{DynamicResource PrimaryPurpleBrush}" TextDecorations="None">
+                                <Bold>Đăng nhập</Bold>
+                            </Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
         </Grid>
     </Grid>

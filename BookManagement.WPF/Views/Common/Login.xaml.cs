@@ -17,8 +17,9 @@ namespace BookManagement.Views.Common
         {
             if (e.PropertyName == nameof(LoginViewModel.IsRegisterMode))
             {
-                txtPassword.Password = string.Empty;
-                txtRegisterPassword.Password = string.Empty;
+                if (txtPassword != null) txtPassword.Password = string.Empty;
+                if (txtRegisterPassword != null) txtRegisterPassword.Password = string.Empty;
+                if (txtRegisterConfirmPassword != null) txtRegisterConfirmPassword.Password = string.Empty;
             }
         }
 
@@ -42,6 +43,13 @@ namespace BookManagement.Views.Common
                             vm.RegisterPassword = passwordBox.Password;
                         }
                     }
+                    else if (passwordBox.Name == "txtRegisterConfirmPassword")
+                    {
+                        if (vm.RegisterConfirmPassword != passwordBox.Password)
+                        {
+                            vm.RegisterConfirmPassword = passwordBox.Password;
+                        }
+                    }
                 }
             }
         }
@@ -50,7 +58,7 @@ namespace BookManagement.Views.Common
         {
             if (sender is TextBox textBox)
             {
-                if (txtPassword.Password != textBox.Text)
+                if (txtPassword != null && txtPassword.Password != textBox.Text)
                 {
                     txtPassword.Password = textBox.Text;
                 }
@@ -61,11 +69,28 @@ namespace BookManagement.Views.Common
         {
             if (sender is TextBox textBox)
             {
-                if (txtRegisterPassword.Password != textBox.Text)
+                if (txtRegisterPassword != null && txtRegisterPassword.Password != textBox.Text)
                 {
                     txtRegisterPassword.Password = textBox.Text;
                 }
             }
+        }
+
+        private void txtRegisterConfirmPasswordPlain_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                if (txtRegisterConfirmPassword != null && txtRegisterConfirmPassword.Password != textBox.Text)
+                {
+                    txtRegisterConfirmPassword.Password = textBox.Text;
+                }
+            }
+        }
+
+        private void NumberValidationTextBox(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            var regex = new System.Text.RegularExpressions.Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

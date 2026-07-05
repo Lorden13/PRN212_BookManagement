@@ -17,11 +17,15 @@ namespace BookManagement.ViewModels.Common
         private string _password = string.Empty;
         private string _registerFullName = string.Empty;
         private string _registerEmail = string.Empty;
+        private string _registerPhone = string.Empty;
+        private string _registerAddress = string.Empty;
         private string _registerPassword = string.Empty;
+        private string _registerConfirmPassword = string.Empty;
         private string _registerRole = string.Empty;
         private string _errorMessage = string.Empty;
         private bool _isLoginPasswordVisible;
         private bool _isRegisterPasswordVisible;
+        private bool _isRegisterConfirmPasswordVisible;
 
         public bool IsRegisterMode
         {
@@ -35,11 +39,15 @@ namespace BookManagement.ViewModels.Common
                     Password = string.Empty;
                     RegisterFullName = string.Empty;
                     RegisterEmail = string.Empty;
+                    RegisterPhone = string.Empty;
+                    RegisterAddress = string.Empty;
                     RegisterPassword = string.Empty;
+                    RegisterConfirmPassword = string.Empty;
                     RegisterRole = string.Empty;
                     ErrorMessage = string.Empty;
                     IsLoginPasswordVisible = false;
                     IsRegisterPasswordVisible = false;
+                    IsRegisterConfirmPasswordVisible = false;
                 }
             }
         }
@@ -71,25 +79,85 @@ namespace BookManagement.ViewModels.Common
         public string RegisterFullName
         {
             get => _registerFullName;
-            set => SetProperty(ref _registerFullName, value);
+            set
+            {
+                if (SetProperty(ref _registerFullName, value))
+                {
+                    ErrorMessage = string.Empty;
+                }
+            }
         }
 
         public string RegisterEmail
         {
             get => _registerEmail;
-            set => SetProperty(ref _registerEmail, value);
+            set
+            {
+                if (SetProperty(ref _registerEmail, value))
+                {
+                    ErrorMessage = string.Empty;
+                }
+            }
+        }
+
+        public string RegisterPhone
+        {
+            get => _registerPhone;
+            set
+            {
+                if (SetProperty(ref _registerPhone, value))
+                {
+                    ErrorMessage = string.Empty;
+                }
+            }
+        }
+
+        public string RegisterAddress
+        {
+            get => _registerAddress;
+            set
+            {
+                if (SetProperty(ref _registerAddress, value))
+                {
+                    ErrorMessage = string.Empty;
+                }
+            }
         }
 
         public string RegisterPassword
         {
             get => _registerPassword;
-            set => SetProperty(ref _registerPassword, value);
+            set
+            {
+                if (SetProperty(ref _registerPassword, value))
+                {
+                    ErrorMessage = string.Empty;
+                }
+            }
+        }
+
+        public string RegisterConfirmPassword
+        {
+            get => _registerConfirmPassword;
+            set
+            {
+                if (SetProperty(ref _registerConfirmPassword, value))
+                {
+                    ErrorMessage = string.Empty;
+                }
+            }
         }
 
         public string RegisterRole
         {
             get => _registerRole;
-            set => SetProperty(ref _registerRole, value);
+            set
+            {
+                if (SetProperty(ref _registerRole, value))
+                {
+                    ErrorMessage = string.Empty;
+                }
+            }
         }
 
         public string ErrorMessage
@@ -110,6 +178,12 @@ namespace BookManagement.ViewModels.Common
             set => SetProperty(ref _isRegisterPasswordVisible, value);
         }
 
+        public bool IsRegisterConfirmPasswordVisible
+        {
+            get => _isRegisterConfirmPasswordVisible;
+            set => SetProperty(ref _isRegisterConfirmPasswordVisible, value);
+        }
+
         public ObservableCollection<string> Roles { get; } = new() { "Reader", "Author" };
 
         public ICommand LoginCommand { get; }
@@ -118,6 +192,8 @@ namespace BookManagement.ViewModels.Common
         public ICommand SwitchToLoginCommand { get; }
         public ICommand ToggleLoginPasswordVisibilityCommand { get; }
         public ICommand ToggleRegisterPasswordVisibilityCommand { get; }
+        public ICommand ToggleRegisterConfirmPasswordVisibilityCommand { get; }
+        public ICommand NavigateToForgotPasswordCommand { get; }
 
         public LoginViewModel(IUserService userService)
         {
@@ -128,6 +204,8 @@ namespace BookManagement.ViewModels.Common
             SwitchToLoginCommand = new RelayCommand(() => IsRegisterMode = false);
             ToggleLoginPasswordVisibilityCommand = new RelayCommand(() => IsLoginPasswordVisible = !IsLoginPasswordVisible);
             ToggleRegisterPasswordVisibilityCommand = new RelayCommand(() => IsRegisterPasswordVisible = !IsRegisterPasswordVisible);
+            ToggleRegisterConfirmPasswordVisibilityCommand = new RelayCommand(() => IsRegisterConfirmPasswordVisible = !IsRegisterConfirmPasswordVisible);
+            NavigateToForgotPasswordCommand = new RelayCommand(ExecuteNavigateToForgotPassword);
         }
 
         private bool CanLogin()
@@ -162,13 +240,83 @@ namespace BookManagement.ViewModels.Common
         {
             return !string.IsNullOrWhiteSpace(RegisterFullName) &&
                    !string.IsNullOrWhiteSpace(RegisterEmail) &&
+                   !string.IsNullOrWhiteSpace(RegisterPhone) &&
+                   !string.IsNullOrWhiteSpace(RegisterAddress) &&
                    !string.IsNullOrWhiteSpace(RegisterPassword) &&
+                   !string.IsNullOrWhiteSpace(RegisterConfirmPassword) &&
                    !string.IsNullOrWhiteSpace(RegisterRole);
         }
 
         private void ExecuteRegister()
         {
-            // Placeholder command
+            ErrorMessage = string.Empty;
+
+            // 1. Email format validation
+            if (!IsValidEmail(RegisterEmail))
+            {
+                ErrorMessage = "Email không hợp lệ. Vui lòng nhập đúng định dạng.";
+                return;
+            }
+
+            // 2. Phone number digits-only and length validation
+            if (!IsNumericOnly(RegisterPhone))
+            {
+                ErrorMessage = "Số điện thoại chỉ được chứa các chữ số.";
+                return;
+            }
+            if (RegisterPhone.Length > 11)
+            {
+                ErrorMessage = "Số điện thoại không được vượt quá 11 chữ số.";
+                return;
+            }
+
+            // 3. Address length validation
+            if (RegisterAddress.Length > 255)
+            {
+                ErrorMessage = "Địa chỉ không được vượt quá 255 ký tự.";
+                return;
+            }
+
+            // 4. Password length validation
+            if (RegisterPassword.Length < 6)
+            {
+                ErrorMessage = "Mật khẩu phải có tối thiểu 6 ký tự.";
+                return;
+            }
+
+            // 5. Confirm password check
+            if (RegisterPassword != RegisterConfirmPassword)
+            {
+                ErrorMessage = "Mật khẩu xác nhận không khớp.";
+                return;
+            }
+
+            // Simulating successful registration
+            System.Windows.MessageBox.Show("Đăng ký tài khoản thành công!", "Thông báo", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+            IsRegisterMode = false;
+        }
+
+        private void ExecuteNavigateToForgotPassword()
+        {
+            NavigationService.Instance.NavigateMain(new ForgotPasswordView());
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private bool IsNumericOnly(string phone)
+        {
+            return System.Text.RegularExpressions.Regex.IsMatch(phone, "^[0-9]+$");
         }
     }
 }
