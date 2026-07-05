@@ -53,7 +53,7 @@ namespace BookManagement.Views.Author {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BookManagement.WPF;component/views/author/authorhomeview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BookManagement.WPF;V1.0.0.0;component/views/author/authorhomeview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Views\Author\AuthorHomeView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

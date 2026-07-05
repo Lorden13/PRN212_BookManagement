@@ -61,7 +61,7 @@ namespace BookManagement.Controls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BookManagement.WPF;component/controls/loadingskeleton.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BookManagement.WPF;V1.0.0.0;component/controls/loadingskeleton.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Controls\LoadingSkeleton.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

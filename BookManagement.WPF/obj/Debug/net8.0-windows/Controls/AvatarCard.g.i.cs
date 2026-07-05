@@ -54,7 +54,7 @@ namespace BookManagement.Controls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BookManagement.WPF;component/controls/avatarcard.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BookManagement.WPF;V1.0.0.0;component/controls/avatarcard.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Controls\AvatarCard.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

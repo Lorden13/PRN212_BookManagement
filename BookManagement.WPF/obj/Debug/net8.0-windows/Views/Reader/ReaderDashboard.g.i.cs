@@ -57,7 +57,7 @@ namespace BookManagement.Views.Reader {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BookManagement.WPF;component/views/reader/readerdashboard.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BookManagement.WPF;V1.0.0.0;component/views/reader/readerdashboard.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Views\Reader\ReaderDashboard.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
