@@ -18,10 +18,10 @@
             <!-- Book Cover -->
             <Border Grid.Row="0" CornerRadius="8" Background="{DynamicResource PrimaryPurpleLightBrush}" Margin="0,0,0,12" ClipToBounds="True">
                 <Grid>
-                    <Image Source="{Binding CoverImagePath}" Stretch="UniformToFill"/>
+                    <Image Source="{Binding CoverImagePath}" Stretch="UniformToFill" Visibility="Collapsed"/>
                     
-                    <!-- Fallback placeholder (visible if CoverImagePath is empty) -->
-                    <Grid Visibility="{Binding CoverImagePath, Converter={StaticResource StringNullOrEmptyToVisInvertConverter}}">
+                    <!-- Fallback placeholder (always visible) -->
+                    <Grid>
                         <Path Data="{StaticResource IconBook}" 
                               Fill="{DynamicResource PrimaryPurpleBrush}" 
                               Width="40" Height="40" 

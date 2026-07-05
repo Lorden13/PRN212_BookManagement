@@ -41,14 +41,14 @@
                         <DataGridTemplateColumn Header="Cover" Width="80">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Border Width="45" Height="60" CornerRadius="6" Background="{DynamicResource PrimaryPurpleLightBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" ClipToBounds="True">
-                                        <Grid>
-                                            <Image Source="{Binding CoverImagePath}" Stretch="UniformToFill"/>
-                                            <Grid Visibility="{Binding CoverImagePath, Converter={StaticResource StringNullOrEmptyToVisInvertConverter}}">
-                                                <Path Data="{StaticResource IconBook}" Fill="{DynamicResource PrimaryPurpleBrush}" Width="16" Height="16" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Grid>
-                                        </Grid>
-                                    </Border>
+                                     <Border Width="45" Height="60" CornerRadius="6" Background="{DynamicResource PrimaryPurpleLightBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" ClipToBounds="True">
+                                         <Grid>
+                                             <Image Source="{Binding CoverImagePath}" Stretch="UniformToFill" Visibility="Collapsed"/>
+                                             <Grid>
+                                                 <Path Data="{StaticResource IconBook}" Fill="{DynamicResource PrimaryPurpleBrush}" Width="16" Height="16" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                             </Grid>
+                                         </Grid>
+                                     </Border>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

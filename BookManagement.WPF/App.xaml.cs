@@ -34,6 +34,7 @@ namespace BookManagement
 
             // Register ViewModels
             services.AddTransient<LoginViewModel>();
+            services.AddTransient<ForgotPasswordViewModel>();
             services.AddTransient<ReaderDashboardViewModel>();
             services.AddTransient<AuthorDashboardViewModel>();
             services.AddTransient<AdminDashboardViewModel>();

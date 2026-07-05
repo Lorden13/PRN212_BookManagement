@@ -13,7 +13,9 @@ namespace BookManagement.Services.Mock
                         Name = "John Smith",
                         Email = "reader@gmail.com",
                         Role = "Reader",
-                        JoinedDate = "2026-05-10"
+                        JoinedDate = "2026-05-10",
+                        PhoneNumber = "0987654321",
+                        Address = "123 Reader Lane, New York"
                     };
                 case "author":
                     return new UserProfileModel
@@ -21,7 +23,9 @@ namespace BookManagement.Services.Mock
                         Name = "Alice Johnson",
                         Email = "author@email.com",
                         Role = "Author",
-                        JoinedDate = "2026-02-15"
+                        JoinedDate = "2026-02-15",
+                        PhoneNumber = "0912345678",
+                        Address = "456 Author Blvd, San Francisco"
                     };
                 case "admin":
                     return new UserProfileModel
@@ -29,7 +33,9 @@ namespace BookManagement.Services.Mock
                         Name = "System Administrator",
                         Email = "admin@gmail.com",
                         Role = "Admin",
-                        JoinedDate = "2026-01-01"
+                        JoinedDate = "2026-01-01",
+                        PhoneNumber = "0900000000",
+                        Address = "789 System Center, Washington DC"
                     };
                 default:
                     return null;

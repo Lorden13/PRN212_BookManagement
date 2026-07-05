@@ -7,5 +7,7 @@ namespace BookManagement.Models.Entities
         public string Role { get; set; } = string.Empty;
         public string JoinedDate { get; set; } = string.Empty;
         public string AvatarPath { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
     }
 }
