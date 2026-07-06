@@ -1,0 +1,68 @@
+<UserControl x:Class="BookManagement.WPF.Views.Reader.BrowseBooksView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:shared="clr-namespace:BookManagement.WPF.Views.Shared"
+             Background="{StaticResource BackgroundBrush}">
+    <ScrollViewer Style="{StaticResource ModernScrollViewer}">
+        <StackPanel Margin="28,24">
+            <TextBlock Text="Browse Books" FontFamily="{StaticResource DefaultFont}"
+                       FontSize="{StaticResource FontSizeXLarge}" FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4"/>
+            <TextBlock Text="Discover and explore our book collection."
+                       FontFamily="{StaticResource DefaultFont}" FontSize="{StaticResource FontSizeNormal}"
+                       Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,20"/>
+
+            <!-- Filters -->
+            <Border Background="White" CornerRadius="{StaticResource RadiusLarge}" Effect="{StaticResource SoftShadow}"
+                    Padding="16" Margin="0,0,0,24">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Style="{StaticResource ModernTextBox}"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                    <ComboBox Grid.Column="2" Style="{StaticResource ModernComboBox}"
+                              ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}"/>
+                    <Button Grid.Column="4" Content="🔍  Search" Style="{StaticResource PrimaryButton}"
+                            Command="{Binding SearchCommand}" Padding="20,10"/>
+                </Grid>
+            </Border>
+
+            <!-- Book Grid -->
+            <ItemsControl ItemsSource="{Binding Books}"
+                          Visibility="{Binding HasBooks, Converter={StaticResource BoolToVis}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <shared:BookCardControl Book="{Binding}"
+                            ShowViewDetails="True" ShowFavorite="True" ShowBuy="True"
+                            ViewDetailsCommand="{Binding DataContext.ViewDetailsCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                            FavoriteCommand="{Binding DataContext.FavoriteCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                            BuyCommand="{Binding DataContext.BuyCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- Empty -->
+            <Border Background="White" CornerRadius="{StaticResource RadiusLarge}" Effect="{StaticResource SoftShadow}"
+                    Padding="48" Visibility="{Binding HasBooks, Converter={StaticResource InverseBoolToVis}}">
+                <StackPanel HorizontalAlignment="Center">
+                    <Border Width="64" Height="64" CornerRadius="32" Background="{StaticResource SurfaceAltBrush}"
+                            HorizontalAlignment="Center" Margin="0,0,0,16">
+                        <TextBlock Text="🔍" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="No books found" FontSize="{StaticResource FontSizeMedium}" FontWeight="SemiBold"
+                               HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                    <TextBlock Text="Try a different search or category." FontSize="{StaticResource FontSizeNormal}"
+                               Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

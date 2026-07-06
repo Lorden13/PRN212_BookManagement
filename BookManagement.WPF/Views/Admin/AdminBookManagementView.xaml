@@ -1,0 +1,101 @@
+<UserControl x:Class="BookManagement.WPF.Views.Admin.AdminBookManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{StaticResource BackgroundBrush}">
+    <ScrollViewer Style="{StaticResource ModernScrollViewer}">
+        <StackPanel Margin="28,24">
+            <TextBlock Text="Book Management" FontFamily="{StaticResource DefaultFont}"
+                       FontSize="{StaticResource FontSizeXLarge}" FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4"/>
+            <TextBlock Text="View and manage all books on the platform."
+                       FontFamily="{StaticResource DefaultFont}" FontSize="{StaticResource FontSizeNormal}"
+                       Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,20"/>
+
+            <Border Background="White" CornerRadius="{StaticResource RadiusLarge}" Effect="{StaticResource SoftShadow}" Padding="20">
+                <StackPanel>
+                    <!-- Filters -->
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Style="{StaticResource ModernTextBox}"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ComboBox Grid.Column="2" Style="{StaticResource ModernComboBox}"
+                                  ItemsSource="{Binding StatusOptions}" SelectedItem="{Binding SelectedStatus}"/>
+                        <Button Grid.Column="4" Content="🔍  Search" Style="{StaticResource PrimaryButton}"
+                                Command="{Binding SearchCommand}" Padding="20,10"/>
+                    </Grid>
+
+                    <DataGrid ItemsSource="{Binding Books}" Style="{StaticResource ModernDataGrid}"
+                              ColumnHeaderStyle="{StaticResource ModernColumnHeader}"
+                              RowStyle="{StaticResource ModernDataGridRow}"
+                              CellStyle="{StaticResource ModernDataGridCell}"
+                              Visibility="{Binding HasBooks, Converter={StaticResource BoolToVis}}">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="BOOK" Width="*" MinWidth="220">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Border Width="36" Height="44" CornerRadius="{StaticResource RadiusSmall}"
+                                                    Background="{Binding CoverColor, Converter={StaticResource StringToBrush}}"
+                                                    Margin="0,0,10,0">
+                                                <TextBlock Text="📖" FontSize="16" Opacity="0.8"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="{StaticResource FontSizeNormal}"/>
+                                                <TextBlock Text="{Binding AuthorName}" FontSize="{StaticResource FontSizeXS}" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="CATEGORY" Binding="{Binding Category}" Width="120"/>
+                            <DataGridTemplateColumn Header="STATUS" Width="110">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{Binding Status, Converter={StaticResource StatusToBackground}}"
+                                                CornerRadius="{StaticResource RadiusRound}" Padding="10,4" HorizontalAlignment="Left">
+                                            <TextBlock Text="{Binding Status}" FontSize="{StaticResource FontSizeXS}" FontWeight="SemiBold"
+                                                       Foreground="{Binding Status, Converter={StaticResource StatusToBrush}}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="ACTIONS" Width="120">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="View" Style="{StaticResource SmallActionButton}"
+                                                    Command="{Binding DataContext.ViewCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                    CommandParameter="{Binding}" Margin="0,0,6,0"/>
+                                            <Button Content="Delete" Style="{StaticResource SmallActionButton}" Foreground="{StaticResource DangerBrush}"
+                                                    Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                    CommandParameter="{Binding}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <StackPanel HorizontalAlignment="Center" Margin="0,48"
+                                Visibility="{Binding HasBooks, Converter={StaticResource InverseBoolToVis}}">
+                        <Border Width="64" Height="64" CornerRadius="32" Background="{StaticResource SurfaceAltBrush}"
+                                HorizontalAlignment="Center" Margin="0,0,0,16">
+                            <TextBlock Text="📚" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="No books found" FontSize="{StaticResource FontSizeMedium}" FontWeight="SemiBold"
+                                   HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                        <TextBlock Text="Try adjusting your search or filters." FontSize="{StaticResource FontSizeNormal}"
+                                   Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

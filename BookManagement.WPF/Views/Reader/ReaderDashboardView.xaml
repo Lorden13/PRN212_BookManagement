@@ -1,0 +1,76 @@
+<UserControl x:Class="BookManagement.WPF.Views.Reader.ReaderDashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:shared="clr-namespace:BookManagement.WPF.Views.Shared"
+             Background="{StaticResource BackgroundBrush}">
+    <ScrollViewer Style="{StaticResource ModernScrollViewer}">
+        <StackPanel Margin="28,24">
+            <TextBlock Text="Welcome back!" FontFamily="{StaticResource DefaultFont}"
+                       FontSize="{StaticResource FontSizeXLarge}" FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4"/>
+            <TextBlock Text="Discover your next favorite book."
+                       FontFamily="{StaticResource DefaultFont}" FontSize="{StaticResource FontSizeNormal}"
+                       Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,28"/>
+
+            <!-- Recently Added -->
+            <TextBlock Text="Recently Added" FontFamily="{StaticResource DefaultFont}"
+                       FontSize="{StaticResource FontSizeLarge}" FontWeight="SemiBold"
+                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,14"/>
+            <ItemsControl ItemsSource="{Binding RecentBooks}"
+                          Visibility="{Binding HasRecent, Converter={StaticResource BoolToVis}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <shared:BookCardControl Book="{Binding}" ShowViewDetails="True"
+                            ViewDetailsCommand="{Binding DataContext.ViewDetailsCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock Text="No recent books available." FontSize="{StaticResource FontSizeNormal}"
+                       Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,12"
+                       Visibility="{Binding HasRecent, Converter={StaticResource InverseBoolToVis}}"/>
+
+            <!-- Recommended -->
+            <TextBlock Text="Recommended for You" FontFamily="{StaticResource DefaultFont}"
+                       FontSize="{StaticResource FontSizeLarge}" FontWeight="SemiBold"
+                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,20,0,14"/>
+            <ItemsControl ItemsSource="{Binding RecommendedBooks}"
+                          Visibility="{Binding HasRecommended, Converter={StaticResource BoolToVis}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <shared:BookCardControl Book="{Binding}" ShowViewDetails="True"
+                            ViewDetailsCommand="{Binding DataContext.ViewDetailsCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock Text="No recommendations yet." FontSize="{StaticResource FontSizeNormal}"
+                       Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,12"
+                       Visibility="{Binding HasRecommended, Converter={StaticResource InverseBoolToVis}}"/>
+
+            <!-- Favorites -->
+            <TextBlock Text="Your Favorites" FontFamily="{StaticResource DefaultFont}"
+                       FontSize="{StaticResource FontSizeLarge}" FontWeight="SemiBold"
+                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,20,0,14"/>
+            <ItemsControl ItemsSource="{Binding FavoriteBooksList}"
+                          Visibility="{Binding HasFavorites, Converter={StaticResource BoolToVis}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <shared:BookCardControl Book="{Binding}" ShowViewDetails="True"
+                            ViewDetailsCommand="{Binding DataContext.ViewDetailsCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock Text="No favorites yet. Browse and add some!" FontSize="{StaticResource FontSizeNormal}"
+                       Foreground="{StaticResource TextMutedBrush}"
+                       Visibility="{Binding HasFavorites, Converter={StaticResource InverseBoolToVis}}"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

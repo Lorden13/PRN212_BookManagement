@@ -1,0 +1,104 @@
+<UserControl x:Class="BookManagement.WPF.Views.Shared.BookCardControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:helpers="clr-namespace:BookManagement.WPF.Helpers"
+             x:Name="BookCard"
+             Width="210">
+
+    <UserControl.Resources>
+        <helpers:StringToBrushConverter x:Key="LocalStringToBrush"/>
+        <BooleanToVisibilityConverter x:Key="LocalBoolToVis"/>
+    </UserControl.Resources>
+
+    <Border x:Name="CardBorder" Background="White"
+            CornerRadius="{StaticResource RadiusLarge}"
+            Effect="{StaticResource SoftShadow}"
+            Margin="0,0,14,14">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="130"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Cover Placeholder -->
+            <Border Grid.Row="0" CornerRadius="12,12,0,0"
+                    Background="{Binding Book.CoverColor, ElementName=BookCard, Converter={StaticResource LocalStringToBrush}}">
+                <TextBlock Text="📖" FontSize="36" Opacity="0.5"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+
+            <!-- Content -->
+            <StackPanel Grid.Row="1" Margin="14,12,14,14">
+                <TextBlock Text="{Binding Book.Title, ElementName=BookCard}"
+                           FontFamily="{StaticResource DefaultFont}"
+                           FontSize="{StaticResource FontSizeMedium}" FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           TextTrimming="CharacterEllipsis" MaxHeight="40" TextWrapping="Wrap"/>
+
+                <TextBlock Text="{Binding Book.AuthorName, ElementName=BookCard}"
+                           FontFamily="{StaticResource DefaultFont}"
+                           FontSize="{StaticResource FontSizeSmall}"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           TextTrimming="CharacterEllipsis" Margin="0,4,0,0"/>
+
+                <!-- Category Badge -->
+                <Border Background="{StaticResource SurfaceAltBrush}"
+                        CornerRadius="{StaticResource RadiusRound}"
+                        Padding="8,3" HorizontalAlignment="Left" Margin="0,8,0,0">
+                    <TextBlock Text="{Binding Book.Category, ElementName=BookCard}"
+                               FontFamily="{StaticResource DefaultFont}"
+                               FontSize="{StaticResource FontSizeXS}"
+                               Foreground="{StaticResource TextSecondaryBrush}" FontWeight="Medium"/>
+                </Border>
+
+                <!-- Price -->
+                <TextBlock Text="{Binding Book.Price, ElementName=BookCard, StringFormat='${0:N2}'}"
+                           FontFamily="{StaticResource DefaultFont}"
+                           FontSize="{StaticResource FontSizeMedium}" FontWeight="Bold"
+                           Foreground="{StaticResource PrimaryBrush}" Margin="0,10,0,0"/>
+
+                <!-- Actions -->
+                <StackPanel Margin="0,10,0,0">
+                    <Button Content="View Details" Padding="0,7"
+                            FontFamily="{StaticResource DefaultFont}"
+                            FontSize="{StaticResource FontSizeSmall}" FontWeight="Medium"
+                            Style="{StaticResource PrimaryButton}"
+                            Command="{Binding ViewDetailsCommand, ElementName=BookCard}"
+                            CommandParameter="{Binding Book, ElementName=BookCard}"
+                            Visibility="{Binding ShowViewDetails, ElementName=BookCard, Converter={StaticResource LocalBoolToVis}}"
+                            HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
+
+                    <Grid Visibility="{Binding ShowFavorite, ElementName=BookCard, Converter={StaticResource LocalBoolToVis}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="♥ Favorite" Padding="0,7"
+                                FontFamily="{StaticResource DefaultFont}"
+                                FontSize="{StaticResource FontSizeSmall}"
+                                Style="{StaticResource SecondaryButton}"
+                                Command="{Binding FavoriteCommand, ElementName=BookCard}"
+                                CommandParameter="{Binding Book, ElementName=BookCard}"/>
+                        <Button Grid.Column="2" Content="Buy" Padding="0,7"
+                                FontFamily="{StaticResource DefaultFont}"
+                                FontSize="{StaticResource FontSizeSmall}"
+                                Style="{StaticResource SuccessButton}"
+                                Command="{Binding BuyCommand, ElementName=BookCard}"
+                                CommandParameter="{Binding Book, ElementName=BookCard}"
+                                Visibility="{Binding ShowBuy, ElementName=BookCard, Converter={StaticResource LocalBoolToVis}}"/>
+                    </Grid>
+
+                    <Button Content="💔 Remove" Padding="0,7"
+                            FontFamily="{StaticResource DefaultFont}"
+                            FontSize="{StaticResource FontSizeSmall}"
+                            Style="{StaticResource DangerButton}"
+                            Command="{Binding RemoveFavoriteCommand, ElementName=BookCard}"
+                            CommandParameter="{Binding Book, ElementName=BookCard}"
+                            Visibility="{Binding ShowRemoveFavorite, ElementName=BookCard, Converter={StaticResource LocalBoolToVis}}"
+                            HorizontalAlignment="Stretch"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>
