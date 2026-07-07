@@ -1,13 +1,16 @@
-using System.Windows.Input;
 using BookManagement.Helpers;
 using BookManagement.Services;
+using System.Windows.Input;
 
 namespace BookManagement.ViewModels.Common
 {
-    using System.Collections.ObjectModel;
-    using System.Windows.Input;
     using BookManagement.Helpers;
     using BookManagement.Services.Repository;
+    using BookManagement.WPF.Entities;
+    using BookManagement.WPF.Services.AuthorSetvice;
+    using BookManagement.WPF.Services.ReaderService;
+    using System.Collections.ObjectModel;
+    using System.Windows.Input;
 
     public class LoginViewModel : BaseViewModel
     {
@@ -318,5 +321,7 @@ namespace BookManagement.ViewModels.Common
         {
             return System.Text.RegularExpressions.Regex.IsMatch(phone, "^[0-9]+$");
         }
+
+
     }
 }

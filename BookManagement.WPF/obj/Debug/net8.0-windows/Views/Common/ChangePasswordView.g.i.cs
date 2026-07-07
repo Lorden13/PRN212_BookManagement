@@ -77,7 +77,7 @@ namespace BookManagement.Views.Common {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BookManagement.WPF;component/views/common/changepasswordview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BookManagement;component/views/common/changepasswordview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Views\Common\ChangePasswordView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

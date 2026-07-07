@@ -12,17 +12,22 @@
 
     <Grid Background="#F8F9FB">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/> <!-- Left Splash -->
-            <ColumnDefinition Width="2*"/> <!-- Right Login Buttons -->
+            <ColumnDefinition Width="3*"/>
+            <!-- Left Splash -->
+            <ColumnDefinition Width="2*"/>
+            <!-- Right Login Buttons -->
         </Grid.ColumnDefinitions>
 
         <!-- Left Splash Panel (Purple Gradient and Branding) -->
         <Border Grid.Column="0">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="#5B21B6" Offset="0.0"/> <!-- Deep Purple -->
-                    <GradientStop Color="#7C3AED" Offset="0.6"/> <!-- Medium Purple -->
-                    <GradientStop Color="#A78BFA" Offset="1.0"/> <!-- Light Purple Accent -->
+                    <GradientStop Color="#5B21B6" Offset="0.0"/>
+                    <!-- Deep Purple -->
+                    <GradientStop Color="#7C3AED" Offset="0.6"/>
+                    <!-- Medium Purple -->
+                    <GradientStop Color="#A78BFA" Offset="1.0"/>
+                    <!-- Light Purple Accent -->
                 </LinearGradientBrush>
             </Border.Background>
             <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="50">
@@ -72,7 +77,13 @@
                                Style="{StaticResource TextBlockNormal}" 
                                TextWrapping="Wrap" 
                                Margin="0,0,0,24"/>
-
+                    <TextBlock Text="Vai trò *"
+                                   Style="{StaticResource TextBlockSmallHeader}" 
+                                   Margin="0,0,0,8"/>
+                    <ComboBox Style="{StaticResource ModernComboBox}"
+                                  ItemsSource="{Binding Roles}"
+                                  x:Name="loginRole"
+                                  Margin="0,0,0,24"/>
                     <!-- Email Field -->
                     <TextBlock Text="Email *" 
                                Style="{StaticResource TextBlockSmallHeader}" 
@@ -94,7 +105,7 @@
                                      Tag="Nhập mật khẩu của bạn..." 
                                      PasswordChanged="PasswordBox_PasswordChanged" 
                                      Visibility="{Binding IsLoginPasswordVisible, Converter={StaticResource BoolToVisInvertConverter}}"/>
-                        
+
                         <!-- Plain Text Password -->
                         <TextBox x:Name="txtPasswordPlain" 
                                  Style="{StaticResource ModernTextBox}" 
@@ -102,7 +113,7 @@
                                  Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                                  TextChanged="txtPasswordPlain_TextChanged"
                                  Visibility="{Binding IsLoginPasswordVisible, Converter={StaticResource BoolToVisConverter}}"/>
-                        
+
                         <!-- Toggle Visibility Button -->
                         <Button Style="{StaticResource IconButton}" 
                                 Command="{Binding ToggleLoginPasswordVisibilityCommand}"
@@ -127,12 +138,7 @@
                         </Button>
                     </Grid>
 
-                    <!-- Forgot Password Link -->
-                    <TextBlock HorizontalAlignment="Right" Margin="0,-8,0,16" FontFamily="{StaticResource MainFontFamily}" FontSize="13">
-                        <Hyperlink Command="{Binding NavigateToForgotPasswordCommand}" Foreground="{DynamicResource PrimaryPurpleBrush}" TextDecorations="None">
-                            Forgot Password?
-                        </Hyperlink>
-                    </TextBlock>
+
 
                     <!-- Error Message -->
                     <TextBlock Text="{Binding ErrorMessage}" 
@@ -146,9 +152,9 @@
                                FontFamily="{StaticResource MainFontFamily}"/>
 
                     <!-- Login Button -->
-                    <Button Command="{Binding LoginCommand}"
-                            Style="{StaticResource PrimaryButton}" 
+                    <Button 
                             Content="Đăng nhập"
+                            Click="Button_Click_Login"
                             Height="46"
                             Margin="0,0,0,16"/>
 
@@ -182,26 +188,26 @@
                                    Style="{StaticResource TextBlockSmallHeader}" 
                                    Margin="0,0,0,8"/>
                         <TextBox Style="{StaticResource ModernTextBox}" 
-                                 Text="{Binding RegisterFullName, UpdateSourceTrigger=PropertyChanged}" 
                                  Tag="Nhập họ và tên..." 
+                                 x:Name="registerFullname"
                                  Margin="0,0,0,16"/>
 
                         <!-- Email Field -->
                         <TextBlock Text="Email *"
                                    Style="{StaticResource TextBlockSmallHeader}" 
                                    Margin="0,0,0,8"/>
-                        <TextBox Style="{StaticResource ModernTextBox}" 
-                                 Text="{Binding RegisterEmail, UpdateSourceTrigger=PropertyChanged}" 
+                        <TextBox Style="{StaticResource ModernTextBox}"                    
                                  Tag="Nhập địa chỉ email..." 
+                                 x:Name="registerEmail"
                                  Margin="0,0,0,16"/>
 
                         <!-- Phone Number Field -->
                         <TextBlock Text="Số điện thoại *"
                                    Style="{StaticResource TextBlockSmallHeader}" 
                                    Margin="0,0,0,8"/>
-                        <TextBox Style="{StaticResource ModernTextBox}" 
-                                 Text="{Binding RegisterPhone, UpdateSourceTrigger=PropertyChanged}" 
+                        <TextBox Style="{StaticResource ModernTextBox}"                               
                                  Tag="Nhập số điện thoại..." 
+                                 x:Name="registerPhone"
                                  MaxLength="11" 
                                  PreviewTextInput="NumberValidationTextBox" 
                                  Margin="0,0,0,16"/>
@@ -211,8 +217,8 @@
                                    Style="{StaticResource TextBlockSmallHeader}" 
                                    Margin="0,0,0,8"/>
                         <TextBox Style="{StaticResource ModernTextBox}" 
-                                 Text="{Binding RegisterAddress, UpdateSourceTrigger=PropertyChanged}" 
                                  Tag="Nhập địa chỉ..." 
+                                 x:Name="registerAddress"
                                  MaxLength="255" 
                                  Margin="0,0,0,16"/>
 
@@ -227,15 +233,14 @@
                                          Tag="Nhập mật khẩu..." 
                                          PasswordChanged="PasswordBox_PasswordChanged" 
                                          Visibility="{Binding IsRegisterPasswordVisible, Converter={StaticResource BoolToVisInvertConverter}}"/>
-                            
+
                             <!-- Plain Text Password -->
                             <TextBox x:Name="txtRegisterPasswordPlain" 
                                      Style="{StaticResource ModernTextBox}" 
                                      Tag="Nhập mật khẩu..." 
-                                     Text="{Binding RegisterPassword, UpdateSourceTrigger=PropertyChanged}"
                                      TextChanged="txtRegisterPasswordPlain_TextChanged"
                                      Visibility="{Binding IsRegisterPasswordVisible, Converter={StaticResource BoolToVisConverter}}"/>
-                            
+
                             <!-- Toggle Visibility Button -->
                             <Button Style="{StaticResource IconButton}" 
                                     Command="{Binding ToggleRegisterPasswordVisibilityCommand}"
@@ -271,7 +276,7 @@
                                          Tag="Nhập lại mật khẩu..." 
                                          PasswordChanged="PasswordBox_PasswordChanged" 
                                          Visibility="{Binding IsRegisterConfirmPasswordVisible, Converter={StaticResource BoolToVisInvertConverter}}"/>
-                            
+
                             <!-- Plain Text Password -->
                             <TextBox x:Name="txtRegisterConfirmPasswordPlain" 
                                      Style="{StaticResource ModernTextBox}" 
@@ -279,17 +284,18 @@
                                      Text="{Binding RegisterConfirmPassword, UpdateSourceTrigger=PropertyChanged}"
                                      TextChanged="txtRegisterConfirmPasswordPlain_TextChanged"
                                      Visibility="{Binding IsRegisterConfirmPasswordVisible, Converter={StaticResource BoolToVisConverter}}"/>
-                            
+
                             <!-- Toggle Visibility Button -->
                             <Button Style="{StaticResource IconButton}" 
-                                    Command="{Binding ToggleRegisterConfirmPasswordVisibilityCommand}"
-                                    HorizontalAlignment="Right" 
-                                    VerticalAlignment="Center" 
-                                    Margin="0,0,12,0"
-                                    Cursor="Hand">
+                            Command="{Binding ToggleRegisterConfirmPasswordVisibilityCommand}"
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Center" 
+                            Margin="0,0,12,0"
+                            Cursor="Hand"
+                            Panel.ZIndex="1">
                                 <Path Fill="{DynamicResource TextSecondaryBrush}" 
-                                      Width="18" Height="18" 
-                                      Stretch="Uniform">
+                                Width="18" Height="18" 
+                                Stretch="Uniform">
                                     <Path.Style>
                                         <Style TargetType="Path">
                                             <Setter Property="Data" Value="{StaticResource IconEye}"/>
@@ -310,7 +316,7 @@
                                    Margin="0,0,0,8"/>
                         <ComboBox Style="{StaticResource ModernComboBox}"
                                   ItemsSource="{Binding Roles}"
-                                  SelectedItem="{Binding RegisterRole, UpdateSourceTrigger=PropertyChanged}"
+                                  x:Name="registerRole"
                                   Margin="0,0,0,24"/>
 
                         <!-- Error Message -->
@@ -321,13 +327,23 @@
                                    TextWrapping="Wrap"
                                    HorizontalAlignment="Left"
                                    Margin="0,8,0,16"
+                                  
                                    Visibility="{Binding ErrorMessage, Converter={StaticResource StringNullOrEmptyToVisConverter}}"
                                    FontFamily="{StaticResource MainFontFamily}"/>
 
+                        <TextBlock x:Name="Message" 
+           Foreground="#DC2626" 
+           FontSize="13" 
+           FontWeight="SemiBold" 
+           TextWrapping="Wrap" 
+           HorizontalAlignment="Center" 
+           Margin="0,8,0,16"/>
+
                         <!-- Register Button -->
-                        <Button Command="{Binding RegisterCommand}"
-                                Style="{StaticResource PrimaryButton}" 
+                        <Button 
+                            
                                 Content="Đăng ký"
+                                Click="Button_Click_Register"
                                 Height="46"
                                 Margin="0,0,0,16"/>
 

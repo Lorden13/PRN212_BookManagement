@@ -53,7 +53,7 @@ namespace BookManagement.Controls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BookManagement.WPF;component/controls/usercard.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BookManagement;component/controls/usercard.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Controls\UserCard.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

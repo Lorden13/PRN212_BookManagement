@@ -53,7 +53,7 @@ namespace BookManagement.Views.Admin {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BookManagement.WPF;component/views/admin/adminallbooksview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BookManagement;component/views/admin/adminallbooksview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Views\Admin\AdminAllBooksView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

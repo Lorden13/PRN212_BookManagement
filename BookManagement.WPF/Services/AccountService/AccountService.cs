@@ -1,4 +1,6 @@
-﻿using BookManagement.WPF.Entities;
+﻿using Azure;
+using Azure.Core;
+using BookManagement.WPF.Entities;
 using BookManagement.WPF.Services.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,9 +21,10 @@ namespace BookManagement.WPF.Services.AccountService
             _prnContext = new ProjectPrnContext();
         }
 
-        public async Task<Account> CheckLoginAsync(string email, string password)
+        public async Task<Account> CheckLoginAsync(string email, string password,string roleId)
         {
-            return await _prnContext.Accounts.Include("Role").Where(q => q.Email.Equals(email) && q.Password.Equals(HashBuilder.ComputeSha256Hash(password + PRIVATEKEY))).FirstOrDefaultAsync();
+            string hashed = HashBuilder.ComputeSha256Hash(password + PRIVATEKEY);
+            return await _prnContext.Accounts.Where(q => q.IsActive && q.Email == email && q.Password == hashed && q.RoleId == roleId).FirstOrDefaultAsync();
         }
 
         public async Task<Account> GetAccountByIdAsync(string accountId)
@@ -53,5 +56,7 @@ namespace BookManagement.WPF.Services.AccountService
             }
             catch (Exception ex) { return false; }
         }
+
+       
     }
 }
