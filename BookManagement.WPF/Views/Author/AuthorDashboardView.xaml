@@ -1,0 +1,70 @@
+<UserControl x:Class="BookManagement.WPF.Views.Author.AuthorDashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{StaticResource BackgroundBrush}">
+    <ScrollViewer Style="{StaticResource ModernScrollViewer}">
+        <StackPanel Margin="28,24">
+            <TextBlock Text="Author Dashboard" FontFamily="{StaticResource DefaultFont}"
+                       FontSize="{StaticResource FontSizeXLarge}" FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4"/>
+            <TextBlock Text="Track your books and submissions."
+                       FontFamily="{StaticResource DefaultFont}" FontSize="{StaticResource FontSizeNormal}"
+                       Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,24"/>
+
+            <UniformGrid Columns="4" Margin="0,0,0,8">
+                <Border Background="White" CornerRadius="{StaticResource RadiusLarge}"
+                        Effect="{StaticResource SoftShadow}" Padding="20,18" Margin="0,0,12,0">
+                    <StackPanel>
+                        <Border Width="40" Height="40" CornerRadius="{StaticResource RadiusMedium}"
+                                Background="{StaticResource PrimaryLightBrush}" HorizontalAlignment="Left" Margin="0,0,0,14">
+                            <TextBlock Text="📚" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="{Binding TotalBooks}" FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeXLarge}" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        <TextBlock Text="Total Books" FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeSmall}" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="White" CornerRadius="{StaticResource RadiusLarge}"
+                        Effect="{StaticResource SoftShadow}" Padding="20,18" Margin="0,0,12,0">
+                    <StackPanel>
+                        <Border Width="40" Height="40" CornerRadius="{StaticResource RadiusMedium}"
+                                Background="{StaticResource WarningBgBrush}" HorizontalAlignment="Left" Margin="0,0,0,14">
+                            <TextBlock Text="⏳" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="{Binding PendingCount}" FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeXLarge}" FontWeight="Bold" Foreground="{StaticResource WarningBrush}"/>
+                        <TextBlock Text="Pending" FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeSmall}" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="White" CornerRadius="{StaticResource RadiusLarge}"
+                        Effect="{StaticResource SoftShadow}" Padding="20,18" Margin="0,0,12,0">
+                    <StackPanel>
+                        <Border Width="40" Height="40" CornerRadius="{StaticResource RadiusMedium}"
+                                Background="{StaticResource SuccessBgBrush}" HorizontalAlignment="Left" Margin="0,0,0,14">
+                            <TextBlock Text="✅" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="{Binding ApprovedCount}" FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeXLarge}" FontWeight="Bold" Foreground="{StaticResource SuccessBrush}"/>
+                        <TextBlock Text="Approved" FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeSmall}" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="White" CornerRadius="{StaticResource RadiusLarge}"
+                        Effect="{StaticResource SoftShadow}" Padding="20,18">
+                    <StackPanel>
+                        <Border Width="40" Height="40" CornerRadius="{StaticResource RadiusMedium}"
+                                Background="{StaticResource DangerBgBrush}" HorizontalAlignment="Left" Margin="0,0,0,14">
+                            <TextBlock Text="❌" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="{Binding RejectedCount}" FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeXLarge}" FontWeight="Bold" Foreground="{StaticResource DangerBrush}"/>
+                        <TextBlock Text="Rejected" FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeSmall}" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

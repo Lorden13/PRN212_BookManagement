@@ -1,0 +1,97 @@
+<UserControl x:Class="BookManagement.WPF.Views.Author.MyBooksView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{StaticResource BackgroundBrush}">
+    <ScrollViewer Style="{StaticResource ModernScrollViewer}">
+        <StackPanel Margin="28,24">
+            <Grid Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock Text="My Books" FontFamily="{StaticResource DefaultFont}"
+                               FontSize="{StaticResource FontSizeXLarge}" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4"/>
+                    <TextBlock Text="Manage your published and submitted books."
+                               FontFamily="{StaticResource DefaultFont}" FontSize="{StaticResource FontSizeNormal}"
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                </StackPanel>
+                <Button Content="+ Add Book" Style="{StaticResource PrimaryButton}"
+                        Command="{Binding AddBookCommand}" Padding="20,10"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            </Grid>
+
+            <Border Background="White" CornerRadius="{StaticResource RadiusLarge}" Effect="{StaticResource SoftShadow}" Padding="20">
+                <StackPanel>
+                    <TextBox Style="{StaticResource ModernTextBox}" Margin="0,0,0,16"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <DataGrid ItemsSource="{Binding MyBooks}" Style="{StaticResource ModernDataGrid}"
+                              ColumnHeaderStyle="{StaticResource ModernColumnHeader}"
+                              RowStyle="{StaticResource ModernDataGridRow}"
+                              CellStyle="{StaticResource ModernDataGridCell}"
+                              Visibility="{Binding HasBooks, Converter={StaticResource BoolToVis}}">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="BOOK" Width="*" MinWidth="200">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Border Width="36" Height="44" CornerRadius="{StaticResource RadiusSmall}"
+                                                    Background="{Binding CoverColor, Converter={StaticResource StringToBrush}}" Margin="0,0,10,0">
+                                                <TextBlock Text="📖" FontSize="16" Opacity="0.8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="{StaticResource FontSizeNormal}"/>
+                                                <TextBlock Text="{Binding Category}" FontSize="{StaticResource FontSizeXS}" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="STATUS" Width="110">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{Binding Status, Converter={StaticResource StatusToBackground}}"
+                                                CornerRadius="{StaticResource RadiusRound}" Padding="10,4" HorizontalAlignment="Left">
+                                            <TextBlock Text="{Binding Status}" FontSize="{StaticResource FontSizeXS}" FontWeight="SemiBold"
+                                                       Foreground="{Binding Status, Converter={StaticResource StatusToBrush}}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="CREATED" Binding="{Binding CreatedDate, StringFormat='{}{0:MMM dd, yyyy}'}" Width="120"/>
+                            <DataGridTemplateColumn Header="ACTIONS" Width="180">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="View" Style="{StaticResource SmallActionButton}"
+                                                    Command="{Binding DataContext.ViewCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                    CommandParameter="{Binding}" Margin="0,0,6,0"/>
+                                            <Button Content="Edit" Style="{StaticResource SmallActionButton}"
+                                                    Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                    CommandParameter="{Binding}" Margin="0,0,6,0"/>
+                                            <Button Content="Delete" Style="{StaticResource SmallActionButton}" Foreground="{StaticResource DangerBrush}"
+                                                    Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                    CommandParameter="{Binding}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <StackPanel HorizontalAlignment="Center" Margin="0,48"
+                                Visibility="{Binding HasBooks, Converter={StaticResource InverseBoolToVis}}">
+                        <Border Width="64" Height="64" CornerRadius="32" Background="{StaticResource SurfaceAltBrush}"
+                                HorizontalAlignment="Center" Margin="0,0,0,16">
+                            <TextBlock Text="📖" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="No books yet" FontSize="{StaticResource FontSizeMedium}" FontWeight="SemiBold"
+                                   HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                        <TextBlock Text="Start by adding your first book." FontSize="{StaticResource FontSizeNormal}"
+                                   Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                        <Button Content="+ Add Book" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Center"
+                                Command="{Binding AddBookCommand}" Padding="24,10"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

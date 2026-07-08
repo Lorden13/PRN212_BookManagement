@@ -1,0 +1,127 @@
+<UserControl x:Class="BookManagement.WPF.Views.Admin.AdminDashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{StaticResource BackgroundBrush}">
+
+    <ScrollViewer Style="{StaticResource ModernScrollViewer}">
+        <StackPanel Margin="28,24">
+            <!-- Page Header -->
+            <TextBlock Text="Overview"
+                       FontFamily="{StaticResource DefaultFont}"
+                       FontSize="{StaticResource FontSizeXLarge}" FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4"/>
+            <TextBlock Text="Welcome back! Here's a summary of your platform."
+                       FontFamily="{StaticResource DefaultFont}"
+                       FontSize="{StaticResource FontSizeNormal}"
+                       Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,24"/>
+
+            <!-- Stats Row -->
+            <UniformGrid Columns="5" Margin="0,0,0,8">
+                <!-- Total Users -->
+                <Border Background="White" CornerRadius="{StaticResource RadiusLarge}"
+                        Effect="{StaticResource SoftShadow}" Padding="20,18" Margin="0,0,12,0">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,14">
+                            <Border Width="40" Height="40" CornerRadius="{StaticResource RadiusMedium}"
+                                    Background="{StaticResource PrimaryLightBrush}" HorizontalAlignment="Left">
+                                <TextBlock Text="👥" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                        <TextBlock Text="{Binding TotalUsers}"
+                                   FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeXLarge}" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"/>
+                        <TextBlock Text="Total Users"
+                                   FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeSmall}"
+                                   Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Total Authors -->
+                <Border Background="White" CornerRadius="{StaticResource RadiusLarge}"
+                        Effect="{StaticResource SoftShadow}" Padding="20,18" Margin="0,0,12,0">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,14">
+                            <Border Width="40" Height="40" CornerRadius="{StaticResource RadiusMedium}"
+                                    Background="{StaticResource InfoBgBrush}" HorizontalAlignment="Left">
+                                <TextBlock Text="✍️" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                        <TextBlock Text="{Binding TotalAuthors}"
+                                   FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeXLarge}" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"/>
+                        <TextBlock Text="Authors"
+                                   FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeSmall}"
+                                   Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Total Readers -->
+                <Border Background="White" CornerRadius="{StaticResource RadiusLarge}"
+                        Effect="{StaticResource SoftShadow}" Padding="20,18" Margin="0,0,12,0">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,14">
+                            <Border Width="40" Height="40" CornerRadius="{StaticResource RadiusMedium}"
+                                    Background="{StaticResource SuccessBgBrush}" HorizontalAlignment="Left">
+                                <TextBlock Text="📖" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                        <TextBlock Text="{Binding TotalReaders}"
+                                   FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeXLarge}" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"/>
+                        <TextBlock Text="Readers"
+                                   FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeSmall}"
+                                   Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Total Books -->
+                <Border Background="White" CornerRadius="{StaticResource RadiusLarge}"
+                        Effect="{StaticResource SoftShadow}" Padding="20,18" Margin="0,0,12,0">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,14">
+                            <Border Width="40" Height="40" CornerRadius="{StaticResource RadiusMedium}"
+                                    Background="#FFF7ED" HorizontalAlignment="Left">
+                                <TextBlock Text="📚" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                        <TextBlock Text="{Binding TotalBooks}"
+                                   FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeXLarge}" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"/>
+                        <TextBlock Text="Total Books"
+                                   FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeSmall}"
+                                   Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Pending -->
+                <Border Background="White" CornerRadius="{StaticResource RadiusLarge}"
+                        Effect="{StaticResource SoftShadow}" Padding="20,18">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,14">
+                            <Border Width="40" Height="40" CornerRadius="{StaticResource RadiusMedium}"
+                                    Background="{StaticResource WarningBgBrush}" HorizontalAlignment="Left">
+                                <TextBlock Text="⏳" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                        <TextBlock Text="{Binding PendingBooks}"
+                                   FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeXLarge}" FontWeight="Bold"
+                                   Foreground="{StaticResource WarningBrush}"/>
+                        <TextBlock Text="Pending"
+                                   FontFamily="{StaticResource DefaultFont}"
+                                   FontSize="{StaticResource FontSizeSmall}"
+                                   Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
