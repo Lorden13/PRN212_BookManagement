@@ -18,6 +18,11 @@ namespace BookManagement.ViewModels.Admin
         private string _selectedReader = "All";
         private string _selectedStatus = "All";
 
+        private double _totalRevenue;
+        private int _totalTransactions;
+        private int _completedCount;
+        private int _cancelledCount;
+
         public string SearchText
         {
             get => _searchText;
@@ -52,6 +57,30 @@ namespace BookManagement.ViewModels.Admin
                     PurchasesView.Refresh();
                 }
             }
+        }
+
+        public double TotalRevenue
+        {
+            get => _totalRevenue;
+            set => SetProperty(ref _totalRevenue, value);
+        }
+
+        public int TotalTransactions
+        {
+            get => _totalTransactions;
+            set => SetProperty(ref _totalTransactions, value);
+        }
+
+        public int CompletedCount
+        {
+            get => _completedCount;
+            set => SetProperty(ref _completedCount, value);
+        }
+
+        public int CancelledCount
+        {
+            get => _cancelledCount;
+            set => SetProperty(ref _cancelledCount, value);
         }
 
         public ObservableCollection<PurchaseModel> Purchases { get; } = new ObservableCollection<PurchaseModel>();
@@ -95,6 +124,12 @@ namespace BookManagement.ViewModels.Admin
             {
                 Readers.Add(name);
             }
+
+            // Purchase statistics (based on completed transactions only for revenue)
+            TotalTransactions = list.Count;
+            CompletedCount = list.Count(p => p.Status == "Completed");
+            CancelledCount = list.Count(p => p.Status == "Cancelled");
+            TotalRevenue = list.Where(p => p.Status == "Completed").Sum(p => p.Price);
         }
 
         private bool FilterPurchases(object item)

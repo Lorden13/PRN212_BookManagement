@@ -8,12 +8,21 @@
              d:DesignHeight="700" d:DesignWidth="1000">
     <Grid Margin="24">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Statistics Cards -->
             <RowDefinition Height="Auto"/> <!-- Toolbar -->
             <RowDefinition Height="*"/>    <!-- DataGrid -->
         </Grid.RowDefinitions>
 
+        <!-- Purchase Statistics Cards -->
+        <UniformGrid Grid.Row="0" Columns="4" Margin="-8,0,-8,20">
+            <controls:StatisticCard Title="Tổng doanh thu" Value="{Binding TotalRevenue, StringFormat='${0:F2}'}" IconKey="IconCart" TrendText="Từ giao dịch thành công" TrendBrush="{DynamicResource SuccessBrush}"/>
+            <controls:StatisticCard Title="Tổng số giao dịch" Value="{Binding TotalTransactions}" IconKey="IconChart" TrendText="Tất cả trạng thái"/>
+            <controls:StatisticCard Title="Giao dịch thành công" Value="{Binding CompletedCount}" IconKey="IconCheck" TrendText="Completed" TrendBrush="{DynamicResource SuccessBrush}"/>
+            <controls:StatisticCard Title="Giao dịch đã hủy" Value="{Binding CancelledCount}" IconKey="IconClose" TrendText="Cancelled" TrendBrush="{DynamicResource DangerBrush}"/>
+        </UniformGrid>
+
         <!-- Toolbar -->
-        <Border Grid.Row="0" Style="{StaticResource BaseCardStyle}" Padding="16" Margin="0,0,0,20">
+        <Border Grid.Row="1" Style="{StaticResource BaseCardStyle}" Padding="16" Margin="0,0,0,20">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/> <!-- Search -->
@@ -51,7 +60,7 @@
         </Border>
 
         <!-- DataGrid of Transactions -->
-        <Border Grid.Row="1" Style="{StaticResource BaseCardStyle}" Padding="20">
+        <Border Grid.Row="2" Style="{StaticResource BaseCardStyle}" Padding="20">
             <Grid>
                 <DataGrid ItemsSource="{Binding PurchasesView}" Style="{StaticResource ModernDataGrid}">
                     <DataGrid.Columns>

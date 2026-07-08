@@ -16,10 +16,16 @@
         <StackPanel Grid.Column="0" Margin="0,0,32,0">
             <!-- Book Title -->
             <TextBlock Text="Tiêu đề sách *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
-            <TextBox Style="{StaticResource ModernTextBox}" 
-                     Text="{Binding BookTitle, UpdateSourceTrigger=PropertyChanged}" 
-                     Tag="Nhập tiêu đề sách..." 
-                     Margin="0,0,0,20"/>
+            <TextBox Style="{StaticResource ModernTextBox}"
+                     Text="{Binding BookTitle, UpdateSourceTrigger=PropertyChanged}"
+                     Tag="Nhập tiêu đề sách..."/>
+            <TextBlock Text="{Binding TitleError}"
+                       Foreground="{DynamicResource DangerBrush}"
+                       FontSize="{StaticResource FontSizeMuted}"
+                       Margin="2,4,0,0"
+                       TextWrapping="Wrap"
+                       Visibility="{Binding TitleError, Converter={StaticResource StringNullOrEmptyToVisConverter}}"/>
+            <Grid Height="16"/>
 
             <!-- Category and Price Row -->
             <Grid Margin="0,0,0,20">
@@ -43,27 +49,77 @@
                         <ComboBoxItem Content="Education"/>
                         <ComboBoxItem Content="History"/>
                     </ComboBox>
+                    <TextBlock Text="{Binding CategoryError}"
+                               Foreground="{DynamicResource DangerBrush}"
+                               FontSize="{StaticResource FontSizeMuted}"
+                               Margin="2,4,0,0"
+                               TextWrapping="Wrap"
+                               Visibility="{Binding CategoryError, Converter={StaticResource StringNullOrEmptyToVisConverter}}"/>
                 </StackPanel>
 
                 <!-- Price -->
                 <StackPanel Grid.Column="2">
                     <TextBlock Text="Giá (USD) *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
-                    <TextBox Style="{StaticResource ModernTextBox}" 
-                             Text="{Binding BookPrice, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox Style="{StaticResource ModernTextBox}"
+                             Text="{Binding BookPrice, UpdateSourceTrigger=PropertyChanged}"
                              Tag="0.00"/>
+                    <TextBlock Text="{Binding PriceError}"
+                               Foreground="{DynamicResource DangerBrush}"
+                               FontSize="{StaticResource FontSizeMuted}"
+                               Margin="2,4,0,0"
+                               TextWrapping="Wrap"
+                               Visibility="{Binding PriceError, Converter={StaticResource StringNullOrEmptyToVisConverter}}"/>
                 </StackPanel>
             </Grid>
 
             <!-- Description -->
             <TextBlock Text="Mô tả *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
-            <TextBox Style="{StaticResource ModernTextBox}" 
-                     Text="{Binding BookDescription, UpdateSourceTrigger=PropertyChanged}" 
-                     Tag="Nhập mô tả tóm tắt sách..." 
-                     Height="120" 
-                     AcceptsReturn="True" 
+            <TextBox Style="{StaticResource ModernTextBox}"
+                     Text="{Binding BookDescription, UpdateSourceTrigger=PropertyChanged}"
+                     Tag="Nhập mô tả tóm tắt sách..."
+                     Height="120"
+                     AcceptsReturn="True"
                      VerticalContentAlignment="Top"
-                     TextWrapping="Wrap" 
-                     Margin="0,0,0,24"/>
+                     TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding DescriptionError}"
+                       Foreground="{DynamicResource DangerBrush}"
+                       FontSize="{StaticResource FontSizeMuted}"
+                       Margin="2,4,0,0"
+                       TextWrapping="Wrap"
+                       Visibility="{Binding DescriptionError, Converter={StaticResource StringNullOrEmptyToVisConverter}}"/>
+            <Grid Height="16"/>
+
+            <!-- Upload PDF -->
+            <TextBlock Text="Tệp bản thảo (PDF) *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+            <Grid Margin="0,0,0,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0"
+                        Style="{StaticResource BaseCardStyle}"
+                        Padding="12,8"
+                        Background="{DynamicResource BackgroundBrush}">
+                    <TextBlock Text="{Binding BookPdfPath, FallbackValue='Chưa chọn tệp PDF'}"
+                               Style="{StaticResource TextBlockMuted}"
+                               TextTrimming="CharacterEllipsis"
+                               VerticalAlignment="Center"/>
+                </Border>
+                <Button Grid.Column="2"
+                        Style="{StaticResource SecondaryButton}"
+                        Content="Chọn file PDF"
+                        Command="{Binding SelectPdfCommand}"
+                        Width="140"
+                        Height="36"/>
+            </Grid>
+            <TextBlock Text="{Binding PdfError}"
+                       Foreground="{DynamicResource DangerBrush}"
+                       FontSize="{StaticResource FontSizeMuted}"
+                       Margin="2,4,0,0"
+                       TextWrapping="Wrap"
+                       Visibility="{Binding PdfError, Converter={StaticResource StringNullOrEmptyToVisConverter}}"/>
+            <Grid Height="8"/>
 
             <!-- Form Action Buttons -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">

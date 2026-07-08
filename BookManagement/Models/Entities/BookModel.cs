@@ -9,6 +9,7 @@ namespace BookManagement.Models.Entities
         public double Price { get; set; }
         public string Status { get; set; } = "Draft"; // Approved, Pending, Rejected, Draft
         public string CoverImagePath { get; set; } = string.Empty;
+        public string PdfFilePath { get; set; } = string.Empty;
         public double Rating { get; set; }
         public string Description { get; set; } = string.Empty;
         public string SubmittedDate { get; set; } = string.Empty;

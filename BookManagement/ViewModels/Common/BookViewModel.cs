@@ -92,6 +92,19 @@ namespace BookManagement.ViewModels.Common
             }
         }
 
+        public string PdfFilePath
+        {
+            get => _model.PdfFilePath;
+            set
+            {
+                if (_model.PdfFilePath != value)
+                {
+                    _model.PdfFilePath = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public double Rating
         {
             get => _model.Rating;

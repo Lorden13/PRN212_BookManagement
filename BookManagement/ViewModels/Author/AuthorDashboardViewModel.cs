@@ -77,9 +77,20 @@ namespace BookManagement.ViewModels.Author
 
             Sidebar.MenuItems.Add(new MenuItemViewModel(new MenuItemModel
             {
+                Title = "Approval Status",
+                IconGeometryKey = "IconShield",
+                Command = new RelayCommand(() =>
+                {
+                    PageTitle = "Approval Status";
+                    CurrentPageViewModel = new AuthorApprovalStatusViewModel(this, _bookService, _reviewService);
+                })
+            }));
+
+            Sidebar.MenuItems.Add(new MenuItemViewModel(new MenuItemModel
+            {
                 Title = "Profile",
                 IconGeometryKey = "IconUser",
-                Command = new RelayCommand(() => 
+                Command = new RelayCommand(() =>
                 {
                     PageTitle = "Profile";
                     CurrentPageViewModel = new AuthorProfileViewModel(this, _authorService);

@@ -72,6 +72,7 @@ namespace BookManagement.Services.Mock
                 existing.Status = book.Status;
                 existing.Description = book.Description;
                 existing.CoverImagePath = book.CoverImagePath;
+                existing.PdfFilePath = book.PdfFilePath;
             }
         }
 

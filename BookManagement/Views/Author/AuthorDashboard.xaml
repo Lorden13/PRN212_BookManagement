@@ -30,6 +30,9 @@
         <DataTemplate DataType="{x:Type vm:AuthorReviewHistoryViewModel}">
             <views:AuthorReviewHistoryView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AuthorApprovalStatusViewModel}">
+            <views:AuthorApprovalStatusView/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type vm:AuthorProfileViewModel}">
             <views:AuthorProfileView/>
         </DataTemplate>
