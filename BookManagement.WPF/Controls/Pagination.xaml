@@ -14,7 +14,7 @@
 
         <!-- Showing range info text -->
         <TextBlock Grid.Column="0" 
-                   Text="{Binding RelativeSource={RelativeSource AncestorType=local:Pagination}, Path=InfoText, FallbackValue='Showing 1 to 8 of 48 books'}" 
+                   
                    Style="{StaticResource TextBlockNormal}" 
                    VerticalAlignment="Center"/>
 
@@ -22,12 +22,12 @@
         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
             <!-- Prev Button -->
             <Button Style="{StaticResource SecondaryButton}" Width="36" Padding="0" Height="36" Margin="0,0,8,0"
-                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:Pagination}, Path=PrevCommand}">
+                    >
                 <Path Data="{StaticResource IconChevronLeft}" Fill="{DynamicResource TextPrimaryBrush}" Width="14" Height="14" Stretch="Uniform"/>
             </Button>
             
             <!-- Page Info Text -->
-            <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=local:Pagination}, Path=PageInfoText, FallbackValue='Page 1 of 5'}" 
+            <TextBlock 
                        Style="{StaticResource TextBlockNormal}" 
                        VerticalAlignment="Center" 
                        Margin="8,0"
@@ -36,7 +36,7 @@
             
             <!-- Next Button -->
             <Button Style="{StaticResource SecondaryButton}" Width="36" Padding="0" Height="36" Margin="8,0,0,0"
-                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:Pagination}, Path=NextCommand}">
+                    >
                 <Path Data="{StaticResource IconChevronRight}" Fill="{DynamicResource TextPrimaryBrush}" Width="14" Height="14" Stretch="Uniform"/>
             </Button>
         </StackPanel>

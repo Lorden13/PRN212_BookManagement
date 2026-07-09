@@ -5,8 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BookManagement.Views.Reader"
       xmlns:controls="clr-namespace:BookManagement.Controls"
-      xmlns:vm="clr-namespace:BookManagement.ViewModels.Reader"
-      xmlns:vmCommon="clr-namespace:BookManagement.ViewModels.Common"
+  
       xmlns:views="clr-namespace:BookManagement.Views.Reader"
       xmlns:viewsCommon="clr-namespace:BookManagement.Views.Common"
       mc:Ignorable="d" 
@@ -14,29 +13,6 @@
       Title="Reader Dashboard"
       Style="{StaticResource PageLoadStyle}">
 
-    <Page.Resources>
-        <DataTemplate DataType="{x:Type vm:ReaderHomeViewModel}">
-            <views:ReaderHomeView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:ReaderBooksViewModel}">
-            <views:ReaderBooksView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:ReaderBookDetailViewModel}">
-            <views:ReaderBookDetailView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:ReaderLibraryViewModel}">
-            <views:ReaderLibraryView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:ReaderFavoriteViewModel}">
-            <views:ReaderFavoriteView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:ReaderProfileViewModel}">
-            <views:ReaderProfileView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vmCommon:ChangePasswordViewModel}">
-            <viewsCommon:ChangePasswordView/>
-        </DataTemplate>
-    </Page.Resources>
 
     <Grid Background="#F8F9FB">
         <Grid.ColumnDefinitions>
@@ -45,8 +21,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Sidebar Navigation -->
-        <controls:Sidebar Grid.Column="0" DataContext="{Binding Sidebar}"/>
-
+        <controls:Sidebar></controls:Sidebar>
         <!-- Right Side Content -->
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -54,20 +29,11 @@
                 <RowDefinition Height="*"/>    <!-- Body Content Area -->
             </Grid.RowDefinitions>
 
-            <!-- Reusable Header -->
-            <controls:Header Grid.Row="0"/>
-
-            <!-- Main Shell Frame (Phase 2 Navigation Content) -->
-            <ContentControl Grid.Row="1" Content="{Binding CurrentPageViewModel}"/>
-
-            <!-- Toast Notification Area -->
-            <controls:NotificationControl Grid.Row="1"
-                                         Message="{Binding ToastMessage}"
-                                         Status="{Binding ToastStatus}"
-                                         IsOpen="{Binding IsToastOpen, Mode=TwoWay}"
-                                         HorizontalAlignment="Right"
-                                         VerticalAlignment="Top"
-                                         Margin="0,16,24,0"/>
+            <controls:Header></controls:Header>
+            <StackPanel Grid.Row="1">
+                <TextBlock>Hello Reader</TextBlock>
+            </StackPanel>
+           
         </Grid>
     </Grid>
 </Page>

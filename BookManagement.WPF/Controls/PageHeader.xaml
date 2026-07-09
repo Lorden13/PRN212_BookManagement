@@ -14,18 +14,18 @@
 
         <!-- Title & Subtitle -->
         <StackPanel Grid.Column="0" VerticalAlignment="Center">
-            <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=local:PageHeader}, Path=Title, FallbackValue='Page Title'}" 
+            <TextBlock 
                        Style="{StaticResource TextBlockMediumHeader}"/>
-            <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=local:PageHeader}, Path=Subtitle, FallbackValue='Page subtitle details.'}" 
+            <TextBlock 
                        Style="{StaticResource TextBlockSmall}" 
                        Foreground="{DynamicResource TextSecondaryBrush}"
                        Margin="0,4,0,0"
-                       Visibility="{Binding RelativeSource={RelativeSource AncestorType=local:PageHeader}, Path=Subtitle, Converter={StaticResource StringNullOrEmptyToVisConverter}}"/>
+                       />
         </StackPanel>
 
         <!-- Actions Area -->
         <ContentControl Grid.Column="1" 
-                        Content="{Binding RelativeSource={RelativeSource AncestorType=local:PageHeader}, Path=ActionsContent}"
+                        
                         VerticalAlignment="Center"/>
     </Grid>
 </UserControl>

@@ -19,13 +19,13 @@
             </Border>
 
             <!-- Title -->
-            <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=local:EmptyState}, Path=Title, FallbackValue='Không tìm thấy kết quả'}" 
+            <TextBlock 
                        Style="{StaticResource TextBlockSmallHeader}" 
                        HorizontalAlignment="Center" 
                        Margin="0,0,0,8"/>
 
             <!-- Message -->
-            <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=local:EmptyState}, Path=Message, FallbackValue='Vui lòng thử lại với từ khóa khác hoặc thiết lập lại bộ lọc.'}" 
+            <TextBlock 
                        Style="{StaticResource TextBlockNormal}" 
                        TextAlignment="Center" 
                        Width="280" 
@@ -35,10 +35,10 @@
 
             <!-- Action Button (optional) -->
             <Button Style="{StaticResource SecondaryButton}" 
-                    Content="{Binding RelativeSource={RelativeSource AncestorType=local:EmptyState}, Path=ActionText, FallbackValue='Làm mới'}" 
+                    
                     Height="36" 
                     HorizontalAlignment="Center"
-                    Visibility="{Binding RelativeSource={RelativeSource AncestorType=local:EmptyState}, Path=ShowAction, Converter={StaticResource BoolToVisConverter}}"/>
+                    />
         </StackPanel>
     </Grid>
 </UserControl>

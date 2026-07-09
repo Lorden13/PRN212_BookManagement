@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BookManagement.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="600"
-             Visibility="{Binding RelativeSource={RelativeSource AncestorType=local:ConfirmationDialog}, Path=IsOpen, Converter={StaticResource BoolToVisConverter}}">
+             >
     <!-- Semi-transparent overlay background -->
     <Grid Style="{StaticResource DialogOverlayStyle}">
         <!-- Dialog Card -->
@@ -23,13 +23,13 @@
                 </Border>
 
                 <!-- Title -->
-                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=local:ConfirmationDialog}, Path=Title, FallbackValue='Xác nhận thao tác'}" 
+                <TextBlock 
                            Style="{StaticResource TextBlockSmallHeader}" 
                            HorizontalAlignment="Center" 
                            Margin="0,0,0,8"/>
 
                 <!-- Message -->
-                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=local:ConfirmationDialog}, Path=Message, FallbackValue='Bạn có chắc chắn muốn thực hiện hành động này không?'}" 
+                <TextBlock 
                            Style="{StaticResource TextBlockNormal}" 
                            TextAlignment="Center" 
                            TextWrapping="Wrap" 

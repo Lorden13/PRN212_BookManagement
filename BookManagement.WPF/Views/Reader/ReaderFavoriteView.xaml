@@ -58,7 +58,7 @@
                         <DataGridTemplateColumn Header="Thể loại" Width="1.2*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <controls:StatusBadge Content="{Binding Category}" HorizontalAlignment="Left"/>
+                                    
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -107,18 +107,7 @@
                 </DataGrid>
 
                 <!-- Empty State -->
-                <controls:EmptyState>
-                    <controls:EmptyState.Style>
-                        <Style TargetType="controls:EmptyState">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding FavoriteBooksView.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls:EmptyState.Style>
-                </controls:EmptyState>
+                
             </Grid>
         </Border>
     </Grid>

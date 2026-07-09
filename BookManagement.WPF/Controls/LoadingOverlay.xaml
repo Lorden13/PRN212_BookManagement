@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BookManagement.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400"
-             Visibility="{Binding RelativeSource={RelativeSource AncestorType=local:LoadingOverlay}, Path=IsLoading, Converter={StaticResource BoolToVisConverter}}">
+             >
     <!-- Semi-transparent overlay -->
     <Grid Style="{StaticResource DialogOverlayStyle}">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -38,7 +38,7 @@
             </Border>
 
             <!-- Loading text -->
-            <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=local:LoadingOverlay}, Path=Message, FallbackValue='Đang tải dữ liệu...'}" 
+            <TextBlock 
                        Foreground="#FFFFFF" 
                        FontSize="14" 
                        FontWeight="SemiBold" 

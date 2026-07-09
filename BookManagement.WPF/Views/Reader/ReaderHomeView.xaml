@@ -127,13 +127,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <controls:BookCard DataContext="{Binding}">
-                                    <controls:BookCard.InputBindings>
-                                        <MouseBinding MouseAction="LeftClick" 
-                                                      Command="{Binding SelectCommand}" 
-                                                      CommandParameter="{Binding}"/>
-                                    </controls:BookCard.InputBindings>
-                                </controls:BookCard>
+                                
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -155,17 +149,7 @@
                                 <WrapPanel Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <controls:BookCard DataContext="{Binding}">
-                                    <controls:BookCard.InputBindings>
-                                        <MouseBinding MouseAction="LeftClick" 
-                                                      Command="{Binding SelectCommand}" 
-                                                      CommandParameter="{Binding}"/>
-                                    </controls:BookCard.InputBindings>
-                                </controls:BookCard>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
+                        
                     </ItemsControl>
 
                     <!-- Recently Purchased Section -->
@@ -216,7 +200,6 @@
                                     <DataGridTemplateColumn Header="Status" Width="1.5*">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <controls:StatusBadge Content="{Binding Status}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>

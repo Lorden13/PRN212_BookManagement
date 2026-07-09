@@ -5,8 +5,6 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BookManagement.Views.Admin"
       xmlns:controls="clr-namespace:BookManagement.Controls"
-      xmlns:vm="clr-namespace:BookManagement.ViewModels.Admin"
-      xmlns:vmCommon="clr-namespace:BookManagement.ViewModels.Common"
       xmlns:views="clr-namespace:BookManagement.Views.Admin"
       xmlns:viewsCommon="clr-namespace:BookManagement.Views.Common"
       mc:Ignorable="d" 
@@ -14,41 +12,7 @@
       Title="Admin Dashboard"
       Style="{StaticResource PageLoadStyle}">
 
-    <Page.Resources>
-        <DataTemplate DataType="{x:Type vm:AdminHomeViewModel}">
-            <views:AdminHomeView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminUsersViewModel}">
-            <views:AdminUsersView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminReaderDetailViewModel}">
-            <views:AdminReaderDetailView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminPendingBooksViewModel}">
-            <views:AdminPendingBooksView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminBookReviewViewModel}">
-            <views:AdminBookReviewView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminAllBooksViewModel}">
-            <views:AdminAllBooksView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminPurchasesViewModel}">
-            <views:AdminPurchasesView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminReviewHistoryViewModel}">
-            <views:AdminReviewHistoryView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminReportsViewModel}">
-            <views:AdminReportsView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminProfileViewModel}">
-            <views:AdminProfileView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vmCommon:ChangePasswordViewModel}">
-            <viewsCommon:ChangePasswordView/>
-        </DataTemplate>
-    </Page.Resources>
+    
 
     <Grid Background="#F8F9FB">
         <Grid.ColumnDefinitions>
@@ -57,7 +21,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Sidebar Navigation -->
-        <controls:Sidebar Grid.Column="0" DataContext="{Binding Sidebar}"/>
+        
 
         <!-- Right Side Content -->
         <Grid Grid.Column="1">
@@ -67,19 +31,12 @@
             </Grid.RowDefinitions>
 
             <!-- Reusable Header -->
-            <controls:Header Grid.Row="0"/>
+            
 
             <!-- Main Shell Frame (Phase 3 Navigation Content) -->
             <ContentControl Grid.Row="1" Content="{Binding CurrentPageViewModel}"/>
 
-            <!-- Toast Notification Area -->
-            <controls:NotificationControl Grid.Row="1"
-                                         Message="{Binding ToastMessage}"
-                                         Status="{Binding ToastStatus}"
-                                         IsOpen="{Binding IsToastOpen, Mode=TwoWay}"
-                                         HorizontalAlignment="Right"
-                                         VerticalAlignment="Top"
-                                         Margin="0,16,24,0"/>
+          
         </Grid>
     </Grid>
 </Page>

@@ -14,7 +14,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- User Avatar -->
-            <local:AvatarCard Grid.Column="0" Width="48" Height="48" VerticalAlignment="Top" HorizontalAlignment="Center" DataContext="{Binding}"/>
+            
 
             <!-- User Details -->
             <StackPanel Grid.Column="1" Margin="16,0,0,0">
@@ -26,7 +26,7 @@
                            FontSize="{StaticResource FontSizeSmall}" 
                            Margin="0,2,0,0"/>
                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                    <local:StatusBadge Content="{Binding Status, FallbackValue='Active'}" VerticalAlignment="Center"/>
+                    
                     <TextBlock Text="{Binding Role, FallbackValue='User'}" 
                                Foreground="{DynamicResource PrimaryPurpleBrush}" 
                                FontSize="{StaticResource FontSizeSmall}" 

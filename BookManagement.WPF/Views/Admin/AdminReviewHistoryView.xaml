@@ -63,7 +63,7 @@
                         <DataGridTemplateColumn Header="Kết quả" Width="1.5*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <controls:StatusBadge Content="{Binding Result}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -86,18 +86,7 @@
                 </DataGrid>
 
                 <!-- Empty State -->
-                <controls:EmptyState>
-                    <controls:EmptyState.Style>
-                        <Style TargetType="controls:EmptyState">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ReviewsView.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls:EmptyState.Style>
-                </controls:EmptyState>
+                
             </Grid>
         </Border>
     </Grid>

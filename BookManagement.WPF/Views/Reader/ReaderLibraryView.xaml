@@ -79,7 +79,7 @@
                         <DataGridTemplateColumn Header="Status" Width="1.5*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <controls:StatusBadge Content="{Binding Status}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -127,13 +127,13 @@
                                         </Button>
 
                                         <!-- Downloading state -->
-                                        <StackPanel Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVisConverter}}" Margin="0,4" VerticalAlignment="Center">
+                                        <StackPanel  Margin="0,4" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding DownloadStatus}" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
                                             <ProgressBar Height="4" Minimum="0" Maximum="100" Value="{Binding DownloadProgress}" Background="#E6E8EC" Foreground="{DynamicResource PrimaryPurpleBrush}" BorderThickness="0"/>
                                         </StackPanel>
 
                                         <!-- Downloaded state -->
-                                        <StackPanel Orientation="Horizontal" Visibility="{Binding IsDownloaded, Converter={StaticResource BoolToVisConverter}}" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal"  VerticalAlignment="Center">
                                             <Path Data="{StaticResource IconCheck}" Fill="{DynamicResource SuccessBrush}" Width="12" Height="12" Stretch="Uniform" VerticalAlignment="Center"/>
                                             <TextBlock Text="Downloaded" Foreground="{DynamicResource SuccessBrush}" FontSize="13" FontWeight="SemiBold" Margin="6,0,0,0" VerticalAlignment="Center"/>
                                         </StackPanel>
@@ -145,18 +145,7 @@
                 </DataGrid>
 
                 <!-- Empty State -->
-                <controls:EmptyState>
-                    <controls:EmptyState.Style>
-                        <Style TargetType="controls:EmptyState">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding LibraryItemsView.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls:EmptyState.Style>
-                </controls:EmptyState>
+                
             </Grid>
         </Border>
     </Grid>

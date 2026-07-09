@@ -5,8 +5,6 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BookManagement.Views.Author"
       xmlns:controls="clr-namespace:BookManagement.Controls"
-      xmlns:vm="clr-namespace:BookManagement.ViewModels.Author"
-      xmlns:vmCommon="clr-namespace:BookManagement.ViewModels.Common"
       xmlns:views="clr-namespace:BookManagement.Views.Author"
       xmlns:viewsCommon="clr-namespace:BookManagement.Views.Common"
       mc:Ignorable="d" 
@@ -14,29 +12,6 @@
       Title="Author Dashboard"
       Style="{StaticResource PageLoadStyle}">
 
-    <Page.Resources>
-        <DataTemplate DataType="{x:Type vm:AuthorHomeViewModel}">
-            <views:AuthorHomeView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AuthorBooksViewModel}">
-            <views:AuthorBooksView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AuthorCreateBookViewModel}">
-            <views:AuthorCreateBookView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AuthorBookDetailViewModel}">
-            <views:AuthorBookDetailView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AuthorReviewHistoryViewModel}">
-            <views:AuthorReviewHistoryView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AuthorProfileViewModel}">
-            <views:AuthorProfileView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vmCommon:ChangePasswordViewModel}">
-            <viewsCommon:ChangePasswordView/>
-        </DataTemplate>
-    </Page.Resources>
 
     <Grid Background="#F8F9FB">
         <Grid.ColumnDefinitions>
@@ -45,7 +20,6 @@
         </Grid.ColumnDefinitions>
 
         <!-- Sidebar Navigation -->
-        <controls:Sidebar Grid.Column="0" DataContext="{Binding Sidebar}"/>
 
         <!-- Right Side Content -->
         <Grid Grid.Column="1">
@@ -55,19 +29,12 @@
             </Grid.RowDefinitions>
 
             <!-- Reusable Header -->
-            <controls:Header Grid.Row="0"/>
 
-            <!-- Main Shell Frame (Phase 2 Navigation Content) -->
-            <ContentControl Grid.Row="1" Content="{Binding CurrentPageViewModel}"/>
+            <controls:Header></controls:Header>
+            <StackPanel Grid.Row="1">
+                <TextBlock>Hello Author</TextBlock>
+            </StackPanel>
 
-            <!-- Toast Notification Area -->
-            <controls:NotificationControl Grid.Row="1"
-                                         Message="{Binding ToastMessage}"
-                                         Status="{Binding ToastStatus}"
-                                         IsOpen="{Binding IsToastOpen, Mode=TwoWay}"
-                                         HorizontalAlignment="Right"
-                                         VerticalAlignment="Top"
-                                         Margin="0,16,24,0"/>
         </Grid>
     </Grid>
 </Page>

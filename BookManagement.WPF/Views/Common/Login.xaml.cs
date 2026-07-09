@@ -22,56 +22,32 @@ namespace BookManagement.Views.Common
         public Login()
         {
             InitializeComponent();
-            var vm = App.Current.Services.GetRequiredService<LoginViewModel>();
-            DataContext = vm;
-            vm.PropertyChanged += Vm_PropertyChanged;
+
             _author = new AuthorService();
             _reader = new ReaderService();
             _account = new AccountService();
             _admin = new AdminService();
             _role = new RoleService();
             _token = new AccessTokenService();
+            registerRole.ItemsSource = new List<string>()
+            {
+                "Reader",
+                "Author",
+                "Admin"
+            };
+            loginRole.ItemsSource = new List<string>()
+            {
+                "Reader",
+                "Author",
+                "Admin"
+            };
         }
 
-        private void Vm_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(LoginViewModel.IsRegisterMode))
-            {
-                if (txtPassword != null) txtPassword.Password = string.Empty;
-                if (txtRegisterPassword != null) txtRegisterPassword.Password = string.Empty;
-                if (txtRegisterConfirmPassword != null) txtRegisterConfirmPassword.Password = string.Empty;
-            }
-        }
+        
 
         private void PasswordBox_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (DataContext is LoginViewModel vm)
-            {
-                if (sender is PasswordBox passwordBox)
-                {
-                    if (passwordBox.Name == "txtPassword")
-                    {
-                        if (vm.Password != passwordBox.Password)
-                        {
-                            vm.Password = passwordBox.Password;
-                        }
-                    }
-                    else if (passwordBox.Name == "txtRegisterPassword")
-                    {
-                        if (vm.RegisterPassword != passwordBox.Password)
-                        {
-                            vm.RegisterPassword = passwordBox.Password;
-                        }
-                    }
-                    else if (passwordBox.Name == "txtRegisterConfirmPassword")
-                    {
-                        if (vm.RegisterConfirmPassword != passwordBox.Password)
-                        {
-                            vm.RegisterConfirmPassword = passwordBox.Password;
-                        }
-                    }
-                }
-            }
+            
         }
 
         private void txtPasswordPlain_TextChanged(object sender, TextChangedEventArgs e)
@@ -142,12 +118,7 @@ namespace BookManagement.Views.Common
                     if (isCreated)
                     {
                         Message.Text = "Tạo thành công";
-                        await Task.Delay(1500);
-
-                        if (DataContext is LoginViewModel vm)
-                        {
-                            vm.IsRegisterMode = false;
-                        }
+                      
                     }
                     else
                     {
@@ -176,12 +147,7 @@ namespace BookManagement.Views.Common
                     if (isCreated)
                     {
                         Message.Text = "Tạo thành công";
-                        await Task.Delay(1500);
-
-                        if (DataContext is LoginViewModel vm)
-                        {
-                            vm.IsRegisterMode = false;
-                        }
+                       
                     }
                     else
                     {
@@ -193,6 +159,7 @@ namespace BookManagement.Views.Common
                     Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại mật khẩu";
                 }
             }
+           
             else
             {
                 Message.Text = "Tạo Thất Bại. Có thể do email bị trùng";
@@ -200,8 +167,9 @@ namespace BookManagement.Views.Common
 
         }
 
-        private async void Button_Click_Login(object sender, RoutedEventArgs e)
+        private async void ButtonLogin_Clicked(object sender, RoutedEventArgs e)
         {
+            btnLogin.IsEnabled = false;
             string email = txtEmail.Text;
             string password = txtPassword.Password;
             string roleChoice = (string)loginRole.SelectedItem;
@@ -213,6 +181,11 @@ namespace BookManagement.Views.Common
             if (roleChoice == "Reader")
             {
                 role = await _role.GetByNameAsync("Reader");
+
+            }
+            if (roleChoice == "Admin")
+            {
+                role = await _role.GetByNameAsync("Admin");
 
             }
             Account accountDb = await _account.CheckLoginAsync(email, password, role.RoleId);
@@ -237,6 +210,10 @@ namespace BookManagement.Views.Common
                 }
                 await sqliteContext.SaveChangesAsync();
                
+                if(role.RoleName == "Admin")
+                {
+                    Services.Navigation.NavigationService.Instance.NavigateMain(new AdminDashboard());
+                }
                 if(role.RoleName == "Author")
                 {
                     Services.Navigation.NavigationService.Instance.NavigateMain(new AuthorDashboard());
@@ -250,10 +227,24 @@ namespace BookManagement.Views.Common
             }
             else
             {
-                Console.WriteLine("Please enter email and password again.");
+                btnLogin.IsEnabled = true;
+                txtError.Visibility = Visibility.Visible;
+                txtError.Text = "Username or password is not correct";
             }
         }
 
+  
 
+        private void registerLink_Click(object sender, RoutedEventArgs e)
+        {
+            registerForm.Visibility = Visibility.Visible;
+            loginForm.Visibility = Visibility.Hidden;
+        }
+
+        private void loginLink_Click(object sender, RoutedEventArgs e)
+        {
+            registerForm.Visibility = Visibility.Hidden;
+            loginForm.Visibility = Visibility.Visible;
+        }
     }
 }
