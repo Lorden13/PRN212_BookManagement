@@ -7,5 +7,6 @@ namespace BookManagement.Services.Repository
         IEnumerable<AuthorModel> GetAllAuthors();
         AuthorModel GetAuthorById(int id);
         void UpdateProfile(AuthorModel author);
+        AuthorModel GetAuthorByAccountId(string accountId);
     }
 }

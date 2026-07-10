@@ -111,9 +111,21 @@ namespace BookManagement.ViewModels.Author
                 return;
             }
 
+            if (BookTitle.Trim().Length < 3)
+            {
+                _dashboard.ShowToast("Tiêu đề sách phải có tối thiểu 3 ký tự!", "Warning");
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(BookDescription))
             {
                 _dashboard.ShowToast("Mô tả sách không được để trống!", "Warning");
+                return;
+            }
+
+            if (BookDescription.Trim().Length < 10)
+            {
+                _dashboard.ShowToast("Mô tả sách phải có tối thiểu 10 ký tự!", "Warning");
                 return;
             }
 
@@ -123,39 +135,48 @@ namespace BookManagement.ViewModels.Author
                 return;
             }
 
-            if (_isEditMode && _existingBook != null)
+            try
             {
-                // Update existing
-                _existingBook.Title = BookTitle;
-                _existingBook.Category = BookCategory;
-                _existingBook.Price = priceValue;
-                _existingBook.Description = BookDescription;
-                _existingBook.CoverImagePath = BookCoverPath == "Chưa chọn ảnh bìa" ? "/Assets/Covers/placeholder.jpg" : BookCoverPath;
-                _existingBook.Status = "Pending"; // edit resubmits for approval
-
-                _bookService.UpdateBook(_existingBook.Model);
-
-                _dashboard.ShowToast($"Đã cập nhật sách '{BookTitle}' và gửi phê duyệt lại!", "Success");
-            }
-            else
-            {
-                // Create new
-                var newBook = new BookModel
+                if (_isEditMode && _existingBook != null)
                 {
-                    Title = BookTitle,
-                    Category = BookCategory,
-                    Price = priceValue,
-                    Description = BookDescription,
-                    Author = "Alice Johnson", // demo author
-                    CoverImagePath = BookCoverPath == "Chưa chọn ảnh bìa" ? "/Assets/Covers/placeholder.jpg" : BookCoverPath,
-                    Status = "Pending",
-                    Rating = 0.0,
-                    SubmittedDate = DateTime.Now.ToString("yyyy-MM-dd")
-                };
+                    // Update existing
+                    _existingBook.Title = BookTitle;
+                    _existingBook.Category = BookCategory;
+                    _existingBook.Price = priceValue;
+                    _existingBook.Description = BookDescription;
+                    _existingBook.CoverImagePath = BookCoverPath == "Chưa chọn ảnh bìa" ? "/Assets/Covers/placeholder.jpg" : BookCoverPath;
+                    _existingBook.Status = "Pending"; // edit resubmits for approval
 
-                _bookService.CreateBook(newBook);
+                    _bookService.UpdateBook(_existingBook.Model);
 
-                _dashboard.ShowToast($"Đã tạo mới sách '{BookTitle}' và gửi phê duyệt thành công!", "Success");
+                    _dashboard.ShowToast($"Đã cập nhật sách '{BookTitle}' và gửi phê duyệt lại!", "Success");
+                }
+                else
+                {
+                    // Create new
+                    var newBook = new BookModel
+                    {
+                        Title = BookTitle,
+                        Category = BookCategory,
+                        Price = priceValue,
+                        Description = BookDescription,
+                        Author = _dashboard.Sidebar.CurrentUser.Name, // use actual logged-in author name
+                        CoverImagePath = BookCoverPath == "Chưa chọn ảnh bìa" ? "/Assets/Covers/placeholder.jpg" : BookCoverPath,
+                        Status = "Pending",
+                        Rating = 0.0,
+                        SubmittedDate = DateTime.Now.ToString("yyyy-MM-dd")
+                    };
+
+                    _bookService.CreateBook(newBook);
+
+                    _dashboard.ShowToast($"Đã tạo mới sách '{BookTitle}' và gửi phê duyệt thành công!", "Success");
+                }
+            }
+            catch (Exception ex)
+            {
+                _dashboard.ShowToast($"Lỗi hệ thống: {ex.Message}", "Error");
+                Console.WriteLine(ex.ToString());
+                return; // Do not return to My Books page if the operation failed
             }
 
             // Return to My Books

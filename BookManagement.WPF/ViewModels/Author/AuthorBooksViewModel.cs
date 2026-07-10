@@ -71,7 +71,7 @@ namespace BookManagement.ViewModels.Author
         private void LoadMyBooks()
         {
             MyBooks.Clear();
-            var list = _bookService.GetMyBooks(1).Where(b => b.Author == "Alice Johnson");
+            var list = _bookService.GetMyBooks(1).Where(b => b.Author == _dashboard.Sidebar.CurrentUser.Name);
             foreach (var b in list)
             {
                 var bookVM = new BookViewModel(b)

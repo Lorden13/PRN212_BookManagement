@@ -59,7 +59,7 @@ namespace BookManagement.ViewModels.Author
         private void LoadStatistics()
         {
             // Demo author is Alice Johnson (Id = 1). Let's filter by Author Name for demo.
-            var myBooks = _bookService.GetMyBooks(1).Where(b => b.Author == "Alice Johnson").ToList();
+            var myBooks = _bookService.GetMyBooks(1).Where(b => b.Author == _dashboard.Sidebar.CurrentUser.Name).ToList();
 
             TotalBooks = myBooks.Count;
             PendingBooks = myBooks.Count(b => b.Status == "Pending");

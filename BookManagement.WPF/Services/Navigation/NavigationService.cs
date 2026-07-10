@@ -31,7 +31,7 @@ namespace BookManagement.Services.Navigation
         }
 
         // Register frames
-        public void RegisterMainFrame(Frame frame)
+        public void     RegisterMainFrame(Frame frame)
         {
             _mainFrame = frame;
         }
@@ -64,5 +64,6 @@ namespace BookManagement.Services.Navigation
         {
             CurrentViewModel = viewModel;
         }
+
     }
 }

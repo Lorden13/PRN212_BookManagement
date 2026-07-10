@@ -13,8 +13,8 @@ namespace BookManagement.Views.Common
 {
     public partial class Login : Page
     {
-        private readonly AuthorService _author;
-        private readonly ReaderService _reader;
+        private readonly BookManagement.WPF.Services.AuthorSetvice.AuthorService _author;
+        private readonly BookManagement.WPF.Services.ReaderService.ReaderService _reader;
         private readonly AccountService _account;
         private readonly AdminService _admin;
         private readonly RoleService _role;
@@ -25,8 +25,8 @@ namespace BookManagement.Views.Common
             var vm = App.Current.Services.GetRequiredService<LoginViewModel>();
             DataContext = vm;
             vm.PropertyChanged += Vm_PropertyChanged;
-            _author = new AuthorService();
-            _reader = new ReaderService();
+            _author = new BookManagement.WPF.Services.AuthorSetvice.AuthorService();
+            _reader = new BookManagement.WPF.Services.ReaderService.ReaderService();
             _account = new AccountService();
             _admin = new AdminService();
             _role = new RoleService();
@@ -118,142 +118,201 @@ namespace BookManagement.Views.Common
 
         private async void Button_Click_Register(object sender, RoutedEventArgs e)
         {
-            string fullFullname = registerFullname.Text;
-            string email = registerEmail.Text;
-            string address = registerAddress.Text;
-            string password = txtRegisterPassword.Password;
-            string confirmPassword = txtRegisterConfirmPasswordPlain.Text;
-            string phone = registerPhone.Text;
-            string role = (string)registerRole.SelectedItem;
-            if (role == "Author")
+            try
             {
-                if (password == confirmPassword)
+                string fullFullname = registerFullname.Text;
+                string email = registerEmail.Text;
+                string address = registerAddress.Text;
+                string password = txtRegisterPassword.Password;
+                string confirmPassword = txtRegisterConfirmPasswordPlain.Text;
+                string phone = registerPhone.Text;
+                string role = (string)registerRole.SelectedItem;
+
+                if (string.IsNullOrEmpty(role))
                 {
-                    bool isCreated = await _author.CreateAuthorAsync(new WPF.Entities.Account
-                    {
-                        Email = email,
-                        Password = password,
-                        FullName = fullFullname,
-                        Address = address,
-                        Phone = phone,
-                        IsActive = true
+                    Message.Text = "Vui lòng chọn vai trò.";
+                    return;
+                }
 
-                    });
-                    if (isCreated)
+                if (role == "Author")
+                {
+                    if (password == confirmPassword)
                     {
-                        Message.Text = "Tạo thành công";
-                        await Task.Delay(1500);
-
-                        if (DataContext is LoginViewModel vm)
+                        bool isCreated = await _author.CreateAuthorAsync(new WPF.Entities.Account
                         {
-                            vm.IsRegisterMode = false;
+                            Email = email,
+                            Password = password,
+                            FullName = fullFullname,
+                            Address = address,
+                            Phone = phone,
+                            IsActive = true
+                        });
+                        if (isCreated)
+                        {
+                            Message.Text = "Tạo thành công";
+                            await Task.Delay(1500);
+
+                            if (DataContext is LoginViewModel vm)
+                            {
+                                vm.IsRegisterMode = false;
+                            }
+                        }
+                        else
+                        {
+                            Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại thông tin";
                         }
                     }
                     else
                     {
-                        Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại thông tin";
+                        Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại mật khẩu";
                     }
                 }
-                else
+                else if (role == "Reader")
                 {
-                    Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại mật khẩu";
-                }
-            }
-            else if (role == "Reader")
-            {
-                if (password == confirmPassword)
-                {
-                    bool isCreated = await _reader.CreateReaderAsync(new WPF.Entities.Account
+                    if (password == confirmPassword)
                     {
-                        Email = email,
-                        Password = password,
-                        FullName = fullFullname,
-                        Address = address,
-                        Phone = phone,
-                        IsActive = true
-
-                    });
-                    if (isCreated)
-                    {
-                        Message.Text = "Tạo thành công";
-                        await Task.Delay(1500);
-
-                        if (DataContext is LoginViewModel vm)
+                        bool isCreated = await _reader.CreateReaderAsync(new WPF.Entities.Account
                         {
-                            vm.IsRegisterMode = false;
+                            Email = email,
+                            Password = password,
+                            FullName = fullFullname,
+                            Address = address,
+                            Phone = phone,
+                            IsActive = true
+                        });
+                        if (isCreated)
+                        {
+                            Message.Text = "Tạo thành công";
+                            await Task.Delay(1500);
+
+                            if (DataContext is LoginViewModel vm)
+                            {
+                                vm.IsRegisterMode = false;
+                            }
+                        }
+                        else
+                        {
+                            Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại thông tin";
                         }
                     }
                     else
                     {
-                        Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại thông tin";
+                        Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại mật khẩu";
                     }
                 }
                 else
                 {
-                    Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại mật khẩu";
+                    Message.Text = "Tạo Thất Bại. Có thể do email bị trùng";
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Message.Text = "Tạo Thất Bại. Có thể do email bị trùng";
+                Message.Text = $"Lỗi hệ thống: {ex.Message}";
+                Console.WriteLine(ex.ToString());
             }
-
         }
 
         private async void Button_Click_Login(object sender, RoutedEventArgs e)
         {
+            if (DataContext is LoginViewModel vm)
+            {
+                vm.ErrorMessage = string.Empty;
+            }
+
             string email = txtEmail.Text;
             string password = txtPassword.Password;
             string roleChoice = (string)loginRole.SelectedItem;
-            Role role = null;
-            if (roleChoice == "Author")
-            {
-                role = await _role.GetByNameAsync("Author");
-            }
-            if (roleChoice == "Reader")
-            {
-                role = await _role.GetByNameAsync("Reader");
 
-            }
-            Account accountDb = await _account.CheckLoginAsync(email, password, role.RoleId);
-            if (accountDb != null)
+            if (string.IsNullOrEmpty(roleChoice))
             {
-                string accessToken = await _token.GenerateAccessTokenAsync(accountDb.AccountId);
-                UserSecretContext sqliteContext = new UserSecretContext();
-                SavedToken token = await sqliteContext.SavedTokens.FirstOrDefaultAsync();
-                if (token == null)
+                if (DataContext is LoginViewModel vm2)
                 {
-                    SavedToken newDb = new SavedToken()
+                    vm2.ErrorMessage = "Vui lòng chọn vai trò.";
+                }
+                return;
+            }
+
+            try
+            {
+                Role role = null;
+                if (roleChoice == "Author")
+                {
+                    role = await _role.GetByNameAsync("Author");
+                }
+                else if (roleChoice == "Reader")
+                {
+                    role = await _role.GetByNameAsync("Reader");
+                }
+                else if (roleChoice == "Admin")
+                {
+                    role = await _role.GetByNameAsync("Admin");
+                }
+
+                if (role == null)
+                {
+                    if (DataContext is LoginViewModel vm2)
                     {
-                        Id = Guid.NewGuid().ToString(),
-                        TokenValue = accessToken
-                    };
-                    await sqliteContext.SavedTokens.AddAsync(newDb);
+                        vm2.ErrorMessage = "Không tìm thấy vai trò đã chọn.";
+                    }
+                    return;
+                }
+
+                Account accountDb = await _account.CheckLoginAsync(email, password, role.RoleId);
+                if (accountDb != null)
+                {
+                    // Save authenticated user to static session
+                    BookManagement.Services.Utils.UserSession.CurrentUser = accountDb;
+
+                    string accessToken = await _token.GenerateAccessTokenAsync(accountDb.AccountId);
+                    UserSecretContext sqliteContext = new UserSecretContext();
+                    SavedToken token = await sqliteContext.SavedTokens.FirstOrDefaultAsync();
+                    if (token == null)
+                    {
+                        SavedToken newDb = new SavedToken()
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            TokenValue = accessToken
+                        };
+                        await sqliteContext.SavedTokens.AddAsync(newDb);
+                    }
+                    else
+                    {
+                        token.TokenValue = accessToken;
+                        sqliteContext.SavedTokens.Update(token);
+                    }
+                    await sqliteContext.SaveChangesAsync();
+
+                    if (role.RoleName == "Author")
+                    {
+                        Services.Navigation.NavigationService.Instance.NavigateMain(new AuthorDashboard());
+                    }
+                    else if (role.RoleName == "Reader")
+                    {
+                        Services.Navigation.NavigationService.Instance.NavigateMain(new ReaderDashboard());
+                    }
+                    else if (role.RoleName == "Admin")
+                    {
+                        Services.Navigation.NavigationService.Instance.NavigateMain(new AdminDashboard());
+                    }
                 }
                 else
                 {
-                    token.TokenValue = accessToken;
-                    sqliteContext.SavedTokens.Update(token);
+                    if (DataContext is LoginViewModel vm2)
+                    {
+                        vm2.ErrorMessage = "Email hoặc mật khẩu không chính xác.";
+                    }
                 }
-                await sqliteContext.SaveChangesAsync();
-               
-                if(role.RoleName == "Author")
-                {
-                    Services.Navigation.NavigationService.Instance.NavigateMain(new AuthorDashboard());
-                }
-
-                if (role.RoleName == "Reader")
-                {
-                    Services.Navigation.NavigationService.Instance.NavigateMain(new ReaderDashboard());
-                }
-
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine("Please enter email and password again.");
+                if (DataContext is LoginViewModel vm2)
+                {
+                    vm2.ErrorMessage = $"Lỗi kết nối cơ sở dữ liệu: {ex.Message}";
+                }
+                Console.WriteLine(ex.ToString());
             }
         }
 
-
+      
     }
 }

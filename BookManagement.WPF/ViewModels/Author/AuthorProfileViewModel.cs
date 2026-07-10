@@ -1,6 +1,4 @@
-using System;
-using System.Windows.Input;
-using BookManagement.Helpers;
+using BookManagement.Services.Utils;
 
 namespace BookManagement.ViewModels.Author
 {
@@ -48,8 +46,16 @@ namespace BookManagement.ViewModels.Author
 
             SaveCommand = new RelayCommand(OnSave);
 
-            // Load demo author profile (ID = 1)
-            _authorModel = _authorService.GetAuthorById(1);
+            // Load author profile dynamically from current logged-in user session
+            if (UserSession.CurrentUser != null)
+            {
+                _authorModel = _authorService.GetAuthorByAccountId(UserSession.CurrentUser.AccountId);
+            }
+            else
+            {
+                _authorModel = _authorService.GetAuthorById(1);
+            }
+
             if (_authorModel != null)
             {
                 Name = _authorModel.Name;

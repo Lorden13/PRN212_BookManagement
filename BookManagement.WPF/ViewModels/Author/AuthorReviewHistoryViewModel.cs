@@ -43,7 +43,7 @@ namespace BookManagement.ViewModels.Author
         {
             Reviews.Clear();
             // Filter reviews for Alice Johnson's books
-            var authorReviews = _reviewService.GetAllReviews().Where(r => r.AuthorName == "Alice Johnson");
+            var authorReviews = _reviewService.GetAllReviews().Where(r => r.AuthorName == _dashboard.Sidebar.CurrentUser.Name);
             foreach (var r in authorReviews)
             {
                 Reviews.Add(r);

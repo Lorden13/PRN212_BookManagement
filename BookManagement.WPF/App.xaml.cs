@@ -20,11 +20,11 @@ namespace BookManagement
         {
             var services = new ServiceCollection();
 
-            // Register Mock Services
-            services.AddSingleton<IBookService, MockBookService>();
-            services.AddSingleton<IAuthorService, MockAuthorService>();
+            // Register Services
+            services.AddSingleton<IBookService, BookService>();
+            services.AddSingleton<IAuthorService, BookManagement.Services.Repository.AuthorService>();
             services.AddSingleton<IReaderService, MockReaderService>();
-            services.AddSingleton<IUserService, MockUserService>();
+            services.AddSingleton<IUserService, BookManagement.Services.Repository.UserService>();
             services.AddSingleton<IPurchaseService, MockPurchaseService>();
             services.AddSingleton<IReviewService, MockReviewService>();
 

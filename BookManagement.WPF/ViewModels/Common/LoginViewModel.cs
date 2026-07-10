@@ -11,6 +11,7 @@ namespace BookManagement.ViewModels.Common
     using BookManagement.WPF.Services.ReaderService;
     using System.Collections.ObjectModel;
     using System.Windows.Input;
+    using BookManagement.Services.Utils;
 
     public class LoginViewModel : BaseViewModel
     {
@@ -187,7 +188,7 @@ namespace BookManagement.ViewModels.Common
             set => SetProperty(ref _isRegisterConfirmPasswordVisible, value);
         }
 
-        public ObservableCollection<string> Roles { get; } = new() { "Reader", "Author" };
+        public ObservableCollection<string> Roles { get; } = new() { "Reader", "Author", "Admin" };
 
         public ICommand LoginCommand { get; }
         public ICommand RegisterCommand { get; }
@@ -220,23 +221,50 @@ namespace BookManagement.ViewModels.Common
         {
             ErrorMessage = string.Empty;
 
-            // TODO: Replace with BookManagement.API authentication
-            if (Email == "reader@demo.com" && Password == "123456")
+            //// TODO: Replace with BookManagement.API authentication
+            //if (Email == "reader@demo.com" && Password == "123456")
+            //{
+            //    NavigationService.Instance.NavigateMain(new ReaderDashboard());
+            //}
+            //else if (Email == "author@demo.com" && Password == "123456")
+            //{
+            //    NavigationService.Instance.NavigateMain(new AuthorDashboard());
+            //}
+            //else if (Email == "admin@demo.com" && Password == "123456")
+            //{
+            //    NavigationService.Instance.NavigateMain(new AdminDashboard());
+            //}
+            //else
+            //{
+            //    ErrorMessage = "Email hoặc mật khẩu không chính xác. Vui lòng thử lại.";
+            //}
+            var account = _userService.Login(Email, Password);
+
+            if (account == null)
             {
-                NavigationService.Instance.NavigateMain(new ReaderDashboard());
+                ErrorMessage = "Email hoặc mật khẩu không đúng.";
+                return;
             }
-            else if (Email == "author@demo.com" && Password == "123456")
+
+            // Lưu session
+            UserSession.CurrentUser = account;
+
+            switch (account.RoleId)
             {
-                NavigationService.Instance.NavigateMain(new AuthorDashboard());
+                case "AUTHOR":
+                    NavigationService.Instance.NavigateMain(new AuthorDashboard());
+                    break;
+
+                case "READER":
+                    NavigationService.Instance.NavigateMain(new ReaderDashboard());
+                    break;
+
+                case "ADMIN":
+                    NavigationService.Instance.NavigateMain(new AdminDashboard());
+                    break;
             }
-            else if (Email == "admin@demo.com" && Password == "123456")
-            {
-                NavigationService.Instance.NavigateMain(new AdminDashboard());
-            }
-            else
-            {
-                ErrorMessage = "Email hoặc mật khẩu không chính xác. Vui lòng thử lại.";
-            }
+
+
         }
 
         private bool CanRegister()
