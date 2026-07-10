@@ -1,0 +1,150 @@
+<UserControl x:Class="BookManagement.Views.Author.AuthorHomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:BookManagement.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1000">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/> <!-- Stat Cards -->
+                <RowDefinition Height="Auto"/> <!-- Charts / Info Breakdown -->
+                <RowDefinition Height="*"/>    <!-- Recent Submissions Table -->
+            </Grid.RowDefinitions>
+
+            <!-- Stat Cards Row -->
+            <UniformGrid Grid.Row="0" Columns="4" Margin="-10,0,-10,20">
+                <controls:StatisticCard Title="Tổng số sách" Value="{Binding TotalBooks}" IconKey="IconBook" TrendText="Tác phẩm đã đăng ký"/>
+                <controls:StatisticCard Title="Đã phê duyệt" Value="{Binding ApprovedBooks}" IconKey="IconCheck" TrendText="Hiển thị với độc giả"/>
+                <controls:StatisticCard Title="Đang chờ duyệt" Value="{Binding PendingBooks}" IconKey="IconClock" TrendText="Đang trong hàng đợi duyệt"/>
+                <controls:StatisticCard Title="Yêu cầu sửa đổi" Value="{Binding RejectedBooks}" IconKey="IconWarning" TrendText="Cần chỉnh sửa lại"/>
+            </UniformGrid>
+
+            <!-- Charts / Info breakdown row -->
+            <Grid Grid.Row="1" Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/> <!-- Chart Panel -->
+                    <ColumnDefinition Width="20"/>  <!-- Gap -->
+                    <ColumnDefinition Width="2*"/> <!-- Quick Actions Panel -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Status Breakdown Chart Panel -->
+                <Border Grid.Column="0" Style="{StaticResource BaseCardStyle}" Padding="24">
+                    <StackPanel>
+                        <TextBlock Text="Biểu đồ trạng thái phê duyệt" Style="{StaticResource TextBlockBold}" FontSize="16" Margin="0,0,0,20"/>
+                        
+                        <!-- Approved Progress Bar -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Đã phê duyệt" Style="{StaticResource TextBlockNormal}" VerticalAlignment="Center"/>
+                            <ProgressBar Grid.Column="1" Value="{Binding ApprovedBooks}" Maximum="{Binding TotalBooks}" Height="12" Foreground="#10B981" Background="#F3F4F6" BorderThickness="0"/>
+                            <TextBlock Grid.Column="2" Text="{Binding ApprovedBooks, StringFormat='{}{0} cuốn'}" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <!-- Pending Progress Bar -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Đang chờ duyệt" Style="{StaticResource TextBlockNormal}" VerticalAlignment="Center"/>
+                            <ProgressBar Grid.Column="1" Value="{Binding PendingBooks}" Maximum="{Binding TotalBooks}" Height="12" Foreground="#6366F1" Background="#F3F4F6" BorderThickness="0"/>
+                            <TextBlock Grid.Column="2" Text="{Binding PendingBooks, StringFormat='{}{0} cuốn'}" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <!-- Rejected Progress Bar -->
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Yêu cầu chỉnh sửa" Style="{StaticResource TextBlockNormal}" VerticalAlignment="Center"/>
+                            <ProgressBar Grid.Column="1" Value="{Binding RejectedBooks}" Maximum="{Binding TotalBooks}" Height="12" Foreground="#EF4444" Background="#F3F4F6" BorderThickness="0"/>
+                            <TextBlock Grid.Column="2" Text="{Binding RejectedBooks, StringFormat='{}{0} cuốn'}" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Quick Actions Panel -->
+                <Border Grid.Column="2" Style="{StaticResource BaseCardStyle}" Padding="24">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Thao tác nhanh" Style="{StaticResource TextBlockBold}" FontSize="16" Margin="0,0,0,16"/>
+                        
+                        <Button Style="{StaticResource PrimaryButton}" 
+                                Command="{Binding CreateBookCommand}" 
+                                Content="+ Đăng ký sách mới" 
+                                Height="42" 
+                                Margin="0,0,0,12" 
+                                HorizontalAlignment="Stretch"/>
+                        
+                        <TextBlock Text="Đăng tải và gửi yêu cầu phê duyệt tác phẩm của bạn đến ban quản trị hệ thống." 
+                                   Style="{StaticResource TextBlockMuted}" 
+                                   TextWrapping="Wrap" 
+                                   TextAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Recent Submissions Table Card -->
+            <Border Grid.Row="2" Style="{StaticResource BaseCardStyle}" Padding="24">
+                <StackPanel>
+                    <TextBlock Text="Các tác phẩm vừa đăng ký" Style="{StaticResource TextBlockBold}" FontSize="16" Margin="0,0,0,16"/>
+                    
+                    <DataGrid ItemsSource="{Binding RecentBooks}" 
+                              Style="{StaticResource ModernDataGrid}">
+                        <DataGrid.Columns>
+                            <!-- Title -->
+                            <DataGridTemplateColumn Header="Tên sách" Width="2.5*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Title}" 
+                                                   VerticalAlignment="Center" 
+                                                   FontWeight="SemiBold" 
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Category -->
+                            <DataGridTextColumn Header="Thể loại" Binding="{Binding Category}" Width="1.5*"/>
+
+                            <!-- Price -->
+                            <DataGridTextColumn Header="Giá bán" Binding="{Binding Price, StringFormat='${0:F2}'}" Width="1.2*"/>
+
+                            <!-- Status Badge -->
+                            <DataGridTemplateColumn Header="Trạng thái" Width="1.5*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <controls:StatusBadge Content="{Binding Status}" HorizontalAlignment="Left"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Actions -->
+                            <DataGridTemplateColumn Header="Thao tác" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Style="{StaticResource OutlinedButton}" 
+                                                Content="Xem" 
+                                                Height="28" 
+                                                Padding="12,0" 
+                                                Command="{Binding SelectCommand}"
+                                                CommandParameter="{Binding}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

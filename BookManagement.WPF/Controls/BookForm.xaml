@@ -1,0 +1,132 @@
+<UserControl x:Class="BookManagement.Controls.BookForm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BookManagement.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/> <!-- Form Fields -->
+            <ColumnDefinition Width="1*"/> <!-- Cover Image Picker Panel -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Side: Form Fields -->
+        <StackPanel Grid.Column="0" Margin="0,0,32,0">
+            <!-- Book Title -->
+            <TextBlock Text="Tiêu đề sách *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+            <TextBox Style="{StaticResource ModernTextBox}" 
+                     Text="{Binding BookTitle, UpdateSourceTrigger=PropertyChanged}" 
+                     Tag="Nhập tiêu đề sách..." 
+                     Margin="0,0,0,20"/>
+
+            <!-- Category and Price Row -->
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Category -->
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Thể loại *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+                    <ComboBox Style="{StaticResource ModernComboBox}" 
+                              SelectedValuePath="Content"
+                              SelectedValue="{Binding BookCategory, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBoxItem Content="Programming"/>
+                        <ComboBoxItem Content="Technology"/>
+                        <ComboBoxItem Content="Science"/>
+                        <ComboBoxItem Content="Business"/>
+                        <ComboBoxItem Content="Novel"/>
+                        <ComboBoxItem Content="Education"/>
+                        <ComboBoxItem Content="History"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Price -->
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="Giá (USD) *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+                    <TextBox Style="{StaticResource ModernTextBox}" 
+                             Text="{Binding BookPrice, UpdateSourceTrigger=PropertyChanged}" 
+                             Tag="0.00"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Description -->
+            <TextBlock Text="Mô tả *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+            <TextBox Style="{StaticResource ModernTextBox}" 
+                     Text="{Binding BookDescription, UpdateSourceTrigger=PropertyChanged}" 
+                     Tag="Nhập mô tả tóm tắt sách..." 
+                     Height="120" 
+                     AcceptsReturn="True" 
+                     VerticalContentAlignment="Top"
+                     TextWrapping="Wrap" 
+                     Margin="0,0,0,24"/>
+
+            <!-- Form Action Buttons -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <!-- Cancel -->
+                <Button Style="{StaticResource SecondaryButton}" 
+                        Content="Hủy" 
+                        Width="100" 
+                        Height="40"
+                        Command="{Binding CancelCommand}"
+                        Margin="0,0,12,0"/>
+                
+                <!-- Reset -->
+                <Button Style="{StaticResource OutlinedButton}" 
+                        Content="Thiết lập lại" 
+                        Width="120" 
+                        Height="40"
+                        Command="{Binding ResetCommand}"
+                        Margin="0,0,12,0"/>
+
+                <!-- Action Button -->
+                <Button Style="{StaticResource PrimaryButton}" 
+                        Content="{Binding ActionText, FallbackValue='Gửi yêu cầu'}" 
+                        Width="160" 
+                        Height="40"
+                        Command="{Binding ActionCommand}"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Right Side: Cover Image Picker -->
+        <Border Grid.Column="1" Style="{StaticResource BaseCardStyle}" Padding="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Bìa sách" Style="{StaticResource TextBlockSmallHeader}" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                
+                <!-- Mock Cover Frame -->
+                <Border Grid.Row="1" CornerRadius="8" Background="{DynamicResource BackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1.5" Margin="0,0,0,16">
+                    <Grid>
+                        <!-- Cover image logic binding -->
+                        <!-- If path is present we show path, else show mock cover indicator -->
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Path Data="{StaticResource IconBook}" Fill="{DynamicResource TextMutedBrush}" Width="48" Height="48" Stretch="Uniform" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Text="{Binding BookCoverPath, FallbackValue='Chưa chọn ảnh bìa'}" 
+                                       Style="{StaticResource TextBlockMuted}" 
+                                       TextAlignment="Center" 
+                                       TextWrapping="Wrap"
+                                       Margin="8,0"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Select Cover Image Picker Button -->
+                <Button Grid.Row="2" 
+                        Style="{StaticResource SecondaryButton}" 
+                        Content="Chọn ảnh bìa" 
+                        Command="{Binding SelectCoverCommand}"
+                        HorizontalAlignment="Stretch" 
+                        Height="36"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

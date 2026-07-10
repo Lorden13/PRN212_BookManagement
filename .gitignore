@@ -1,0 +1,18 @@
+# Build folders
+bin/
+obj/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Cache and temporary files
+.vs/
+*.cache
+*.log
+err.log
+out.log
+TestResults/
+packages/
