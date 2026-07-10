@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BookManagement.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="80" d:DesignWidth="350"
-             Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsOpen, Converter={StaticResource BoolToVisConverter}}">
+             >
     
     <Border Background="White"
             CornerRadius="8"
@@ -16,7 +16,7 @@
             Margin="20"
             Padding="16"
             BorderThickness="4,1,1,1"
-            BorderBrush="{Binding RelativeSource={RelativeSource AncestorType=local:NotificationControl}, Path=Status, Converter={StaticResource StatusToBrushConv}}">
+            >
         <Border.Effect>
             <DropShadowEffect BlurRadius="15" 
                               ShadowDepth="2" 
@@ -32,8 +32,7 @@
 
             <!-- Status Icon -->
             <Path Grid.Column="0" 
-                  Data="{Binding RelativeSource={RelativeSource AncestorType=local:NotificationControl}, Path=Status, Converter={StaticResource StatusToIconGeomConv}}" 
-                  Fill="{Binding RelativeSource={RelativeSource AncestorType=local:NotificationControl}, Path=Status, Converter={StaticResource StatusToBrushConv}}"
+                  
                   Width="18" Height="18" 
                   Stretch="Uniform" 
                   VerticalAlignment="Top" 
@@ -41,13 +40,13 @@
 
             <!-- Content Area (Title & Description) -->
             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=local:NotificationControl}, Path=Title}" 
+                <TextBlock 
                            Style="{StaticResource TextBlockNormal}"
                            FontWeight="Bold"
                            FontSize="14"
                            Foreground="{DynamicResource TextPrimaryBrush}"
                            Margin="0,0,0,2"/>
-                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=local:NotificationControl}, Path=Message}" 
+                <TextBlock  
                            Style="{StaticResource TextBlockNormal}"
                            FontSize="12"
                            Foreground="{DynamicResource TextSecondaryBrush}"

@@ -8,27 +8,14 @@ namespace BookManagement.Services.Navigation
         private static NavigationService _instance;
         public static NavigationService Instance => _instance ??= new NavigationService();
 
-        private BaseViewModel _currentViewModel;
         private Frame _mainFrame;
         private Frame _contentFrame;
 
-        public event Action<BaseViewModel> CurrentViewModelChanged;
 
         private NavigationService() { }
 
         // ViewModel-first (UserControl) Navigation
-        public BaseViewModel CurrentViewModel
-        {
-            get => _currentViewModel;
-            set
-            {
-                if (_currentViewModel != value)
-                {
-                    _currentViewModel = value;
-                    CurrentViewModelChanged?.Invoke(_currentViewModel);
-                }
-            }
-        }
+   
 
         // Register frames
         public void     RegisterMainFrame(Frame frame)
@@ -60,9 +47,9 @@ namespace BookManagement.Services.Navigation
         }
 
         // Navigate by ViewModel inside the UserControl content
-        public void NavigateTo(BaseViewModel viewModel)
+        public void NavigateTo()
         {
-            CurrentViewModel = viewModel;
+           
         }
 
     }

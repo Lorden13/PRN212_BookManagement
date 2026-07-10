@@ -20,7 +20,7 @@
 
             <!-- Title -->
             <TextBlock Grid.Row="0" Grid.Column="0"
-                       Text="{Binding RelativeSource={RelativeSource AncestorType=local:StatisticCard}, Path=Title, FallbackValue='Total Books'}" 
+                        
                        Foreground="{DynamicResource TextSecondaryBrush}" 
                        FontSize="{StaticResource FontSizeSmall}"
                        FontFamily="{DynamicResource MainFontFamily}"/>
@@ -31,7 +31,7 @@
                     CornerRadius="8" 
                     Background="{DynamicResource PrimaryPurpleLightBrush}" 
                     VerticalAlignment="Top">
-                <Path Data="{Binding RelativeSource={RelativeSource AncestorType=local:StatisticCard}, Path=IconKey, Converter={StaticResource ResKeyToGeomConv}}" 
+                <Path 
                       Fill="{DynamicResource PrimaryPurpleBrush}" 
                       Width="20" Height="20" 
                       Stretch="Uniform" 
@@ -41,14 +41,13 @@
 
             <!-- Value -->
             <TextBlock Grid.Row="1" Grid.Column="0"
-                       Text="{Binding RelativeSource={RelativeSource AncestorType=local:StatisticCard}, Path=Value, FallbackValue='12'}" 
+                       
                        Style="{StaticResource TextBlockMediumHeader}"
                        VerticalAlignment="Center"/>
 
             <!-- Trend / Subtext -->
             <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                       Text="{Binding RelativeSource={RelativeSource AncestorType=local:StatisticCard}, Path=TrendText, FallbackValue='View all'}" 
-                       Foreground="{Binding RelativeSource={RelativeSource AncestorType=local:StatisticCard}, Path=TrendBrush, FallbackValue={StaticResource TextMutedBrush}}" 
+                        
                        FontSize="{StaticResource FontSizeMuted}"
                        FontWeight="SemiBold"
                        FontFamily="{DynamicResource MainFontFamily}"/>

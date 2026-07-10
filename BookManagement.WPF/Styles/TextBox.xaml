@@ -91,7 +91,6 @@
         <Setter Property="Height" Value="42"/>
         <Setter Property="SelectionBrush" Value="{DynamicResource PrimaryPurpleActiveBrush}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="helpers:PasswordBoxHelper.Attach" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="PasswordBox">
@@ -117,9 +116,7 @@
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="helpers:PasswordBoxHelper.HasPassword" Value="True">
-                            <Setter Property="Visibility" TargetName="watermark" Value="Collapsed"/>
-                        </Trigger>
+                        
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource PrimaryPurpleHoverBrush}"/>
                         </Trigger>

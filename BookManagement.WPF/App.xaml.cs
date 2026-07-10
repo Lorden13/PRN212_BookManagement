@@ -1,7 +1,4 @@
-using System;
-using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
-using BookManagement.Services.Mock;
 
 namespace BookManagement
 {
@@ -20,6 +17,7 @@ namespace BookManagement
         {
             var services = new ServiceCollection();
 
+
             // Register Services
             services.AddSingleton<IBookService, BookService>();
             services.AddSingleton<IAuthorService, BookManagement.Services.Repository.AuthorService>();
@@ -28,16 +26,13 @@ namespace BookManagement
             services.AddSingleton<IPurchaseService, MockPurchaseService>();
             services.AddSingleton<IReviewService, MockReviewService>();
 
+
             // Register Core Services
             services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IDialogService, DialogService>();
 
             // Register ViewModels
-            services.AddTransient<LoginViewModel>();
-            services.AddTransient<ForgotPasswordViewModel>();
-            services.AddTransient<ReaderDashboardViewModel>();
-            services.AddTransient<AuthorDashboardViewModel>();
-            services.AddTransient<AdminDashboardViewModel>();
+      
 
             return services.BuildServiceProvider();
         }

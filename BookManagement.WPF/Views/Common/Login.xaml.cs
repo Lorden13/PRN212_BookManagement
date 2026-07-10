@@ -22,56 +22,36 @@ namespace BookManagement.Views.Common
         public Login()
         {
             InitializeComponent();
+
             var vm = App.Current.Services.GetRequiredService<LoginViewModel>();
             DataContext = vm;
             vm.PropertyChanged += Vm_PropertyChanged;
             _author = new BookManagement.WPF.Services.AuthorSetvice.AuthorService();
             _reader = new BookManagement.WPF.Services.ReaderService.ReaderService();
+
             _account = new AccountService();
             _admin = new AdminService();
             _role = new RoleService();
             _token = new AccessTokenService();
+            registerRole.ItemsSource = new List<string>()
+            {
+                "Reader",
+                "Author",
+                "Admin"
+            };
+            loginRole.ItemsSource = new List<string>()
+            {
+                "Reader",
+                "Author",
+                "Admin"
+            };
         }
 
-        private void Vm_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(LoginViewModel.IsRegisterMode))
-            {
-                if (txtPassword != null) txtPassword.Password = string.Empty;
-                if (txtRegisterPassword != null) txtRegisterPassword.Password = string.Empty;
-                if (txtRegisterConfirmPassword != null) txtRegisterConfirmPassword.Password = string.Empty;
-            }
-        }
+        
 
         private void PasswordBox_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (DataContext is LoginViewModel vm)
-            {
-                if (sender is PasswordBox passwordBox)
-                {
-                    if (passwordBox.Name == "txtPassword")
-                    {
-                        if (vm.Password != passwordBox.Password)
-                        {
-                            vm.Password = passwordBox.Password;
-                        }
-                    }
-                    else if (passwordBox.Name == "txtRegisterPassword")
-                    {
-                        if (vm.RegisterPassword != passwordBox.Password)
-                        {
-                            vm.RegisterPassword = passwordBox.Password;
-                        }
-                    }
-                    else if (passwordBox.Name == "txtRegisterConfirmPassword")
-                    {
-                        if (vm.RegisterConfirmPassword != passwordBox.Password)
-                        {
-                            vm.RegisterConfirmPassword = passwordBox.Password;
-                        }
-                    }
-                }
-            }
+            
         }
 
         private void txtPasswordPlain_TextChanged(object sender, TextChangedEventArgs e)
@@ -138,6 +118,7 @@ namespace BookManagement.Views.Common
                 {
                     if (password == confirmPassword)
                     {
+
                         bool isCreated = await _author.CreateAuthorAsync(new WPF.Entities.Account
                         {
                             Email = email,
@@ -161,6 +142,7 @@ namespace BookManagement.Views.Common
                         {
                             Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại thông tin";
                         }
+
                     }
                     else
                     {
@@ -171,6 +153,7 @@ namespace BookManagement.Views.Common
                 {
                     if (password == confirmPassword)
                     {
+
                         bool isCreated = await _reader.CreateReaderAsync(new WPF.Entities.Account
                         {
                             Email = email,
@@ -194,6 +177,7 @@ namespace BookManagement.Views.Common
                         {
                             Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại thông tin";
                         }
+
                     }
                     else
                     {
@@ -205,15 +189,18 @@ namespace BookManagement.Views.Common
                     Message.Text = "Tạo Thất Bại. Có thể do email bị trùng";
                 }
             }
+
             catch (Exception ex)
+
             {
                 Message.Text = $"Lỗi hệ thống: {ex.Message}";
                 Console.WriteLine(ex.ToString());
             }
         }
 
-        private async void Button_Click_Login(object sender, RoutedEventArgs e)
+        private async void ButtonLogin_Clicked(object sender, RoutedEventArgs e)
         {
+
             if (DataContext is LoginViewModel vm)
             {
                 vm.ErrorMessage = string.Empty;
@@ -223,7 +210,9 @@ namespace BookManagement.Views.Common
             string password = txtPassword.Password;
             string roleChoice = (string)loginRole.SelectedItem;
 
+
             if (string.IsNullOrEmpty(roleChoice))
+
             {
                 if (DataContext is LoginViewModel vm2)
                 {
@@ -302,9 +291,11 @@ namespace BookManagement.Views.Common
                         vm2.ErrorMessage = "Email hoặc mật khẩu không chính xác.";
                     }
                 }
+
             }
             catch (Exception ex)
             {
+
                 if (DataContext is LoginViewModel vm2)
                 {
                     vm2.ErrorMessage = $"Lỗi kết nối cơ sở dữ liệu: {ex.Message}";
@@ -314,5 +305,6 @@ namespace BookManagement.Views.Common
         }
 
       
+
     }
 }

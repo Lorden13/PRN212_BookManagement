@@ -45,7 +45,7 @@
 
                         <!-- Details -->
                         <StackPanel Grid.Column="2" VerticalAlignment="Top">
-                            <controls:StatusBadge Content="{Binding Book.Category}" HorizontalAlignment="Left" Margin="0,0,0,8"/>
+                            
                             <TextBlock Text="{Binding Book.Title}" Style="{StaticResource TextBlockMediumHeader}" FontSize="24" TextWrapping="Wrap" Margin="0,0,0,4"/>
                             <TextBlock Text="{Binding Book.Author, StringFormat='Tác giả: {0}'}" Style="{StaticResource TextBlockNormal}" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,12"/>
                             
@@ -79,7 +79,7 @@
                 <!-- Description Card -->
                 <Border Style="{StaticResource BaseCardStyle}" Padding="24" Margin="0,0,0,24">
                     <StackPanel>
-                        <controls:SectionTitle Text="Giới thiệu sách" Margin="0,0,0,12"/>
+                        
                         <TextBlock Text="{Binding Book.Description}" Style="{StaticResource TextBlockNormal}" TextWrapping="Wrap" LineHeight="20"/>
                     </StackPanel>
                 </Border>
@@ -87,7 +87,7 @@
                 <!-- Reviews Section -->
                 <Border Style="{StaticResource BaseCardStyle}" Padding="24">
                     <StackPanel>
-                        <controls:SectionTitle Text="Đánh giá từ độc giả" Margin="0,0,0,16"/>
+                        
 
                         <!-- Reviews List -->
                         <ItemsControl ItemsSource="{Binding Reviews}">
@@ -113,7 +113,7 @@
 
                                             <!-- Result Badge -->
                                             <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,4,0,8">
-                                                <controls:StatusBadge Content="{Binding Result}"/>
+                                                
                                             </StackPanel>
 
                                             <!-- Comment text -->
@@ -125,18 +125,7 @@
                         </ItemsControl>
 
                         <!-- Empty State if no reviews -->
-                        <controls:EmptyState Margin="0,10,0,0">
-                            <controls:EmptyState.Style>
-                                <Style TargetType="controls:EmptyState">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Reviews.Count}" Value="0">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </controls:EmptyState.Style>
-                        </controls:EmptyState>
+                        
                     </StackPanel>
                 </Border>
 
@@ -151,13 +140,7 @@
                 <ItemsControl ItemsSource="{Binding RecommendedBooks}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <controls:BookCard DataContext="{Binding}" Margin="0,0,0,12">
-                                <controls:BookCard.InputBindings>
-                                    <MouseBinding MouseAction="LeftClick" 
-                                                  Command="{Binding SelectCommand}" 
-                                                  CommandParameter="{Binding}"/>
-                                </controls:BookCard.InputBindings>
-                            </controls:BookCard>
+                            
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

@@ -3,8 +3,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:BookManagement.Views"
-      xmlns:vm="clr-namespace:BookManagement.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="768" d:DesignWidth="1366"
       Title="Đăng nhập">
@@ -68,7 +66,7 @@
         <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="40">
             <Grid Width="360">
                 <!-- ==================== LOGIN FORM ==================== -->
-                <StackPanel Visibility="{Binding IsRegisterMode, Converter={StaticResource BoolToVisInvertConverter}}">
+                <StackPanel x:Name="loginForm" >
                     <!-- Welcome header -->
                     <TextBlock Text="Welcome back!" 
                                Style="{StaticResource TextBlockLargeHeader}" 
@@ -80,10 +78,10 @@
                     <TextBlock Text="Vai trò *"
                                    Style="{StaticResource TextBlockSmallHeader}" 
                                    Margin="0,0,0,8"/>
+                    <!-- Choose role -->
                     <ComboBox Style="{StaticResource ModernComboBox}"
-                                  ItemsSource="{Binding Roles}"
-                                  x:Name="loginRole"
-                                  Margin="0,0,0,24"/>
+                  x:Name="loginRole"
+                     Margin="0,0,0,24"/>
                     <!-- Email Field -->
                     <TextBlock Text="Email *" 
                                Style="{StaticResource TextBlockSmallHeader}" 
@@ -101,10 +99,10 @@
                     <Grid Margin="0,0,0,16">
                         <!-- Masked Password -->
                         <PasswordBox x:Name="txtPassword" 
-                                     Style="{StaticResource ModernPasswordBox}" 
+                                     
                                      Tag="Nhập mật khẩu của bạn..." 
                                      PasswordChanged="PasswordBox_PasswordChanged" 
-                                     Visibility="{Binding IsLoginPasswordVisible, Converter={StaticResource BoolToVisInvertConverter}}"/>
+                                   />
 
                         <!-- Plain Text Password -->
                         <TextBox x:Name="txtPasswordPlain" 
@@ -112,7 +110,7 @@
                                  Tag="Nhập mật khẩu của bạn..." 
                                  Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                                  TextChanged="txtPasswordPlain_TextChanged"
-                                 Visibility="{Binding IsLoginPasswordVisible, Converter={StaticResource BoolToVisConverter}}"/>
+                                />
 
                         <!-- Toggle Visibility Button -->
                         <Button Style="{StaticResource IconButton}" 
@@ -141,34 +139,36 @@
 
 
                     <!-- Error Message -->
-                    <TextBlock Text="{Binding ErrorMessage}" 
+                    <TextBlock x:Name="txtError"
                                Foreground="{DynamicResource DangerBrush}" 
                                FontSize="13"
                                FontWeight="SemiBold"
                                TextWrapping="Wrap"
                                HorizontalAlignment="Left"
                                Margin="0,8,0,16"
-                               Visibility="{Binding ErrorMessage, Converter={StaticResource StringNullOrEmptyToVisConverter}}"
                                FontFamily="{StaticResource MainFontFamily}"/>
 
                     <!-- Login Button -->
-                    <Button 
+                    <Button x:Name="btnLogin"
                             Content="Đăng nhập"
-                            Click="Button_Click_Login"
+                            Click="ButtonLogin_Clicked"
                             Height="46"
                             Margin="0,0,0,16"/>
 
                     <!-- Switch to Register Link -->
                     <TextBlock HorizontalAlignment="Center" Margin="0,8,0,0" FontFamily="{StaticResource MainFontFamily}" FontSize="14">
                         <Run Text="Chưa có tài khoản?" Foreground="{DynamicResource TextSecondaryBrush}"/>
-                        <Hyperlink Command="{Binding SwitchToRegisterCommand}" Foreground="{DynamicResource PrimaryPurpleBrush}" TextDecorations="None">
+                        <Hyperlink x:Name="registerLink" Click="registerLink_Click" Foreground="{DynamicResource PrimaryPurpleBrush}" TextDecorations="None">
                             <Bold>Đăng ký ngay</Bold>
                         </Hyperlink>
                     </TextBlock>
                 </StackPanel>
+                
+                
 
                 <!-- ==================== REGISTER FORM ==================== -->
-                <ScrollViewer Visibility="{Binding IsRegisterMode, Converter={StaticResource BoolToVisConverter}}" 
+                <ScrollViewer x:Name="registerForm"
+                    Visibility="Hidden"
                               VerticalScrollBarVisibility="Auto" 
                               HorizontalScrollBarVisibility="Disabled" 
                               MaxHeight="500" 
@@ -229,17 +229,17 @@
                         <Grid Margin="0,0,0,16">
                             <!-- Masked Password -->
                             <PasswordBox x:Name="txtRegisterPassword" 
-                                         Style="{StaticResource ModernPasswordBox}" 
+                                         
                                          Tag="Nhập mật khẩu..." 
                                          PasswordChanged="PasswordBox_PasswordChanged" 
-                                         Visibility="{Binding IsRegisterPasswordVisible, Converter={StaticResource BoolToVisInvertConverter}}"/>
+                                   />
 
                             <!-- Plain Text Password -->
                             <TextBox x:Name="txtRegisterPasswordPlain" 
                                      Style="{StaticResource ModernTextBox}" 
                                      Tag="Nhập mật khẩu..." 
                                      TextChanged="txtRegisterPasswordPlain_TextChanged"
-                                     Visibility="{Binding IsRegisterPasswordVisible, Converter={StaticResource BoolToVisConverter}}"/>
+                                     />
 
                             <!-- Toggle Visibility Button -->
                             <Button Style="{StaticResource IconButton}" 
@@ -272,10 +272,10 @@
                         <Grid Margin="0,0,0,16">
                             <!-- Masked Password -->
                             <PasswordBox x:Name="txtRegisterConfirmPassword" 
-                                         Style="{StaticResource ModernPasswordBox}" 
+                                         
                                          Tag="Nhập lại mật khẩu..." 
                                          PasswordChanged="PasswordBox_PasswordChanged" 
-                                         Visibility="{Binding IsRegisterConfirmPasswordVisible, Converter={StaticResource BoolToVisInvertConverter}}"/>
+                                         />
 
                             <!-- Plain Text Password -->
                             <TextBox x:Name="txtRegisterConfirmPasswordPlain" 
@@ -283,7 +283,7 @@
                                      Tag="Nhập lại mật khẩu..." 
                                      Text="{Binding RegisterConfirmPassword, UpdateSourceTrigger=PropertyChanged}"
                                      TextChanged="txtRegisterConfirmPasswordPlain_TextChanged"
-                                     Visibility="{Binding IsRegisterConfirmPasswordVisible, Converter={StaticResource BoolToVisConverter}}"/>
+                                     />
 
                             <!-- Toggle Visibility Button -->
                             <Button Style="{StaticResource IconButton}" 
@@ -315,7 +315,7 @@
                                    Style="{StaticResource TextBlockSmallHeader}" 
                                    Margin="0,0,0,8"/>
                         <ComboBox Style="{StaticResource ModernComboBox}"
-                                  ItemsSource="{Binding Roles}"
+                                   
                                   x:Name="registerRole"
                                   Margin="0,0,0,24"/>
 
@@ -328,7 +328,7 @@
                                    HorizontalAlignment="Left"
                                    Margin="0,8,0,16"
                                   
-                                   Visibility="{Binding ErrorMessage, Converter={StaticResource StringNullOrEmptyToVisConverter}}"
+                                   
                                    FontFamily="{StaticResource MainFontFamily}"/>
 
                         <TextBlock x:Name="Message" 
@@ -350,7 +350,7 @@
                         <!-- Switch to Login Link -->
                         <TextBlock HorizontalAlignment="Center" Margin="0,8,0,0" FontFamily="{StaticResource MainFontFamily}" FontSize="14">
                             <Run Text="Đã có tài khoản?" Foreground="{DynamicResource TextSecondaryBrush}"/>
-                            <Hyperlink Command="{Binding SwitchToLoginCommand}" Foreground="{DynamicResource PrimaryPurpleBrush}" TextDecorations="None">
+                            <Hyperlink x:Name="loginLink" Click="loginLink_Click" Foreground="{DynamicResource PrimaryPurpleBrush}" TextDecorations="None">
                                 <Bold>Đăng nhập</Bold>
                             </Hyperlink>
                         </TextBlock>

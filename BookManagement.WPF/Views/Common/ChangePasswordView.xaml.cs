@@ -12,12 +12,7 @@ namespace BookManagement.Views.Common
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ChangePasswordViewModel vm)
-            {
-                vm.CurrentPassword = txtCurrentPassword.Password;
-                vm.NewPassword = txtNewPassword.Password;
-                vm.ConfirmPassword = txtConfirmPassword.Password;
-            }
+            
         }
     }
 }

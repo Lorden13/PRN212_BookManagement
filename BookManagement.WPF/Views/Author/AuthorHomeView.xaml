@@ -15,12 +15,7 @@
             </Grid.RowDefinitions>
 
             <!-- Stat Cards Row -->
-            <UniformGrid Grid.Row="0" Columns="4" Margin="-10,0,-10,20">
-                <controls:StatisticCard Title="Tổng số sách" Value="{Binding TotalBooks}" IconKey="IconBook" TrendText="Tác phẩm đã đăng ký"/>
-                <controls:StatisticCard Title="Đã phê duyệt" Value="{Binding ApprovedBooks}" IconKey="IconCheck" TrendText="Hiển thị với độc giả"/>
-                <controls:StatisticCard Title="Đang chờ duyệt" Value="{Binding PendingBooks}" IconKey="IconClock" TrendText="Đang trong hàng đợi duyệt"/>
-                <controls:StatisticCard Title="Yêu cầu sửa đổi" Value="{Binding RejectedBooks}" IconKey="IconWarning" TrendText="Cần chỉnh sửa lại"/>
-            </UniformGrid>
+     
 
             <!-- Charts / Info breakdown row -->
             <Grid Grid.Row="1" Margin="0,0,0,24">
@@ -119,15 +114,7 @@
                             <!-- Price -->
                             <DataGridTextColumn Header="Giá bán" Binding="{Binding Price, StringFormat='${0:F2}'}" Width="1.2*"/>
 
-                            <!-- Status Badge -->
-                            <DataGridTemplateColumn Header="Trạng thái" Width="1.5*">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <controls:StatusBadge Content="{Binding Status}" HorizontalAlignment="Left"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-
+                          
                             <!-- Actions -->
                             <DataGridTemplateColumn Header="Thao tác" Width="100">
                                 <DataGridTemplateColumn.CellTemplate>

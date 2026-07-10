@@ -30,4 +30,11 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\Admin\" />
+    <Folder Include="ViewModels\Author\" />
+    <Folder Include="ViewModels\Common\" />
+    <Folder Include="ViewModels\Reader\" />
+  </ItemGroup>
+
 </Project>
