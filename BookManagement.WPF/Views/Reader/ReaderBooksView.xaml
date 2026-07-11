@@ -95,16 +95,41 @@
                                 <WrapPanel Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
-                    
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <controls:BookCard DataContext="{Binding}">
+                                    <controls:BookCard.InputBindings>
+                                        <MouseBinding MouseAction="LeftClick" 
+                                                      Command="{Binding SelectCommand}" 
+                                                      CommandParameter="{Binding}"/>
+                                    </controls:BookCard.InputBindings>
+                                </controls:BookCard>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
                     <!-- Empty State if no books found -->
-                    
+                    <controls:EmptyState Margin="0,40,0,0">
+                        <controls:EmptyState.Style>
+                            <Style TargetType="controls:EmptyState">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding PagedBooks.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </controls:EmptyState.Style>
+                    </controls:EmptyState>
                 </StackPanel>
             </ScrollViewer>
             
             <!-- Pagination -->
-            
+            <controls:Pagination Grid.Row="1" 
+                                 InfoText="{Binding PaginationInfo}" 
+                                 PageInfoText="{Binding PageInfoText}"
+                                 PrevCommand="{Binding PrevPageCommand}"
+                                 NextCommand="{Binding NextPageCommand}"/>
         </Grid>
     </Grid>
 </UserControl>

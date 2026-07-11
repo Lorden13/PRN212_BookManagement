@@ -14,6 +14,7 @@
 
         <!-- Icon -->
         <Path Grid.Column="0"
+              Data="{Binding IconGeometryKey, Converter={StaticResource ResKeyToGeomConv}}" 
               Fill="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=Foreground}"
               Width="18" Height="18" 
               Stretch="Uniform"

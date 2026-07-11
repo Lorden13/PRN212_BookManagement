@@ -12,6 +12,9 @@
             <RowDefinition Height="*"/>    <!-- Shared Form Control -->
         </Grid.RowDefinitions>
 
-        
+        <controls:SectionTitle Grid.Row="0" Text="{Binding ActionText, StringFormat='{}Tác phẩm - {0}'}" Margin="0,0,0,24"/>
+
+        <!-- Shared Book Form -->
+        <controls:BookForm Grid.Row="1"/>
     </Grid>
 </UserControl>

@@ -22,7 +22,7 @@
 
             <!-- Injected Content Area (Allows future pages to inject custom buttons/filters) -->
             <ContentControl Grid.Column="1" 
-                            
+                            Content="{Binding RelativeSource={RelativeSource AncestorType=local:Header}, Path=HeaderContent}" 
                             VerticalAlignment="Center" 
                             Margin="20,0"/>
 
@@ -30,14 +30,19 @@
             <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                 
                 <!-- Reusable Search Box -->
-            
+                <local:SearchBox Width="220" Margin="0,0,16,0" VerticalAlignment="Center" Tag="Tìm kiếm sách, tác giả..."/>
+                
+                <!-- Notification Button with badge count -->
+                <local:NotificationButton Margin="0,0,16,0"/>
 
                 <!-- Divider -->
                 <Border Width="1" Height="24" Background="{DynamicResource BorderBrush}" Margin="0,0,16,0"/>
 
                 <!-- User Profile quick info -->
                 <StackPanel Orientation="Horizontal">
-                    
+                    <local:AvatarCard Width="36" Height="36" 
+                                      VerticalAlignment="Center"
+                                      DataContext="{Binding Sidebar.CurrentUser}"/>
                     <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
                         <TextBlock Text="{Binding Sidebar.CurrentUser.Name, FallbackValue='John Doe'}" 
                                    Foreground="{DynamicResource TextPrimaryBrush}" 

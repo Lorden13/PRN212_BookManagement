@@ -84,7 +84,14 @@
                         <!-- Price -->
                         <DataGridTextColumn Header="Giá bán" Binding="{Binding Price, StringFormat='${0:F2}'}" Width="1.2*"/>
 
-                      
+                        <!-- Status Badge -->
+                        <DataGridTemplateColumn Header="Trạng thái" Width="1.5*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <controls:StatusBadge Content="{Binding Status}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
                         <!-- Actions -->
                         <DataGridTemplateColumn Header="Thao tác" Width="240">
@@ -108,7 +115,18 @@
                 </DataGrid>
 
                 <!-- Empty State -->
-               
+                <controls:EmptyState>
+                    <controls:EmptyState.Style>
+                        <Style TargetType="controls:EmptyState">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding BooksView.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:EmptyState.Style>
+                </controls:EmptyState>
             </Grid>
         </Border>
     </Grid>

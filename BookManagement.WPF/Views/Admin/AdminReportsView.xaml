@@ -15,7 +15,12 @@
             </Grid.RowDefinitions>
 
             <!-- Revenue Cards -->
-           
+            <UniformGrid Grid.Row="0" Columns="4" Margin="-10,0,-10,20">
+                <controls:StatisticCard Title="Tổng doanh thu" Value="{Binding TotalRevenue, StringFormat='${0:F2}'}" IconKey="IconCart" TrendText="Từ trước tới nay" TrendBrush="{DynamicResource SuccessBrush}"/>
+                <controls:StatisticCard Title="Số lượng ấn phẩm bán ra" Value="{Binding TotalBooksSold}" IconKey="IconBook" TrendText="Giao dịch thành công"/>
+                <controls:StatisticCard Title="Tổng số độc giả" Value="{Binding TotalReaders}" IconKey="IconUser" TrendText="Thành viên bạn đọc"/>
+                <controls:StatisticCard Title="Tổng số tác giả" Value="{Binding TotalAuthors}" IconKey="IconPen" TrendText="Đối tác tác giả"/>
+            </UniformGrid>
 
             <!-- Charts (Mock) -->
             <Grid Grid.Row="1" Margin="0,0,0,24">

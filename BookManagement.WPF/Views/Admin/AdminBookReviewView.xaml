@@ -35,7 +35,7 @@
                                 <TextBlock Text="BÌA SÁCH CHƯA ĐĂNG TẢI" Style="{StaticResource TextBlockMuted}" FontSize="9" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,16"/>
                             </Grid>
                         </Border>
-                        
+                        <controls:StatusBadge Content="{Binding Book.Status}" HorizontalAlignment="Center" Margin="0,16,0,0"/>
                     </StackPanel>
 
                     <!-- Right: Info & Actions -->
@@ -67,7 +67,7 @@
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
-                                                    
+                                                    <controls:StatusBadge Grid.Column="0" Content="{Binding Result}" VerticalAlignment="Top"/>
                                                     <TextBlock Grid.Column="2" Text="{Binding AdminComment}" Style="{StaticResource TextBlockNormal}" TextWrapping="Wrap" VerticalAlignment="Top"/>
                                                     <TextBlock Grid.Column="3" Text="{Binding Date}" Style="{StaticResource TextBlockMuted}" FontSize="11" VerticalAlignment="Top" Margin="12,0,0,0"/>
                                                 </Grid>

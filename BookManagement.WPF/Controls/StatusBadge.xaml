@@ -12,10 +12,11 @@
                     Padding="12,4" 
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Center"
-                    
+                    Background="{Binding Content, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource StatusToBgBrushConv}}"
+                    BorderBrush="{Binding Content, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource StatusToBrushConv}}"
                     BorderThickness="1">
                 <TextBlock Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" 
-                           
+                           Foreground="{Binding Content, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource StatusToBrushConv}}" 
                            FontSize="12" 
                            FontWeight="Bold" 
                            VerticalAlignment="Center" 

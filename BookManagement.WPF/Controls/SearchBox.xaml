@@ -10,9 +10,9 @@
         <!-- TextBox wrapped inside -->
         <TextBox x:Name="txtSearch" 
                  Style="{StaticResource ModernTextBox}" 
-                 
+                 Tag="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=Tag}"
                  Padding="12,10,36,10"
-                 />
+                 Text="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=Text, UpdateSourceTrigger=PropertyChanged}"/>
         
         <!-- Search Icon placed on the right -->
         <Path Data="{StaticResource IconSearch}" 

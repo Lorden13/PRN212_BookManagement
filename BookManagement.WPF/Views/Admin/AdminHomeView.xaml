@@ -14,7 +14,16 @@
                 <RowDefinition Height="*"/>    <!-- Logs & Pending Books -->
             </Grid.RowDefinitions>
 
-   
+            <!-- Stat Cards Row -->
+            <UniformGrid Grid.Row="0" Columns="4" Margin="-8,0,-8,20">
+                <controls:StatisticCard Title="Tổng số tài khoản" Value="{Binding TotalUsers}" IconKey="IconUsers" TrendText="Độc giả + Tác giả + Admin"/>
+                <controls:StatisticCard Title="Tổng số độc giả" Value="{Binding TotalReaders}" IconKey="IconUser" TrendText="Bạn đọc đã đăng ký"/>
+                <controls:StatisticCard Title="Tổng số tác giả" Value="{Binding TotalAuthors}" IconKey="IconPen" TrendText="Nhà sáng tác nội dung"/>
+                <controls:StatisticCard Title="Tổng số sách" Value="{Binding TotalBooks}" IconKey="IconBook" TrendText="Sách trong hệ thống"/>
+                <controls:StatisticCard Title="Yêu cầu chờ duyệt" Value="{Binding PendingBooks}" IconKey="IconClock" TrendText="Sách đang đợi kiểm duyệt" TrendBrush="{DynamicResource WarningBrush}"/>
+                <controls:StatisticCard Title="Doanh thu tích lũy" Value="{Binding TotalRevenue, StringFormat='${0:F2}'}" IconKey="IconCart" TrendText="Tổng giao dịch mua sách" TrendBrush="{DynamicResource SuccessBrush}"/>
+                <controls:StatisticCard Title="Doanh thu hôm nay" Value="{Binding TodaySales, StringFormat='${0:F2}'}" IconKey="IconCheck" TrendText="Doanh thu ngày hôm nay" TrendBrush="{DynamicResource InfoBrush}"/>
+            </UniformGrid>
 
             <!-- Widgets Grid (Charts) -->
             <Grid Grid.Row="1" Margin="0,0,0,24">

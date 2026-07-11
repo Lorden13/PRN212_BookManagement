@@ -3,7 +3,16 @@
                     xmlns:converters="clr-namespace:BookManagement.Converters">
     
     <!-- Global Converters -->
-    
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisConverter"/>
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisInvertConverter" Invert="True"/>
+    <converters:NullToVisibilityConverter x:Key="NullToVisConverter"/>
+    <converters:NullToVisibilityConverter x:Key="NullToVisInvertConverter" Invert="True"/>
+    <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisConverter"/>
+    <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisInvertConverter" Invert="True"/>
+    <converters:StatusToBrushConverter x:Key="StatusToBrushConv"/>
+    <converters:StatusToBackgroundBrushConverter x:Key="StatusToBgBrushConv"/>
+    <converters:ResourceKeyToGeometryConverter x:Key="ResKeyToGeomConv"/>
+    <converters:StatusToIconGeometryConverter x:Key="StatusToIconGeomConv"/>
 
     <!-- Thin Modern ScrollBar Style -->
     <!-- Scrollbar RepeatButton (Thumb track buttons) -->

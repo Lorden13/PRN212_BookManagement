@@ -64,7 +64,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        
+                                        <controls:AvatarCard Width="32" Height="32" VerticalAlignment="Center"/>
                                         <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding Name}" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
                                             <TextBlock Text="{Binding Email}" Style="{StaticResource TextBlockMuted}" FontSize="12" Margin="0,2,0,0"/>
@@ -90,7 +90,7 @@
                         <DataGridTemplateColumn Header="Trạng thái" Width="1.5*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    
+                                    <controls:StatusBadge Content="{Binding Status}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -117,7 +117,18 @@
                 </DataGrid>
 
                 <!-- Empty State -->
-                
+                <controls:EmptyState>
+                    <controls:EmptyState.Style>
+                        <Style TargetType="controls:EmptyState">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding UsersView.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:EmptyState.Style>
+                </controls:EmptyState>
             </Grid>
         </Border>
     </Grid>
