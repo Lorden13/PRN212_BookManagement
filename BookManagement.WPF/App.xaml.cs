@@ -1,13 +1,7 @@
-
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BookManagement.WPF;
-
-/// <summary>
-/// Interaction logic for App.xaml
-/// </summary>
-
-
+namespace BookManagement
+{
     public partial class App : Application
     {
         public IServiceProvider Services { get; private set; }
@@ -47,5 +41,4 @@ namespace BookManagement.WPF;
             return services.BuildServiceProvider();
         }
     }
-
-
+}

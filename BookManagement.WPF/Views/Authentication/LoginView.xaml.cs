@@ -1,6 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
-using BookManagement.WPF.ViewModels;
+using LoginViewModel = BookManagement.WPF.ViewModels.LoginViewModel;
 
 namespace BookManagement.WPF.Views.Authentication
 {

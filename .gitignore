@@ -1,50 +1,18 @@
-## Ignore Visual Studio temporary files, builds, and user settings
+# Build folders
+bin/
+obj/
 
 # User-specific files
-*.rsuser
-*.suo
 *.user
-*.user2
-*.userhost
-*.sln.docstates
+*.userosscache
+*.suo
+*.userprefs
 
-# Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Re]leasePublic/
-x64/
-x86/
-build/
-bld/
-[Bb]in/
-[Oo]bj/
-[Oo]ut/
-msbuild.log
-msbuild.err
-msbuild.wrn
-
-# Visual Studio 2015/2017/2019 cache/options directory
+# Cache and temporary files
 .vs/
-# Uncomment if you have tasks that create to-do list files
-#*.tasks
-
-# MSTest test Results
-[Tt]est[Rr]esult*/
-[Bb]uild[Cc]omputer[Ke]y.pfx
-
-# OpenCover Target outputs
--exclude-results
-
-# Output of the build process
-[Oo]utput/
-
-# JetBrains Rider
-.idea/
-*.sln.iml
-
-# Visual Studio Code
-.vscode/
-
-# Project-specific ignores
-*.slnx
+*.cache
+*.log
+err.log
+out.log
+TestResults/
+packages/
