@@ -304,7 +304,26 @@ namespace BookManagement.Views.Common
             }
         }
 
-      
+        private void Vm_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(LoginViewModel.IsRegisterMode))
+            {
+                if (txtPassword != null) txtPassword.Password = string.Empty;
+                if (txtRegisterPassword != null) txtRegisterPassword.Password = string.Empty;
+                if (txtRegisterConfirmPassword != null) txtRegisterConfirmPassword.Password = string.Empty;
+            }
+        }
 
+        private void registerLink_Click(object sender, RoutedEventArgs e)
+        {
+            registerForm.Visibility = Visibility.Visible;
+            loginForm.Visibility = Visibility.Hidden;
+        }
+
+        private void loginLink_Click(object sender, RoutedEventArgs e)
+        {
+            registerForm.Visibility = Visibility.Hidden;
+            loginForm.Visibility = Visibility.Visible;
+        }
     }
 }
