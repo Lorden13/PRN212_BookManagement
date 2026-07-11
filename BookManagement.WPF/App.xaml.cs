@@ -21,7 +21,7 @@ namespace BookManagement
             // Register Services
             services.AddSingleton<IBookService, BookService>();
             services.AddSingleton<IAuthorService, BookManagement.Services.Repository.AuthorService>();
-            services.AddSingleton<IReaderService, MockReaderService>();
+            services.AddSingleton<IReaderService, BookManagement.Services.Repository.ReaderService>();
             services.AddSingleton<IUserService, BookManagement.Services.Repository.UserService>();
             services.AddSingleton<IPurchaseService, MockPurchaseService>();
             services.AddSingleton<IReviewService, MockReviewService>();
@@ -32,7 +32,11 @@ namespace BookManagement
             services.AddSingleton<IDialogService, DialogService>();
 
             // Register ViewModels
-      
+            services.AddTransient<LoginViewModel>();
+            services.AddTransient<ForgotPasswordViewModel>();
+            services.AddTransient<ReaderDashboardViewModel>();
+            services.AddTransient<AuthorDashboardViewModel>();
+            services.AddTransient<AdminDashboardViewModel>();
 
             return services.BuildServiceProvider();
         }
