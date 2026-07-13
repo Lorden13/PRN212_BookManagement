@@ -212,7 +212,7 @@ namespace BookManagement.Views.Common {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BookManagement;V1.0.0.0;component/views/common/login.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BookManagement;component/views/common/login.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Views\Common\Login.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

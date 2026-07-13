@@ -4693,11 +4693,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Documents\\Ky 5 FPT\\PRN201\\.NET FPT\\Project\\BookManagement.WPF\\BookManagement.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Documents\\Ky 5 FPT\\PRN201\\.NET FPT\\Project_PRN\\PRN212_BookManagement\\BookManagement.WPF\\BookManagement.csproj",
       "projectName": "BookManagement",
-      "projectPath": "C:\\Users\\Admin\\Documents\\Ky 5 FPT\\PRN201\\.NET FPT\\Project\\BookManagement.WPF\\BookManagement.csproj",
+      "projectPath": "C:\\Users\\Admin\\Documents\\Ky 5 FPT\\PRN201\\.NET FPT\\Project_PRN\\PRN212_BookManagement\\BookManagement.WPF\\BookManagement.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Documents\\Ky 5 FPT\\PRN201\\.NET FPT\\Project\\BookManagement.WPF\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\Documents\\Ky 5 FPT\\PRN201\\.NET FPT\\Project_PRN\\PRN212_BookManagement\\BookManagement.WPF\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "D:\\Microsoft Visual Studio\\Shared\\NuGetPackages"

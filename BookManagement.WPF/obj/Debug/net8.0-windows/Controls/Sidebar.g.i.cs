@@ -53,7 +53,7 @@ namespace BookManagement.Controls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BookManagement;V1.0.0.0;component/controls/sidebar.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BookManagement;component/controls/sidebar.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Controls\Sidebar.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
