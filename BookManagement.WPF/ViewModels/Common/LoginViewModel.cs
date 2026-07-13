@@ -249,7 +249,7 @@ namespace BookManagement.ViewModels.Common
             // Lưu session
             UserSession.CurrentUser = account;
 
-            switch (account.RoleId)
+            switch (account.Role?.RoleName?.Trim().ToUpperInvariant())
             {
                 case "AUTHOR":
                     NavigationService.Instance.NavigateMain(new AuthorDashboard());
@@ -261,6 +261,10 @@ namespace BookManagement.ViewModels.Common
 
                 case "ADMIN":
                     NavigationService.Instance.NavigateMain(new AdminDashboard());
+                    break;
+
+                default:
+                    ErrorMessage = "Tài khoản không có vai trò hợp lệ.";
                     break;
             }
 
