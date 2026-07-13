@@ -33,7 +33,6 @@ namespace BookManagement.Views.Common
             {
                 "Reader",
                 "Author",
-                "Admin"
             };
             loginRole.ItemsSource = new List<string>()
             {
@@ -158,8 +157,7 @@ namespace BookManagement.Views.Common
                 {
                     Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại mật khẩu";
                 }
-            }
-           
+            } 
             else
             {
                 Message.Text = "Tạo Thất Bại. Có thể do email bị trùng";
