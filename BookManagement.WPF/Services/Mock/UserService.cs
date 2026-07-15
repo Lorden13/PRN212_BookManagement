@@ -3,6 +3,7 @@ using BookManagement.WPF.Entities;
 using BookManagement.WPF.Services.Utils;
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookManagement.Services.Repository
 {
@@ -21,7 +22,24 @@ namespace BookManagement.Services.Repository
             try
             {
                 string hashed = HashBuilder.ComputeSha256Hash(password + PRIVATEKEY);
-                return _prnContext.Accounts.FirstOrDefault(q => q.IsActive && q.Email == email && q.Password == hashed);
+                var account = _prnContext.Accounts
+                    .Include(q => q.Role)
+                    .FirstOrDefault(q => q.IsActive && q.Email == email.Trim());
+
+                if (account == null)
+                    return null;
+                if (account.Password == hashed)
+                    return account;
+
+                // Upgrade legacy plaintext passwords created directly in SQL.
+                if (account.Password == password)
+                {
+                    account.Password = hashed;
+                    _prnContext.SaveChanges();
+                    return account;
+                }
+
+                return null;
             }
             catch (Exception ex)
             {

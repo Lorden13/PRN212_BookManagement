@@ -25,6 +25,10 @@ namespace BookManagement
             services.AddSingleton<IUserService, BookManagement.Services.Repository.UserService>();
             services.AddSingleton<IPurchaseService, MockPurchaseService>();
             services.AddSingleton<IReviewService, MockReviewService>();
+            services.AddTransient<BookManagement.WPF.Entities.ProjectPrnContext>();
+            services.AddTransient<BookManagement.WPF.Services.Transactions.IApprovalService, BookManagement.WPF.Services.Transactions.ApprovalService>();
+            services.AddTransient<BookManagement.WPF.Services.Transactions.IPurchaseTransactionService, BookManagement.WPF.Services.Transactions.PurchaseTransactionService>();
+            services.AddTransient<BookManagement.WPF.Services.Transactions.IFavoriteService, BookManagement.WPF.Services.Transactions.FavoriteService>();
 
 
             // Register Core Services
