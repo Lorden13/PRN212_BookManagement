@@ -7,6 +7,7 @@
              xmlns:adminViews="clr-namespace:BookManagement.WPF.Views.Admin"
              xmlns:authorViews="clr-namespace:BookManagement.WPF.Views.Author"
              xmlns:readerViews="clr-namespace:BookManagement.WPF.Views.Reader"
+             xmlns:commonViews="clr-namespace:BookManagement.WPF.Views.Common"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -55,6 +56,9 @@
             <DataTemplate DataType="{x:Type vm:AdminPurchasesViewModel}">
                 <adminViews:AdminPurchasesView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:AdminProfileViewModel}">
+                <adminViews:AdminProfileView/>
+            </DataTemplate>
 
             <DataTemplate DataType="{x:Type vm:AuthorDashboardViewModel}">
                 <authorViews:AuthorDashboardView/>
@@ -92,6 +96,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type vm:ProfileViewModel}">
                 <readerViews:ProfileView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ChangePasswordViewModel}">
+                <commonViews:ChangePasswordView/>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

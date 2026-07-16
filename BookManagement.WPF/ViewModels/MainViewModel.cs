@@ -148,6 +148,10 @@ namespace BookManagement.WPF.ViewModels
                     CurrentViewModel = new AdminPurchasesViewModel(this);
                     CurrentPageTitle = "Purchases";
                     break;
+                case "AdminProfile":
+                    CurrentViewModel = new AdminProfileViewModel(this);
+                    CurrentPageTitle = "My Profile";
+                    break;
 
                 // Author
                 case "AuthorDashboard":
@@ -200,6 +204,10 @@ namespace BookManagement.WPF.ViewModels
                     CurrentViewModel = new ProfileViewModel(this);
                     CurrentPageTitle = "My Profile";
                     break;
+                case "ChangePassword":
+                    CurrentViewModel = new ChangePasswordViewModel(this);
+                    CurrentPageTitle = "Change Password";
+                    break;
 
                 // Auth
                 case "Login":
@@ -246,6 +254,7 @@ namespace BookManagement.WPF.ViewModels
                     MenuItems.Add(new MenuItem { Title = "Pending Books", Icon = "⏳", Tag = "PendingBooks" });
                     MenuItems.Add(new MenuItem { Title = "Moderation History", Icon = "📋", Tag = "ModerationHistory" });
                     MenuItems.Add(new MenuItem { Title = "Purchases", Icon = "💳", Tag = "AdminPurchases" });
+                    MenuItems.Add(new MenuItem { Title = "Profile", Icon = "👤", Tag = "AdminProfile" });
                     break;
                 case UserRole.Author:
                     MenuItems.Add(new MenuItem { Title = "Dashboard", Icon = "📊", Tag = "AuthorDashboard" });
