@@ -36,8 +36,7 @@ namespace BookManagement.Views.Common
             registerRole.ItemsSource = new List<string>()
             {
                 "Reader",
-                "Author",
-                "Admin"
+                "Author"
             };
             loginRole.ItemsSource = new List<string>()
             {
@@ -113,10 +112,37 @@ namespace BookManagement.Views.Common
             e.Handled = regex.IsMatch(e.Text);
         }
 
+        private bool IsValidRegisterEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private void ClearRegisterErrors()
+        {
+            errFullName.Text = string.Empty;
+            errEmail.Text = string.Empty;
+            errPhone.Text = string.Empty;
+            errAddress.Text = string.Empty;
+            errPassword.Text = string.Empty;
+            errConfirmPassword.Text = string.Empty;
+            errRole.Text = string.Empty;
+            Message.Text = string.Empty;
+        }
+
         private async void Button_Click_Register(object sender, RoutedEventArgs e)
         {
             try
             {
+                ClearRegisterErrors();
+
                 string fullFullname = registerFullname.Text;
                 string email = registerEmail.Text;
                 string address = registerAddress.Text;
@@ -127,89 +153,97 @@ namespace BookManagement.Views.Common
 
                 if (string.IsNullOrEmpty(role))
                 {
-                    Message.Text = "Vui lòng chọn vai trò.";
+                    errRole.Text = "Vui lòng chọn vai trò.";
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(fullFullname))
+                {
+                    errFullName.Text = "Vui lòng nhập họ và tên.";
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(email))
+                {
+                    errEmail.Text = "Vui lòng nhập email.";
+                    return;
+                }
+
+                if (!IsValidRegisterEmail(email))
+                {
+                    errEmail.Text = "Email không hợp lệ. Vui lòng nhập đúng định dạng.";
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(phone))
+                {
+                    errPhone.Text = "Vui lòng nhập số điện thoại.";
+                    return;
+                }
+
+                if (!System.Text.RegularExpressions.Regex.IsMatch(phone, "^[0-9]+$"))
+                {
+                    errPhone.Text = "Số điện thoại chỉ được chứa các chữ số.";
+                    return;
+                }
+
+                if (phone.Length > 11)
+                {
+                    errPhone.Text = "Số điện thoại không được vượt quá 11 chữ số.";
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(address))
+                {
+                    errAddress.Text = "Vui lòng nhập địa chỉ.";
+                    return;
+                }
+
+                if (address.Length > 255)
+                {
+                    errAddress.Text = "Địa chỉ không được vượt quá 255 ký tự.";
                     return;
                 }
 
                 if (password.Length < 6)
                 {
-                    Message.Text = "Mật khẩu phải có tối thiểu 6 ký tự.";
+                    errPassword.Text = "Mật khẩu phải có tối thiểu 6 ký tự.";
                     return;
                 }
 
-                if (role == "Author")
+                if (password != confirmPassword)
                 {
-                    if (password == confirmPassword)
-                    {
-
-                        bool isCreated = await _author.CreateAuthorAsync(new WPF.Entities.Account
-                        {
-                            Email = email,
-                            Password = password,
-                            FullName = fullFullname,
-                            Address = address,
-                            Phone = phone,
-                            IsActive = true
-                        });
-                        if (isCreated)
-                        {
-                            Message.Text = "Tạo thành công";
-                            await Task.Delay(1500);
-
-                            if (DataContext is LoginViewModel vm)
-                            {
-                                vm.IsRegisterMode = false;
-                            }
-                        }
-                        else
-                        {
-                            Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại thông tin";
-                        }
-
-                    }
-                    else
-                    {
-                        Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại mật khẩu";
-                    }
+                    errConfirmPassword.Text = "Mật khẩu xác nhận không khớp.";
+                    return;
                 }
-                else if (role == "Reader")
+
+                var newAccount = new WPF.Entities.Account
                 {
-                    if (password == confirmPassword)
+                    Email = email,
+                    Password = password,
+                    FullName = fullFullname,
+                    Address = address,
+                    Phone = phone,
+                    IsActive = true
+                };
+
+                bool isCreated = role == "Author"
+                    ? await _author.CreateAuthorAsync(newAccount)
+                    : await _reader.CreateReaderAsync(newAccount);
+
+                if (isCreated)
+                {
+                    Message.Text = "Tạo thành công";
+                    await Task.Delay(1500);
+
+                    if (DataContext is LoginViewModel vm)
                     {
-
-                        bool isCreated = await _reader.CreateReaderAsync(new WPF.Entities.Account
-                        {
-                            Email = email,
-                            Password = password,
-                            FullName = fullFullname,
-                            Address = address,
-                            Phone = phone,
-                            IsActive = true
-                        });
-                        if (isCreated)
-                        {
-                            Message.Text = "Tạo thành công";
-                            await Task.Delay(1500);
-
-                            if (DataContext is LoginViewModel vm)
-                            {
-                                vm.IsRegisterMode = false;
-                            }
-                        }
-                        else
-                        {
-                            Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại thông tin";
-                        }
-
-                    }
-                    else
-                    {
-                        Message.Text = "Tạo thất bại. Vui lòng kiểm tra lại mật khẩu";
+                        vm.IsRegisterMode = false;
                     }
                 }
                 else
                 {
-                    Message.Text = "Tạo Thất Bại. Có thể do email bị trùng";
+                    Message.Text = "Email hoặc số điện thoại đã được sử dụng.";
                 }
             }
 
