@@ -240,6 +240,9 @@ namespace BookManagement.Views.Common
                     {
                         vm.IsRegisterMode = false;
                     }
+
+                    registerForm.Visibility = Visibility.Hidden;
+                    loginForm.Visibility = Visibility.Visible;
                 }
                 else
                 {
