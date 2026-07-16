@@ -69,17 +69,6 @@ namespace BookManagement.ViewModels.Reader
 
             Sidebar.MenuItems.Add(new MenuItemViewModel(new MenuItemModel
             {
-                Title = "Favorites",
-                IconGeometryKey = "IconHeart",
-                Command = new RelayCommand(() => 
-                {
-                    PageTitle = "Favorites";
-                    CurrentPageViewModel = new ReaderFavoriteViewModel(this, _bookService, _purchaseService);
-                })
-            }));
-
-            Sidebar.MenuItems.Add(new MenuItemViewModel(new MenuItemModel
-            {
                 Title = "Profile",
                 IconGeometryKey = "IconUser",
                 Command = new RelayCommand(() => 

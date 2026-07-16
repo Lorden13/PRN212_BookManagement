@@ -270,25 +270,6 @@
                                 </Grid>
                             </Button>
 
-                            <!-- Favorites -->
-                            <Button Style="{StaticResource QuickActionButtonStyle}" Command="{Binding ViewAllFavoritesCommand}" Margin="0,0,0,12" Height="60">
-                                <Grid Margin="12,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Border Grid.Column="0" Width="36" Height="36" CornerRadius="8" Background="{DynamicResource PrimaryPurpleLightBrush}">
-                                        <Path Data="{StaticResource IconHeart}" Fill="{DynamicResource PrimaryPurpleBrush}" Width="16" Height="16" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
-                                        <TextBlock Text="Favorites" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                        <TextBlock Text="View your favorites" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
-                                    </StackPanel>
-                                    <Path Grid.Column="2" Data="{StaticResource IconChevronRight}" Fill="{DynamicResource TextMutedBrush}" Width="12" Height="12" Stretch="Uniform" VerticalAlignment="Center"/>
-                                </Grid>
-                            </Button>
-
                             <!-- Profile -->
                             <Button Style="{StaticResource QuickActionButtonStyle}" Command="{Binding ViewProfileCommand}" Margin="0,0,0,12" Height="60">
                                 <Grid Margin="12,0">

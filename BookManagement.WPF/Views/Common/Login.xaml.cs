@@ -49,23 +49,40 @@ namespace BookManagement.Views.Common
 
         
 
+        private bool _isUpdatingPassword = false;
+
         private void PasswordBox_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)
         {
-            
+            if (_isUpdatingPassword) return;
+            if (sender is not PasswordBox passwordBox) return;
+
+            _isUpdatingPassword = true;
+            if (passwordBox == txtPassword && txtPasswordPlain != null)
+            {
+                txtPasswordPlain.Text = passwordBox.Password;
+            }
+            else if (passwordBox == txtRegisterPassword && txtRegisterPasswordPlain != null)
+            {
+                txtRegisterPasswordPlain.Text = passwordBox.Password;
+            }
+            else if (passwordBox == txtRegisterConfirmPassword && txtRegisterConfirmPasswordPlain != null)
+            {
+                txtRegisterConfirmPasswordPlain.Text = passwordBox.Password;
+            }
+            _isUpdatingPassword = false;
         }
 
         private void txtPasswordPlain_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (sender is TextBox textBox)
+            if (_isUpdatingPassword) return;
+
+            if (sender is TextBox textBox && txtPassword != null)
             {
-                if (txtPassword != null && txtPassword.Password != textBox.Text)
-                {
-                    txtPassword.Password = textBox.Text;
-                }
+                _isUpdatingPassword = true;
+                txtPassword.Password = textBox.Text;
+                _isUpdatingPassword = false;
             }
         }
-
-        private bool _isUpdatingPassword = false;
         private void txtRegisterPasswordPlain_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (_isUpdatingPassword) return;
@@ -111,6 +128,12 @@ namespace BookManagement.Views.Common
                 if (string.IsNullOrEmpty(role))
                 {
                     Message.Text = "Vui lòng chọn vai trò.";
+                    return;
+                }
+
+                if (password.Length < 6)
+                {
+                    Message.Text = "Mật khẩu phải có tối thiểu 6 ký tự.";
                     return;
                 }
 
@@ -254,6 +277,7 @@ namespace BookManagement.Views.Common
 
                     string accessToken = await _token.GenerateAccessTokenAsync(accountDb.AccountId);
                     UserSecretContext sqliteContext = new UserSecretContext();
+                    await sqliteContext.Database.EnsureCreatedAsync();
                     SavedToken token = await sqliteContext.SavedTokens.FirstOrDefaultAsync();
                     if (token == null)
                     {

@@ -29,6 +29,7 @@ namespace BookManagement.Services.Utils
         {
             try
             {
+                await _sql.Database.EnsureCreatedAsync();
                 SavedToken token = await _sql.SavedTokens.FirstOrDefaultAsync();
                 if(token == null)
                 {
