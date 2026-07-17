@@ -33,11 +33,17 @@ namespace BookManagement.WPF.Services.AuthorSetvice
             }
         }
 
+        private async Task<bool> IsDuplicatePhone(string phone)
+        {
+            Account accountDb = await _prnContext.Accounts.Where(q => q.Phone.Equals(phone)).FirstOrDefaultAsync();
+            return accountDb != null;
+        }
+
         public async Task<bool> CreateAuthorAsync(Account account)
         {
             try
             {
-                if (!await IsDuplicateEmail(account.Email))
+                if (!await IsDuplicateEmail(account.Email) && !await IsDuplicatePhone(account.Phone))
                 {
                     string hashedPassword = HashBuilder.ComputeSha256Hash(account.Password + PRIVATEKEY);
                     string accId = Guid.NewGuid().ToString();

@@ -33,7 +33,7 @@
                 <local:SearchBox Width="220" Margin="0,0,16,0" VerticalAlignment="Center" Tag="Tìm kiếm sách, tác giả..."/>
                 
                 <!-- Notification Button with badge count -->
-                <local:NotificationButton Margin="0,0,16,0"/>
+                <local:NotificationButton Margin="0,0,16,0" Visibility="Collapsed"/>
 
                 <!-- Divider -->
                 <Border Width="1" Height="24" Background="{DynamicResource BorderBrush}" Margin="0,0,16,0"/>

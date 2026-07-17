@@ -98,19 +98,37 @@
                                Margin="0,0,0,8"/>
                     <Grid Margin="0,0,0,16">
                         <!-- Masked Password -->
-                        <PasswordBox x:Name="txtPassword" 
-                                     
-                                     Tag="Nhập mật khẩu của bạn..." 
-                                     PasswordChanged="PasswordBox_PasswordChanged" 
-                                   />
+                        <PasswordBox x:Name="txtPassword"
+                                     Tag="Nhập mật khẩu của bạn..."
+                                     PasswordChanged="PasswordBox_PasswordChanged">
+                            <PasswordBox.Style>
+                                <Style TargetType="PasswordBox" BasedOn="{StaticResource ModernPasswordBox}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsLoginPasswordVisible}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </PasswordBox.Style>
+                        </PasswordBox>
 
                         <!-- Plain Text Password -->
-                        <TextBox x:Name="txtPasswordPlain" 
-                                 Style="{StaticResource ModernTextBox}" 
-                                 Tag="Nhập mật khẩu của bạn..." 
+                        <TextBox x:Name="txtPasswordPlain"
+                                 Tag="Nhập mật khẩu của bạn..."
                                  Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
-                                 TextChanged="txtPasswordPlain_TextChanged"
-                                />
+                                 TextChanged="txtPasswordPlain_TextChanged">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource ModernTextBox}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsLoginPasswordVisible}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
 
                         <!-- Toggle Visibility Button -->
                         <Button Style="{StaticResource IconButton}" 
@@ -140,7 +158,8 @@
 
                     <!-- Error Message -->
                     <TextBlock x:Name="txtError"
-                               Foreground="{DynamicResource DangerBrush}" 
+                               Text="{Binding ErrorMessage}"
+                               Foreground="{DynamicResource DangerBrush}"
                                FontSize="13"
                                FontWeight="SemiBold"
                                TextWrapping="Wrap"
@@ -185,61 +204,91 @@
 
                         <!-- Full Name Field -->
                         <TextBlock Text="Họ và tên *"
-                                   Style="{StaticResource TextBlockSmallHeader}" 
+                                   Style="{StaticResource TextBlockSmallHeader}"
                                    Margin="0,0,0,8"/>
-                        <TextBox Style="{StaticResource ModernTextBox}" 
-                                 Tag="Nhập họ và tên..." 
+                        <TextBox Style="{StaticResource ModernTextBox}"
+                                 Tag="Nhập họ và tên..."
                                  x:Name="registerFullname"
-                                 Margin="0,0,0,16"/>
+                                 Margin="0,0,0,4"/>
+                        <TextBlock x:Name="errFullName"
+                                   Foreground="{DynamicResource DangerBrush}"
+                                   FontSize="12" TextWrapping="Wrap" Margin="0,0,0,12"/>
 
                         <!-- Email Field -->
                         <TextBlock Text="Email *"
-                                   Style="{StaticResource TextBlockSmallHeader}" 
+                                   Style="{StaticResource TextBlockSmallHeader}"
                                    Margin="0,0,0,8"/>
-                        <TextBox Style="{StaticResource ModernTextBox}"                    
-                                 Tag="Nhập địa chỉ email..." 
+                        <TextBox Style="{StaticResource ModernTextBox}"
+                                 Tag="Nhập địa chỉ email..."
                                  x:Name="registerEmail"
-                                 Margin="0,0,0,16"/>
+                                 Margin="0,0,0,4"/>
+                        <TextBlock x:Name="errEmail"
+                                   Foreground="{DynamicResource DangerBrush}"
+                                   FontSize="12" TextWrapping="Wrap" Margin="0,0,0,12"/>
 
                         <!-- Phone Number Field -->
                         <TextBlock Text="Số điện thoại *"
-                                   Style="{StaticResource TextBlockSmallHeader}" 
+                                   Style="{StaticResource TextBlockSmallHeader}"
                                    Margin="0,0,0,8"/>
-                        <TextBox Style="{StaticResource ModernTextBox}"                               
-                                 Tag="Nhập số điện thoại..." 
+                        <TextBox Style="{StaticResource ModernTextBox}"
+                                 Tag="Nhập số điện thoại..."
                                  x:Name="registerPhone"
-                                 MaxLength="11" 
-                                 PreviewTextInput="NumberValidationTextBox" 
-                                 Margin="0,0,0,16"/>
+                                 MaxLength="11"
+                                 PreviewTextInput="NumberValidationTextBox"
+                                 Margin="0,0,0,4"/>
+                        <TextBlock x:Name="errPhone"
+                                   Foreground="{DynamicResource DangerBrush}"
+                                   FontSize="12" TextWrapping="Wrap" Margin="0,0,0,12"/>
 
                         <!-- Address Field -->
                         <TextBlock Text="Địa chỉ *"
-                                   Style="{StaticResource TextBlockSmallHeader}" 
+                                   Style="{StaticResource TextBlockSmallHeader}"
                                    Margin="0,0,0,8"/>
-                        <TextBox Style="{StaticResource ModernTextBox}" 
-                                 Tag="Nhập địa chỉ..." 
+                        <TextBox Style="{StaticResource ModernTextBox}"
+                                 Tag="Nhập địa chỉ..."
                                  x:Name="registerAddress"
-                                 MaxLength="255" 
-                                 Margin="0,0,0,16"/>
+                                 MaxLength="255"
+                                 Margin="0,0,0,4"/>
+                        <TextBlock x:Name="errAddress"
+                                   Foreground="{DynamicResource DangerBrush}"
+                                   FontSize="12" TextWrapping="Wrap" Margin="0,0,0,12"/>
 
                         <!-- Password Field -->
                         <TextBlock Text="Mật khẩu *"
-                                   Style="{StaticResource TextBlockSmallHeader}" 
+                                   Style="{StaticResource TextBlockSmallHeader}"
                                    Margin="0,0,0,8"/>
-                        <Grid Margin="0,0,0,16">
+                        <Grid Margin="0,0,0,4">
                             <!-- Masked Password -->
-                            <PasswordBox x:Name="txtRegisterPassword" 
-                                         
-                                         Tag="Nhập mật khẩu..." 
-                                         PasswordChanged="PasswordBox_PasswordChanged" 
-                                   />
+                            <PasswordBox x:Name="txtRegisterPassword"
+                                         Tag="Nhập mật khẩu..."
+                                         PasswordChanged="PasswordBox_PasswordChanged">
+                                <PasswordBox.Style>
+                                    <Style TargetType="PasswordBox" BasedOn="{StaticResource ModernPasswordBox}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsRegisterPasswordVisible}" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </PasswordBox.Style>
+                            </PasswordBox>
 
                             <!-- Plain Text Password -->
-                            <TextBox x:Name="txtRegisterPasswordPlain" 
-                                     Style="{StaticResource ModernTextBox}" 
-                                     Tag="Nhập mật khẩu..." 
-                                     TextChanged="txtRegisterPasswordPlain_TextChanged"
-                                     />
+                            <TextBox x:Name="txtRegisterPasswordPlain"
+                                     Tag="Nhập mật khẩu..."
+                                     TextChanged="txtRegisterPasswordPlain_TextChanged">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox" BasedOn="{StaticResource ModernTextBox}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsRegisterPasswordVisible}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
 
                             <!-- Toggle Visibility Button -->
                             <Button Style="{StaticResource IconButton}" 
@@ -264,26 +313,47 @@
                                 </Path>
                             </Button>
                         </Grid>
+                        <TextBlock x:Name="errPassword"
+                                   Foreground="{DynamicResource DangerBrush}"
+                                   FontSize="12" TextWrapping="Wrap" Margin="0,0,0,12"/>
 
                         <!-- Confirm Password Field -->
                         <TextBlock Text="Xác nhận mật khẩu *"
-                                   Style="{StaticResource TextBlockSmallHeader}" 
+                                   Style="{StaticResource TextBlockSmallHeader}"
                                    Margin="0,0,0,8"/>
-                        <Grid Margin="0,0,0,16">
+                        <Grid Margin="0,0,0,4">
                             <!-- Masked Password -->
-                            <PasswordBox x:Name="txtRegisterConfirmPassword" 
-                                         
-                                         Tag="Nhập lại mật khẩu..." 
-                                         PasswordChanged="PasswordBox_PasswordChanged" 
-                                         />
+                            <PasswordBox x:Name="txtRegisterConfirmPassword"
+                                         Tag="Nhập lại mật khẩu..."
+                                         PasswordChanged="PasswordBox_PasswordChanged">
+                                <PasswordBox.Style>
+                                    <Style TargetType="PasswordBox" BasedOn="{StaticResource ModernPasswordBox}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsRegisterConfirmPasswordVisible}" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </PasswordBox.Style>
+                            </PasswordBox>
 
                             <!-- Plain Text Password -->
-                            <TextBox x:Name="txtRegisterConfirmPasswordPlain" 
-                                     Style="{StaticResource ModernTextBox}" 
-                                     Tag="Nhập lại mật khẩu..." 
+                            <TextBox x:Name="txtRegisterConfirmPasswordPlain"
+                                     Tag="Nhập lại mật khẩu..."
                                      Text="{Binding RegisterConfirmPassword, UpdateSourceTrigger=PropertyChanged}"
-                                     TextChanged="txtRegisterConfirmPasswordPlain_TextChanged"
-                                     />
+                                     TextChanged="txtRegisterConfirmPasswordPlain_TextChanged">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox" BasedOn="{StaticResource ModernTextBox}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsRegisterConfirmPasswordVisible}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
 
                             <!-- Toggle Visibility Button -->
                             <Button Style="{StaticResource IconButton}" 
@@ -309,15 +379,20 @@
                                 </Path>
                             </Button>
                         </Grid>
+                        <TextBlock x:Name="errConfirmPassword"
+                                   Foreground="{DynamicResource DangerBrush}"
+                                   FontSize="12" TextWrapping="Wrap" Margin="0,0,0,12"/>
 
                         <!-- Role ComboBox Field -->
                         <TextBlock Text="Vai trò *"
-                                   Style="{StaticResource TextBlockSmallHeader}" 
+                                   Style="{StaticResource TextBlockSmallHeader}"
                                    Margin="0,0,0,8"/>
                         <ComboBox Style="{StaticResource ModernComboBox}"
-                                   
                                   x:Name="registerRole"
-                                  Margin="0,0,0,24"/>
+                                  Margin="0,0,0,4"/>
+                        <TextBlock x:Name="errRole"
+                                   Foreground="{DynamicResource DangerBrush}"
+                                   FontSize="12" TextWrapping="Wrap" Margin="0,0,0,20"/>
 
                         <!-- Error Message -->
                         <TextBlock Text="{Binding ErrorMessage}" 

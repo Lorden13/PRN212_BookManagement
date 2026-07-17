@@ -49,23 +49,20 @@
                           ItemsSource="{Binding RatingOptions}" 
                           SelectedItem="{Binding SelectedRatingOption}"/>
 
-                <!-- Row 1: Price Slider, Sort ComboBox, Clear Button -->
+                <!-- Row 1: Max Price input, Sort ComboBox, Clear Button -->
                 <Grid Grid.Row="1" Grid.Column="0" Margin="0,12,0,0" VerticalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" 
-                               Text="{Binding MaxPrice, StringFormat='Max Price: ${0:F2}'}" 
-                               Width="110" 
-                               Style="{StaticResource TextBlockNormal}" 
+                    <TextBlock Grid.Column="0"
+                               Text="Max Price:"
+                               Width="80"
+                               Style="{StaticResource TextBlockNormal}"
                                VerticalAlignment="Center"/>
-                    <Slider Grid.Column="1" 
-                            Minimum="0" Maximum="50" 
-                            Value="{Binding MaxPrice}" 
-                            TickFrequency="1" 
-                            IsSnapToTickEnabled="False"
-                            VerticalAlignment="Center"/>
+                    <controls:SearchBox Grid.Column="1" VerticalAlignment="Center"
+                                        Tag="Max price..."
+                                        Text="{Binding MaxPrice, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
 
                 <ComboBox Grid.Row="1" Grid.Column="2" Margin="0,12,0,0" VerticalAlignment="Center"
