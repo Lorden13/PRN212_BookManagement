@@ -7,5 +7,7 @@ namespace BookManagement.Services.Repository
         IEnumerable<ReaderModel> GetAllReaders();
         ReaderModel GetReaderById(int id);
         void UpdateProfile(ReaderModel reader);
+        bool UpdateReader(ReaderModel reader);
+        void SetReaderActive(int id, bool isActive);
     }
 }

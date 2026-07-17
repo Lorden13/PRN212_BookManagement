@@ -37,5 +37,27 @@ namespace BookManagement.Services.Mock
                 existing.Phone = reader.Phone;
             }
         }
+
+        public bool UpdateReader(ReaderModel reader)
+        {
+            var existing = GetReaderById(reader.Id);
+            if (existing == null) return false;
+
+            existing.Name = reader.Name;
+            existing.Email = reader.Email;
+            existing.Phone = reader.Phone;
+            existing.Address = reader.Address;
+            existing.Status = reader.Status;
+            return true;
+        }
+
+        public void SetReaderActive(int id, bool isActive)
+        {
+            var existing = GetReaderById(id);
+            if (existing != null)
+            {
+                existing.Status = isActive ? "Active" : "Inactive";
+            }
+        }
     }
 }

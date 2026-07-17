@@ -8,5 +8,7 @@ namespace BookManagement.Services.Repository
         AuthorModel GetAuthorById(int id);
         void UpdateProfile(AuthorModel author);
         AuthorModel GetAuthorByAccountId(string accountId);
+        bool UpdateAuthor(AuthorModel author);
+        void SetAuthorActive(int id, bool isActive);
     }
 }

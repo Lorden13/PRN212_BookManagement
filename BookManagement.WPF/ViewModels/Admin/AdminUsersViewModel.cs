@@ -177,19 +177,79 @@ namespace BookManagement.ViewModels.Admin
 
         private void OnEditUser(UserItemViewModel user)
         {
-            if (user != null)
+            if (user == null) return;
+
+            var editVm = new EditUserViewModel(user);
+            var window = new EditUserWindow
             {
-                _dashboard.ShowToast($"Đã mở form chỉnh sửa cho: {user.Name} (Demo)", "Success");
+                DataContext = editVm,
+                Owner = Application.Current?.MainWindow
+            };
+
+            if (window.ShowDialog() != true) return;
+
+            bool ok;
+            if (user.Role == "Reader")
+            {
+                ok = _readerService.UpdateReader(new ReaderModel
+                {
+                    Id = user.Id,
+                    Name = editVm.Name,
+                    Email = editVm.Email,
+                    Phone = editVm.Phone,
+                    Address = editVm.Address,
+                    Status = editVm.SelectedStatus
+                });
+            }
+            else
+            {
+                ok = _authorService.UpdateAuthor(new AuthorModel
+                {
+                    Id = user.Id,
+                    Name = editVm.Name,
+                    Email = editVm.Email,
+                    Phone = editVm.Phone,
+                    Address = editVm.Address,
+                    Status = editVm.SelectedStatus
+                });
+            }
+
+            if (ok)
+            {
+                LoadUsers();
+                UsersView.Refresh();
+                _dashboard.ShowToast($"Đã cập nhật người dùng: {editVm.Name}", "Success");
+            }
+            else
+            {
+                _dashboard.ShowToast("Cập nhật thất bại (email có thể đã tồn tại).", "Warning");
             }
         }
 
         private void OnDeleteUser(UserItemViewModel user)
         {
-            if (user != null)
+            if (user == null) return;
+
+            var confirm = MessageBox.Show(
+                $"Vô hiệu hóa người dùng \"{user.Name}\"?",
+                "Xác nhận",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (confirm != MessageBoxResult.Yes) return;
+
+            if (user.Role == "Reader")
             {
-                Users.Remove(user);
-                _dashboard.ShowToast($"Đã xóa người dùng: {user.Name}", "Success");
+                _readerService.SetReaderActive(user.Id, false);
             }
+            else
+            {
+                _authorService.SetAuthorActive(user.Id, false);
+            }
+
+            LoadUsers();
+            UsersView.Refresh();
+            _dashboard.ShowToast($"Đã vô hiệu hóa người dùng: {user.Name}", "Success");
         }
     }
 }

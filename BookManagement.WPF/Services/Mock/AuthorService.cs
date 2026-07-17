@@ -70,6 +70,63 @@ namespace BookManagement.Services.Repository
             return account == null ? null : MapToModel(account);
         }
 
+        private string? ResolveGuid(int id)
+        {
+            if (_idMap.TryGetValue(id, out string? guid))
+            {
+                return guid;
+            }
+
+            // Fallback: re-hash all author accounts to populate the map, then retry
+            var accounts = _dbContext.Accounts.Include(a => a.Role).Where(a => a.Role.RoleName == "Author").ToList();
+            foreach (var acc in accounts)
+            {
+                GetIntId(acc.AccountId);
+            }
+
+            return _idMap.TryGetValue(id, out guid) ? guid : null;
+        }
+
+        public bool UpdateAuthor(AuthorModel author)
+        {
+            try
+            {
+                string? guid = ResolveGuid(author.Id);
+                if (guid == null) return false;
+
+                var account = _dbContext.Accounts.FirstOrDefault(a => a.AccountId == guid);
+                if (account == null) return false;
+
+                account.FullName = author.Name;
+                account.Email = author.Email;
+                account.Phone = author.Phone;
+                account.Address = author.Address;
+                account.IsActive = author.Status == "Active";
+
+                _dbContext.Accounts.Update(account);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void SetAuthorActive(int id, bool isActive)
+        {
+            string? guid = ResolveGuid(id);
+            if (guid == null) return;
+
+            var account = _dbContext.Accounts.FirstOrDefault(a => a.AccountId == guid);
+            if (account != null)
+            {
+                account.IsActive = isActive;
+                _dbContext.Accounts.Update(account);
+                _dbContext.SaveChanges();
+            }
+        }
+
         public void UpdateProfile(AuthorModel author)
         {
             string? guid = null;

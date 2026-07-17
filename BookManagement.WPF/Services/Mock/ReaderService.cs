@@ -67,6 +67,63 @@ namespace BookManagement.Services.Repository
             return account == null ? null : MapToModel(account);
         }
 
+        private string? ResolveGuid(int id)
+        {
+            if (_idMap.TryGetValue(id, out string? guid))
+            {
+                return guid;
+            }
+
+            // Fallback: re-hash all reader accounts to populate the map, then retry
+            var accounts = _dbContext.Accounts.Include(a => a.Role).Where(a => a.Role.RoleName == "Reader").ToList();
+            foreach (var acc in accounts)
+            {
+                GetIntId(acc.AccountId);
+            }
+
+            return _idMap.TryGetValue(id, out guid) ? guid : null;
+        }
+
+        public bool UpdateReader(ReaderModel reader)
+        {
+            try
+            {
+                string? guid = ResolveGuid(reader.Id);
+                if (guid == null) return false;
+
+                var account = _dbContext.Accounts.FirstOrDefault(a => a.AccountId == guid);
+                if (account == null) return false;
+
+                account.FullName = reader.Name;
+                account.Email = reader.Email;
+                account.Phone = reader.Phone;
+                account.Address = reader.Address;
+                account.IsActive = reader.Status == "Active";
+
+                _dbContext.Accounts.Update(account);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void SetReaderActive(int id, bool isActive)
+        {
+            string? guid = ResolveGuid(id);
+            if (guid == null) return;
+
+            var account = _dbContext.Accounts.FirstOrDefault(a => a.AccountId == guid);
+            if (account != null)
+            {
+                account.IsActive = isActive;
+                _dbContext.Accounts.Update(account);
+                _dbContext.SaveChanges();
+            }
+        }
+
         public void UpdateProfile(ReaderModel reader)
         {
             string? guid = null;
