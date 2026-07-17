@@ -119,9 +119,7 @@ public partial class BookManagementContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
-            entity.Property(e => e.Status)
-                .IsRequired()
-                .HasDefaultValueSql("(NULL)");
+            entity.Property(e => e.Status).HasDefaultValueSql("(NULL)");
             entity.Property(e => e.Title).HasMaxLength(255);
 
             entity.HasOne(d => d.Author).WithMany(p => p.Books)
@@ -192,6 +190,10 @@ public partial class BookManagementContext : DbContext
 
             entity.HasIndex(e => e.DownloadToken, "UQ__Purchase__142F302BF4B81563").IsUnique();
 
+            entity.HasIndex(e => new { e.ReaderId, e.BookId }, "UX_Purchases_Reader_Book_Bought")
+                .IsUnique()
+                .HasFilter("[IsBought] = 1");
+
             entity.Property(e => e.PurchaseId)
                 .HasMaxLength(400)
                 .IsUnicode(false)
@@ -204,6 +206,7 @@ public partial class BookManagementContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.IsBought).HasDefaultValue(true);
+            entity.Property(e => e.Payment).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.PurchasedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");

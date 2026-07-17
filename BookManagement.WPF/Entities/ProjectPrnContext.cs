@@ -36,8 +36,13 @@ public partial class ProjectPrnContext : DbContext
     public virtual DbSet<Token> Tokens { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=(local);Database=Project_PRN;User Id=sa;Password=12345;Encrypt=False;");
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer(
+                "Server=(local);Database=Project_PRN;User Id=sa;Password=12345;Encrypt=False;");
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -126,9 +131,7 @@ public partial class ProjectPrnContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
-            entity.Property(e => e.Status)
-                .IsRequired()
-                .HasDefaultValueSql("(NULL)");
+            entity.Property(e => e.Status).HasDefaultValueSql("(NULL)");
             entity.Property(e => e.Title).HasMaxLength(255);
 
             entity.HasOne(d => d.Author).WithMany(p => p.Books)
@@ -199,6 +202,10 @@ public partial class ProjectPrnContext : DbContext
 
             entity.HasIndex(e => e.DownloadToken, "UQ__Purchase__142F302BF4B81563").IsUnique();
 
+            entity.HasIndex(e => new { e.ReaderId, e.BookId }, "UX_Purchases_Reader_Book_Bought")
+                .IsUnique()
+                .HasFilter("[IsBought] = 1");
+
             entity.Property(e => e.PurchaseId)
                 .HasMaxLength(400)
                 .IsUnicode(false)
@@ -211,6 +218,7 @@ public partial class ProjectPrnContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.IsBought).HasDefaultValue(true);
+            entity.Property(e => e.Payment).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.PurchasedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
