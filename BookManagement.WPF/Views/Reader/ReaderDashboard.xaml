@@ -1,0 +1,73 @@
+<Page x:Class="BookManagement.Views.Reader.ReaderDashboard"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BookManagement.Views.Reader"
+      xmlns:controls="clr-namespace:BookManagement.Controls"
+      xmlns:vm="clr-namespace:BookManagement.ViewModels.Reader"
+      xmlns:vmCommon="clr-namespace:BookManagement.ViewModels.Common"
+      xmlns:views="clr-namespace:BookManagement.Views.Reader"
+      xmlns:viewsCommon="clr-namespace:BookManagement.Views.Common"
+      mc:Ignorable="d" 
+      d:DesignHeight="768" d:DesignWidth="1366"
+      Title="Reader Dashboard"
+      Style="{StaticResource PageLoadStyle}">
+
+    <Page.Resources>
+        <DataTemplate DataType="{x:Type vm:ReaderHomeViewModel}">
+            <views:ReaderHomeView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ReaderBooksViewModel}">
+            <views:ReaderBooksView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ReaderBookDetailViewModel}">
+            <views:ReaderBookDetailView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ReaderLibraryViewModel}">
+            <views:ReaderLibraryView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ReaderFavoriteViewModel}">
+            <views:ReaderFavoriteView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ReaderProfileViewModel}">
+            <views:ReaderProfileView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vmCommon:ChangePasswordViewModel}">
+            <viewsCommon:ChangePasswordView/>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Background="#F8F9FB">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/> <!-- Sidebar -->
+            <ColumnDefinition Width="*"/>    <!-- Main Content -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar Navigation -->
+        <controls:Sidebar Grid.Column="0" DataContext="{Binding Sidebar}"/>
+
+        <!-- Right Side Content -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/> <!-- Header -->
+                <RowDefinition Height="*"/>    <!-- Body Content Area -->
+            </Grid.RowDefinitions>
+
+            <!-- Reusable Header -->
+            <controls:Header Grid.Row="0"/>
+
+            <!-- Main Shell Frame (Phase 2 Navigation Content) -->
+            <Frame x:Name="ContentFrame" Grid.Row="1" NavigationUIVisibility="Hidden" JournalOwnership="OwnsJournal"/>
+
+            <!-- Toast Notification Area -->
+            <controls:NotificationControl Grid.Row="1"
+                                         Message="{Binding ToastMessage}"
+                                         Status="{Binding ToastStatus}"
+                                         IsOpen="{Binding IsToastOpen, Mode=TwoWay}"
+                                         HorizontalAlignment="Right"
+                                         VerticalAlignment="Top"
+                                         Margin="0,16,24,0"/>
+        </Grid>
+    </Grid>
+</Page>

@@ -1,0 +1,328 @@
+<UserControl x:Class="BookManagement.Controls.Sidebar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="260"
+             Loaded="UserControl_Loaded">
+    
+    <UserControl.Resources>
+        <!-- Sidebar Button Style -->
+        <Style x:Key="SidebarButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextSidebarBrush}"/>
+            <Setter Property="Height" Value="46"/>
+            <Setter Property="Margin" Value="0,4"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="12" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource SidebarHoverBrush}"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Border Background="{DynamicResource SidebarBackgroundBrush}" Width="260">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>   <!-- Logo/Title -->
+                <RowDefinition Height="*"/>      <!-- Menu Items -->
+                <RowDefinition Height="Auto"/>   <!-- User Profile -->
+                <RowDefinition Height="Auto"/>   <!-- Logout Button -->
+            </Grid.RowDefinitions>
+
+            <!-- Logo Section -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="32,30,24,24">
+                <Path Data="{StaticResource IconBook}" 
+                      Fill="{DynamicResource PrimaryPurpleActiveBrush}" 
+                      Width="28" Height="28" 
+                      Stretch="Uniform" 
+                      VerticalAlignment="Center"/>
+                <StackPanel Margin="12,0,0,0">
+                    <TextBlock Text="Book Management" 
+                               Foreground="#FFFFFF" 
+                               FontSize="16" 
+                               FontWeight="Bold" 
+                               FontFamily="{DynamicResource MainFontFamily}"/>
+                    <TextBlock Text="SYSTEM" 
+                               Foreground="{DynamicResource PrimaryPurpleActiveBrush}" 
+                               FontSize="11" 
+                               FontWeight="Heavy" 
+                               FontFamily="{DynamicResource MainFontFamily}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Menu ScrollViewer -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,10">
+                <StackPanel Margin="16,0">
+                    <!-- Author Menu -->
+                    <StackPanel x:Name="AuthorMenu" Visibility="Collapsed">
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="AuthorHome_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconHome}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="Dashboard" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="AuthorBooks_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconBooks}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="My Books" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="AuthorCreateBook_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconPlus}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="Create Book" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="AuthorReviewHistory_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconClock}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="Review History" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="AuthorProfile_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconUser}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="Profile" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- Reader Menu -->
+                    <StackPanel x:Name="ReaderMenu" Visibility="Collapsed">
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="ReaderHome_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconHome}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="Dashboard" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="ReaderBooks_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconBooks}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="Browse Books" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="ReaderFavorite_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconHeart}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="Favorites" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="ReaderLibrary_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconBook}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="My Library" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="ReaderProfile_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconUser}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="Profile" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- Admin Menu -->
+                    <StackPanel x:Name="AdminMenu" Visibility="Collapsed">
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="AdminHome_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconHome}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="Dashboard" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="AdminAllBooks_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconBooks}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="All Books" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="AdminPendingBooks_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconClock}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="Pending Books" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="AdminUsers_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconUsers}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="Users" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="AdminReports_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconChart}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="Reports" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                        <Button Style="{StaticResource SidebarButtonStyle}" Click="AdminProfile_Click">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Data="{StaticResource IconUser}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Width="18" Height="18" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="Profile" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" FontSize="14" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- User Profile Section -->
+            <Border Grid.Row="2" 
+                    Background="#191635" 
+                    BorderBrush="#252148" 
+                    BorderThickness="0,1,0,0" 
+                    Padding="16" 
+                    Margin="16,12,16,0" 
+                    CornerRadius="12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- Avatar placeholder -->
+                    <Border Grid.Column="0" 
+                            Width="40" Height="40" 
+                            CornerRadius="20" 
+                            Background="{DynamicResource PrimaryPurpleBrush}"
+                            BorderBrush="{DynamicResource PrimaryPurpleActiveBrush}"
+                            BorderThickness="1.5">
+                        <TextBlock Text="{Binding Sidebar.CurrentUser.Initials}" 
+                                   Foreground="#FFFFFF" 
+                                   FontWeight="Bold" 
+                                   FontSize="16"
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"
+                                   FontFamily="{DynamicResource MainFontFamily}"/>
+                    </Border>
+                    
+                    <!-- Username & Email -->
+                    <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Sidebar.CurrentUser.Name}" 
+                                   Foreground="#FFFFFF" 
+                                   FontSize="13" 
+                                   FontWeight="SemiBold" 
+                                   TextTrimming="CharacterEllipsis"
+                                   FontFamily="{DynamicResource MainFontFamily}"/>
+                        <TextBlock Text="{Binding Sidebar.CurrentUser.Email}" 
+                                   Foreground="{DynamicResource TextSidebarBrush}" 
+                                   FontSize="11" 
+                                   TextTrimming="CharacterEllipsis"
+                                   FontFamily="{DynamicResource MainFontFamily}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Logout Button -->
+            <Button Grid.Row="3" 
+                    Click="Logout_Click"
+                    Style="{StaticResource IconButton}" 
+                    Width="Auto" Height="46"
+                    Margin="16,12,16,24"
+                    Padding="16,0" 
+                    HorizontalAlignment="Stretch">
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="24"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Path Grid.Column="0"
+                          Data="{StaticResource IconLogout}" 
+                          Fill="{DynamicResource TextSidebarBrush}" 
+                          Width="18" Height="18" 
+                          Stretch="Uniform" 
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" 
+                               Text="Logout" 
+                               Foreground="{DynamicResource TextSidebarBrush}" 
+                               FontSize="14" 
+                               FontWeight="SemiBold" 
+                               Margin="12,0,0,0"
+                               VerticalAlignment="Center"
+                               FontFamily="{DynamicResource MainFontFamily}"/>
+                </Grid>
+            </Button>
+        </Grid>
+    </Border>
+</UserControl>
