@@ -4,6 +4,7 @@ namespace BookManagement.WPF.Services.Transactions;
 
 public interface IApprovalService
 {
+    // Book.Status: null = pending, true = approved, false = rejected.
     Task SubmitBookAsync(string bookId, string authorId, CancellationToken cancellationToken = default);
     Task<BookApproval> ApproveAsync(string bookId, string adminId, string? feedback = null, CancellationToken cancellationToken = default);
     Task<BookApproval> RejectAsync(string bookId, string adminId, string feedback, CancellationToken cancellationToken = default);
