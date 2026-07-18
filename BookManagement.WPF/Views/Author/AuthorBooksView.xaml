@@ -54,8 +54,11 @@
         <Border Grid.Row="1" Style="{StaticResource BaseCardStyle}" Padding="20">
             <Grid>
                 <DataGrid x:Name="dgBooks" 
-                          Style="{StaticResource ModernDataGrid}">
+                           Style="{StaticResource ModernDataGrid}">
                     <DataGrid.Columns>
+                        <!-- Book ID -->
+                        <DataGridTextColumn Header="Mã sách" Binding="{Binding Id}" Width="1.2*"/>
+
                         <!-- Title -->
                         <DataGridTemplateColumn Header="Tên sách" Width="2*">
                             <DataGridTemplateColumn.CellTemplate>
@@ -68,34 +71,23 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
+                        <!-- Description -->
+                        <DataGridTextColumn Header="Mô tả" Binding="{Binding Description}" Width="2*"/>
+
                         <!-- Category -->
                         <DataGridTextColumn Header="Thể loại" Binding="{Binding Category}" Width="1.2*"/>
 
                         <!-- Price -->
                         <DataGridTextColumn Header="Giá bán" Binding="{Binding Price, StringFormat='${0:F2}'}" Width="1*"/>
 
-                        <!-- Status Badge -->
-                        <DataGridTemplateColumn Header="Trạng thái" Width="1.2*">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <controls:StatusBadge Content="{Binding Status}" HorizontalAlignment="Left"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                        <!-- Created At -->
+                        <DataGridTextColumn Header="Ngày đăng ký" Binding="{Binding SubmittedDate}" Width="1.5*"/>
 
                         <!-- Actions -->
-                        <DataGridTemplateColumn Header="Thao tác" Width="240">
+                        <DataGridTemplateColumn Header="Thao tác" Width="180">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="4,0">
-                                        <!-- View Detail -->
-                                        <Button Style="{StaticResource OutlinedButton}" 
-                                                Content="Xem" 
-                                                Height="28" 
-                                                Padding="12,0" 
-                                                Click="BtnViewBook_Click"
-                                                Margin="0,0,6,0"/>
-
                                         <!-- Edit -->
                                         <Button Style="{StaticResource SecondaryButton}" 
                                                 Content="Sửa" 

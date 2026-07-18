@@ -71,12 +71,7 @@
                             <TextBlock Text="Thêm sách mới" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
                         </StackPanel>
                     </ListBoxItem>
-                    <ListBoxItem Tag="ReviewHistory">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Data="{StaticResource IconHistory}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
-                            <TextBlock Text="Lịch sử đánh giá" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
-                        </StackPanel>
-                    </ListBoxItem>
+
                     <ListBoxItem Tag="Profile">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="{StaticResource IconUser}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>

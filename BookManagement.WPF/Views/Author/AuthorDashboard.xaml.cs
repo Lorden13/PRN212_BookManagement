@@ -26,6 +26,9 @@ namespace BookManagement.Views.Author
                 }
             }
 
+            // Register Content Frame for Navigation Service
+            BookManagement.Services.Navigation.NavigationService.Instance.RegisterContentFrame(frmContent);
+
             // Default navigate to Home page
             lstMenu.SelectedIndex = 0;
             frmContent.Navigate(new AuthorHomeView());
@@ -53,10 +56,7 @@ namespace BookManagement.Views.Author
                         frmContent.Navigate(new AuthorCreateBookView());
                         header.PageTitle = "Thêm sách mới";
                         break;
-                    case "ReviewHistory":
-                        frmContent.Navigate(new AuthorReviewHistoryView());
-                        header.PageTitle = "Lịch sử đánh giá";
-                        break;
+
                     case "Profile":
                         frmContent.Navigate(new AuthorProfileView());
                         header.PageTitle = "Thông tin cá nhân";

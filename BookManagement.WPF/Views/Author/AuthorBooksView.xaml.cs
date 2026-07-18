@@ -91,34 +91,23 @@ namespace BookManagement.Views.Author
 
         private void BtnCreateBook_Click(object sender, RoutedEventArgs e)
         {
-            var nav = NavigationService.GetNavigationService();
-            if (nav != null)
-            {
-                nav.NavigateContent(new AuthorCreateBookView());
-            }
-        }
-
-        private void BtnViewBook_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.DataContext is BookModel book)
-            {
-                var nav = NavigationService.GetNavigationService();
-                if (nav != null)
-                {
-                    nav.NavigateContent(new AuthorBookDetailView(book));
-                }
-            }
+            var nav = BookManagement.Services.Navigation.NavigationService.Instance;
+            nav.NavigateContent(new AuthorCreateBookView());
         }
 
         private void BtnEditBook_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.DataContext is BookModel book)
             {
-                var nav = NavigationService.GetNavigationService();
-                if (nav != null)
+                var currentUser = UserSession.CurrentUser;
+                if (currentUser == null || currentUser.FullName != book.Author)
                 {
-                    nav.NavigateContent(new AuthorCreateBookView(book));
+                    MessageBox.Show("Bạn không có quyền chỉnh sửa tác phẩm của tác giả khác.", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
                 }
+
+                var nav = BookManagement.Services.Navigation.NavigationService.Instance;
+                nav.NavigateContent(new AuthorBookDetailView(book));
             }
         }
 
@@ -126,6 +115,13 @@ namespace BookManagement.Views.Author
         {
             if (sender is Button btn && btn.DataContext is BookModel book)
             {
+                var currentUser = UserSession.CurrentUser;
+                if (currentUser == null || currentUser.FullName != book.Author)
+                {
+                    MessageBox.Show("Bạn không có quyền xóa tác phẩm của tác giả khác.", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa tác phẩm \"{book.Title}\"? Hành động này không thể hoàn tác.", "Xác nhận xóa", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {

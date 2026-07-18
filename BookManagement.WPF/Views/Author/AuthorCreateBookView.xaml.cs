@@ -1,16 +1,10 @@
 using BookManagement.Models.Entities;
 using BookManagement.Services.Repository;
-using BookManagement.WPF.Services.Utils;
+using BookManagement.Services.Utils;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Win32;
 using System;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
-using BookManagement.Services.Utils;
-using NavigationService =
-BookManagement.Services.Navigation.NavigationService;
 
 namespace BookManagement.Views.Author
 {
@@ -18,7 +12,6 @@ namespace BookManagement.Views.Author
     {
         private readonly IBookService _bookService;
         private readonly BookModel? _editingBook;
-        private string? _selectedPdfPath;
 
         public AuthorCreateBookView() : this(null)
         {
@@ -54,28 +47,10 @@ namespace BookManagement.Views.Author
                         break;
                     }
                 }
-
-                _selectedPdfPath = _editingBook.FilePath;
-                lblFilePath.Text = string.IsNullOrEmpty(_editingBook.FilePath) ? "Chưa chọn tài liệu bản thảo PDF" : Path.GetFileName(_editingBook.FilePath);
             }
             else
             {
                 cbCategory.SelectedIndex = 0;
-            }
-        }
-
-        private void BtnSelectPdf_Click(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog
-            {
-                Filter = "PDF Files (*.pdf)|*.pdf",
-                Title = "Chọn bản thảo sách PDF"
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                _selectedPdfPath = openFileDialog.FileName;
-                lblFilePath.Text = openFileDialog.SafeFileName;
             }
         }
 
@@ -104,12 +79,6 @@ namespace BookManagement.Views.Author
                 return;
             }
 
-            //if (_editingBook == null && string.IsNullOrEmpty(_selectedPdfPath))
-            //{
-            //    MessageBox.Show("Vui lòng tải lên tài liệu bản thảo PDF.", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //    return;
-            //}
-
             try
             {
                 var user = UserSession.CurrentUser;
@@ -125,7 +94,7 @@ namespace BookManagement.Views.Author
                         Category = category,
                         Price = price,
                         Description = description,
-                        FilePath = _selectedPdfPath ?? string.Empty,
+                        FilePath = "Manuscripts/default_manuscript.pdf",
                         Status = "Pending"
                     };
 
@@ -139,10 +108,6 @@ namespace BookManagement.Views.Author
                     _editingBook.Category = category;
                     _editingBook.Price = price;
                     _editingBook.Description = description;
-                    if (!string.IsNullOrEmpty(_selectedPdfPath) && _selectedPdfPath != _editingBook.FilePath)
-                    {
-                        _editingBook.FilePath = _selectedPdfPath;
-                    }
                     _editingBook.Status = "Pending"; // reset status to Pending upon editing
 
                     _bookService.UpdateBook(_editingBook);
@@ -174,19 +139,17 @@ namespace BookManagement.Views.Author
                 cbCategory.SelectedIndex = 0;
                 txtPrice.Text = string.Empty;
                 txtDescription.Text = string.Empty;
-                //_selectedPdfPath = null;
-                //lblFilePath.Text = "Chưa chọn tài liệu bản thảo PDF";
             }
         }
 
         private void NavigateBack()
         {
-            var nav = NavigationService.GetNavigationService(); // lỗi ở đây
-            if (nav != null && nav.CanGoBack())
+            var nav = BookManagement.Services.Navigation.NavigationService.Instance;
+            if (nav.CanGoBack())
             {
                 nav.GoBack();
             }
-            else if (nav != null)
+            else
             {
                 nav.NavigateContent(new AuthorBooksView());
             }

@@ -140,25 +140,10 @@ namespace BookManagement.Services.Repository
             var existing = _dbContext.Books.FirstOrDefault(b => b.BookId == bookModel.Id);
             if (existing != null)
             {
-                //if (!string.IsNullOrEmpty(bookModel.FilePath) && File.Exists(bookModel.FilePath) && bookModel.FilePath != existing.FilePath)
-                //{
-                //    FileStorageHelper.DeletePdfFromStorage(existing.FilePath);   //error here
-                //    string newPath = FileStorageHelper.CopyPdfToStorage(bookModel.FilePath, bookModel.Title); //error here
-                //    existing.FilePath = newPath;
-                //    bookModel.FilePath = newPath;
-                //}
-
                 existing.Title = bookModel.Title;
                 existing.Description = bookModel.Description;
                 existing.Category = bookModel.Category;
                 existing.Price = (decimal)bookModel.Price;
-                existing.Status = bookModel.Status switch
-                {
-                    "Approved" => true,
-                    "Rejected" => false,
-                    "Pending" => null,
-                    _ => null
-                };
 
                 _dbContext.Books.Update(existing);
                 _dbContext.SaveChanges();

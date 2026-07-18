@@ -25,6 +25,9 @@ namespace BookManagement.Views.Reader
                 }
             }
 
+            // Register Content Frame for Navigation Service
+            BookManagement.Services.Navigation.NavigationService.Instance.RegisterContentFrame(frmContent);
+
             // Default navigate to Home page
             lstMenu.SelectedIndex = 0;
             frmContent.Navigate(new ReaderHomeView());

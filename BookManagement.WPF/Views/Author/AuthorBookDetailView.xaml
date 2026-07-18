@@ -5,122 +5,109 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:BookManagement.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1000">
+             d:DesignHeight="800" d:DesignWidth="1000"
+             Loaded="UserControl_Loaded">
     <Grid Margin="24">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Width="700" HorizontalAlignment="Left">
-                
-                <!-- Back Button -->
-                <Button Style="{StaticResource OutlinedButton}" 
-                        Click="BtnBack_Click" 
-                        Content="← Quay lại danh sách" 
-                        HorizontalAlignment="Left"
-                        Height="36" 
-                        Padding="16,0" 
-                        Margin="0,0,0,20"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Title -->
+            <RowDefinition Height="*"/>    <!-- Form content -->
+        </Grid.RowDefinitions>
 
-                <!-- Main Info Card -->
-                <Border Style="{StaticResource BaseCardStyle}" Padding="24" Margin="0,0,0,24">
-                    <Grid>
+        <controls:SectionTitle Grid.Row="0" Text="Chỉnh sửa chi tiết tác phẩm" Margin="0,0,0,24"/>
+
+        <!-- Form Layout with ScrollViewer -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <Border Style="{StaticResource BaseCardStyle}" Padding="32" Width="700" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,24">
+                <StackPanel>
+                    
+                    <!-- Row 1: Book ID & Created At (Readonly) -->
+                    <Grid Margin="0,0,0,20">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"/> <!-- Cover -->
-                            <ColumnDefinition Width="24"/>  <!-- Gap -->
-                            <ColumnDefinition Width="*"/>   <!-- Details -->
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Cover image -->
-                        <Border Grid.Column="0" CornerRadius="12" Background="{DynamicResource PrimaryPurpleLightBrush}" Height="210">
-                            <Grid>
-                                <Path Data="{StaticResource IconBook}" Fill="{DynamicResource PrimaryPurpleBrush}" Width="48" Height="48" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock Text="COVER IMAGE" Foreground="{DynamicResource PrimaryPurpleBrush}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,16"/>
-                            </Grid>
-                        </Border>
+                        <!-- Book ID -->
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Mã số sách" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+                            <TextBox x:Name="txtBookId" Style="{StaticResource ModernTextBox}" 
+                                     IsReadOnly="True" Background="#F3F4F6" Foreground="#6B7280"/>
+                        </StackPanel>
 
-                        <!-- Details -->
-                        <StackPanel Grid.Column="2" VerticalAlignment="Top">
-                            <!-- Category and Status Badge -->
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                <controls:StatusBadge x:Name="txtCategory" Content="Category" Margin="0,0,8,0"/>
-                                <controls:StatusBadge x:Name="txtStatus" Content="Pending"/>
-                            </StackPanel>
-                            
-                            <TextBlock x:Name="txtTitle" Text="Book Title" Style="{StaticResource TextBlockMediumHeader}" FontSize="24" TextWrapping="Wrap" Margin="0,0,0,4"/>
-                            <TextBlock x:Name="txtAuthor" Text="Tác giả: Name" Style="{StaticResource TextBlockNormal}" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,12"/>
-                            
-                            <!-- Rating -->
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
-                                <Path Data="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" Fill="#FBBF24" Width="16" Height="16" Stretch="Uniform" VerticalAlignment="Center"/>
-                                <TextBlock x:Name="txtRating" Text="0.0 / 5.0" Style="{StaticResource TextBlockBold}" FontSize="14" Margin="6,0,0,0" VerticalAlignment="Center"/>
-                            </StackPanel>
-
-                            <!-- Price -->
-                            <TextBlock x:Name="txtPrice" Text="$0.00" Foreground="{DynamicResource PrimaryPurpleBrush}" FontSize="28" FontWeight="Bold" Margin="0,0,0,20"/>
-
-                            <!-- Action Buttons -->
-                            <Button Style="{StaticResource PrimaryButton}" 
-                                    Click="BtnEdit_Click" 
-                                    Content="Chỉnh sửa tác phẩm" 
-                                    Width="180" 
-                                    Height="40" 
-                                    HorizontalAlignment="Left"/>
+                        <!-- Created At -->
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Ngày đăng ký" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+                            <TextBox x:Name="txtCreatedAt" Style="{StaticResource ModernTextBox}" 
+                                     IsReadOnly="True" Background="#F3F4F6" Foreground="#6B7280"/>
                         </StackPanel>
                     </Grid>
-                </Border>
 
-                <!-- Description Card -->
-                <Border Style="{StaticResource BaseCardStyle}" Padding="24" Margin="0,0,0,24">
-                    <StackPanel>
-                        <controls:SectionTitle Text="Giới thiệu tác phẩm" Margin="0,0,0,12"/>
-                        <TextBlock x:Name="txtDescription" Text="Book Description" Style="{StaticResource TextBlockNormal}" TextWrapping="Wrap" LineHeight="20"/>
+                    <!-- Row 2: Title (Editable) -->
+                    <TextBlock Text="Tiêu đề tác phẩm *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+                    <TextBox x:Name="txtTitle" Style="{StaticResource ModernTextBox}" 
+                             Tag="Nhập tiêu đề tác phẩm..." 
+                             Margin="0,0,0,20"/>
+
+                    <!-- Row 3: Category & Price -->
+                    <Grid Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="180"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Category -->
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Thể loại *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+                            <ComboBox x:Name="cbCategory" Style="{StaticResource ModernComboBox}">
+                                <ComboBoxItem Content="Programming"/>
+                                <ComboBoxItem Content="Technology"/>
+                                <ComboBoxItem Content="Science"/>
+                                <ComboBoxItem Content="Business"/>
+                                <ComboBoxItem Content="Novel"/>
+                                <ComboBoxItem Content="Education"/>
+                                <ComboBoxItem Content="History"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <!-- Price -->
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Giá bán (USD) *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+                            <TextBox x:Name="txtPrice" Style="{StaticResource ModernTextBox}" 
+                                     Tag="0.00"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Row 4: Description (Editable) -->
+                    <TextBlock Text="Mô tả tóm tắt *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+                    <TextBox x:Name="txtDescription" Style="{StaticResource ModernTextBox}" 
+                             Tag="Nhập mô tả chi tiết của sách..." 
+                             Height="150" 
+                             AcceptsReturn="True" 
+                             VerticalContentAlignment="Top"
+                             TextWrapping="Wrap" 
+                             Margin="0,0,0,28"/>
+
+                    <!-- Action Buttons -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <!-- Cancel -->
+                        <Button Style="{StaticResource SecondaryButton}" 
+                                Content="Hủy bỏ" 
+                                Width="120" 
+                                Height="40"
+                                Click="BtnCancel_Click"
+                                Margin="0,0,12,0"/>
+
+                        <!-- Save -->
+                        <Button Style="{StaticResource PrimaryButton}" 
+                                Content="Lưu thay đổi" 
+                                Width="160" 
+                                Height="40"
+                                Click="BtnSave_Click"/>
                     </StackPanel>
-                </Border>
-
-                <!-- Review Logs Card -->
-                <Border Style="{StaticResource BaseCardStyle}" Padding="24">
-                    <StackPanel>
-                        <controls:SectionTitle Text="Lịch sử kiểm duyệt" Margin="0,0,0,16"/>
-
-                        <!-- Reviews List -->
-                        <ItemsControl x:Name="icReviews">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,0,0,16" Margin="0,0,0,16">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-                                            
-                                            <!-- Title & Date -->
-                                            <Grid Grid.Row="0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="Ban kiểm duyệt Hệ thống" Style="{StaticResource TextBlockBold}"/>
-                                                <TextBlock Grid.Column="1" Text="{Binding Date}" Style="{StaticResource TextBlockMuted}"/>
-                                            </Grid>
-
-                                            <!-- Status Badge -->
-                                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,4,0,8">
-                                                <controls:StatusBadge Content="{Binding Result}"/>
-                                            </StackPanel>
-
-                                            <!-- Comment text -->
-                                            <TextBlock Grid.Row="2" Text="{Binding AdminComment}" Style="{StaticResource TextBlockNormal}" TextWrapping="Wrap"/>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
-                        <!-- Empty State if no reviews -->
-                        <controls:EmptyState x:Name="emptyReviewsState" Margin="0,10,0,0" Visibility="Collapsed"/>
-                    </StackPanel>
-                </Border>
-
-            </StackPanel>
+                </StackPanel>
+            </Border>
         </ScrollViewer>
     </Grid>
 </UserControl>
