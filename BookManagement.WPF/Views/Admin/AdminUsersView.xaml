@@ -7,22 +7,32 @@
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="1000">
     <Grid Margin="24">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="949*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/> <!-- Toolbar -->
-            <RowDefinition Height="*"/>    <!-- DataGrid -->
+            <RowDefinition Height="Auto"/>
+            <!-- Toolbar -->
+            <RowDefinition Height="*"/>
+            <!-- DataGrid -->
         </Grid.RowDefinitions>
 
         <!-- Toolbar -->
-        <Border Grid.Row="0" Style="{StaticResource BaseCardStyle}" Padding="16" Margin="0,0,0,20">
+        <Border Grid.Row="0" Style="{StaticResource BaseCardStyle}" Padding="16" Margin="0,0,0,20" Grid.ColumnSpan="2">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/> <!-- Search -->
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Search -->
                     <ColumnDefinition Width="20"/>
-                    <ColumnDefinition Width="Auto"/> <!-- Role Filter -->
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Role Filter -->
                     <ColumnDefinition Width="16"/>
-                    <ColumnDefinition Width="Auto"/> <!-- Status Filter -->
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Status Filter -->
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/> <!-- Refresh -->
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Refresh -->
                 </Grid.ColumnDefinitions>
 
                 <!-- Search -->
@@ -55,9 +65,9 @@
         </Border>
 
         <!-- DataGrid -->
-        <Border Grid.Row="1" Style="{StaticResource BaseCardStyle}" Padding="20">
+        <Border Grid.Row="1" Style="{StaticResource BaseCardStyle}" Padding="20" Grid.ColumnSpan="2">
             <Grid>
-                <DataGrid ItemsSource="{Binding UsersView}" Style="{StaticResource ModernDataGrid}">
+                <DataGrid ItemsSource="{Binding UsersView}" Style="{StaticResource ModernDataGrid}" Margin="10,28,-10,-28">
                     <DataGrid.Columns>
                         <!-- Avatar & Name -->
                         <DataGridTemplateColumn Header="Người dùng" Width="2.5*">
