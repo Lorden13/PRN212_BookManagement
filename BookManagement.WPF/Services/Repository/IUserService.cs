@@ -6,7 +6,6 @@ namespace BookManagement.Services.Repository
 {
     public interface IUserService
     {
-        UserProfileModel AuthenticateDemo(string role);
         Account? Login(string email, string password);
     }
 }

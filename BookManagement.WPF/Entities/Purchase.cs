@@ -15,7 +15,7 @@ public partial class Purchase
 
     public bool IsBought { get; set; }
 
-    public decimal Payment { get; set; }
+   // public decimal Payment { get; set; }
 
     public DateTime PurchasedAt { get; set; }
 

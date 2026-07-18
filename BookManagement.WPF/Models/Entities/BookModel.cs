@@ -2,7 +2,7 @@ namespace BookManagement.Models.Entities
 {
     public class BookModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public string Author { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
@@ -13,5 +13,7 @@ namespace BookManagement.Models.Entities
         public string Description { get; set; } = string.Empty;
         public string SubmittedDate { get; set; } = string.Empty;
         public string FilePath { get; set; } = string.Empty;
+
+        public Guid BookId { get; set; }
     }
 }

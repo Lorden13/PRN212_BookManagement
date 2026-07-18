@@ -2,10 +2,10 @@ namespace BookManagement.Models.Entities
 {
     public class PurchaseModel
     {
-        public int Id { get; set; }
-        public int BookId { get; set; }
+        public string Id { get; set; } = string.Empty;
+        public string BookId { get; set; } = string.Empty;
         public string BookTitle { get; set; } = string.Empty;
-        public int ReaderId { get; set; }
+        public string ReaderId { get; set; } = string.Empty;
         public string ReaderName { get; set; } = string.Empty;
         public double Price { get; set; }
         public string PurchaseDate { get; set; } = string.Empty;

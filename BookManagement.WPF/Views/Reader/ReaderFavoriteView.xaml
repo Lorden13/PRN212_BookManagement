@@ -21,8 +21,8 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Column="0" Width="300" HorizontalAlignment="Left">
-                    <TextBox Style="{StaticResource ModernTextBox}" 
-                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox x:Name="txtSearch" Style="{StaticResource ModernTextBox}" 
+                             TextChanged="txtSearch_TextChanged"
                              Tag="Tìm kiếm trong danh sách yêu thích..."/>
                     <Path Data="{StaticResource IconSearch}" 
                           Fill="{DynamicResource TextMutedBrush}" 
@@ -36,8 +36,8 @@
         <!-- DataGrid Area -->
         <Border Grid.Row="1" Style="{StaticResource BaseCardStyle}" Padding="20">
             <Grid>
-                <DataGrid ItemsSource="{Binding FavoriteBooksView}" 
-                          Style="{StaticResource ModernDataGrid}">
+                <DataGrid x:Name="dgFavorites"
+                           Style="{StaticResource ModernDataGrid}">
                     <DataGrid.Columns>
                         <!-- Title -->
                         <DataGridTemplateColumn Header="Tên sách" Width="2*">
@@ -89,16 +89,15 @@
                                                 Content="Mua" 
                                                 Height="28" 
                                                 Padding="12,0" 
-                                                Command="{Binding BuyCommand}"
+                                                Click="BtnBuy_Click"
                                                 Margin="0,0,8,0"/>
-                                        
+
                                         <!-- Remove button -->
                                         <Button Style="{StaticResource DangerButton}" 
                                                 Content="Xóa" 
                                                 Height="28" 
                                                 Padding="12,0"
-                                                Command="{Binding DataContext.RemoveFavoriteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                CommandParameter="{Binding}"/>
+                                                Click="BtnRemove_Click"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -107,18 +106,7 @@
                 </DataGrid>
 
                 <!-- Empty State -->
-                <controls:EmptyState>
-                    <controls:EmptyState.Style>
-                        <Style TargetType="controls:EmptyState">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding FavoriteBooksView.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls:EmptyState.Style>
-                </controls:EmptyState>
+                <controls:EmptyState x:Name="emptyState" Visibility="Collapsed"/>
             </Grid>
         </Border>
     </Grid>

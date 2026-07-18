@@ -24,8 +24,8 @@
 
                 <!-- Search -->
                 <Grid Grid.Column="0" Width="300" HorizontalAlignment="Left">
-                    <TextBox Style="{StaticResource ModernTextBox}" 
-                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox x:Name="txtSearch" Style="{StaticResource ModernTextBox}" 
+                             TextChanged="FilterInput_Changed"
                              Tag="Tìm kiếm theo tiêu đề, tác giả..."/>
                     <Path Data="{StaticResource IconSearch}" 
                           Fill="{DynamicResource TextMutedBrush}" 
@@ -37,7 +37,7 @@
                 <!-- Author Filter -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
                     <TextBlock Text="Tác giả:" VerticalAlignment="Center" Margin="0,0,8,0" Style="{StaticResource TextBlockNormal}"/>
-                    <ComboBox ItemsSource="{Binding Authors}" SelectedItem="{Binding SelectedAuthor}" Width="180" Style="{StaticResource ModernComboBox}"/>
+                    <ComboBox x:Name="cbAuthor" Width="180" Style="{StaticResource ModernComboBox}" SelectionChanged="FilterInput_Changed"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -45,7 +45,7 @@
         <!-- DataGrid of Pending Books -->
         <Border Grid.Row="1" Style="{StaticResource BaseCardStyle}" Padding="20">
             <Grid>
-                <DataGrid ItemsSource="{Binding BooksView}" Style="{StaticResource ModernDataGrid}">
+                <DataGrid x:Name="dgPendingBooks" Style="{StaticResource ModernDataGrid}">
                     <DataGrid.Columns>
                         <!-- Cover Placeholder -->
                         <DataGridTemplateColumn Header="Bìa sách" Width="80">
@@ -88,14 +88,11 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <Button Style="{StaticResource OutlinedButton}" Content="Xét duyệt" Height="28" Padding="12,0" Margin="0,0,8,0"
-                                                Command="{Binding DataContext.ViewCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                CommandParameter="{Binding}"/>
+                                                Click="BtnReview_Click"/>
                                         <Button Style="{StaticResource OutlinedButton}" Content="Phê duyệt" Height="28" Padding="12,0" Margin="0,0,8,0" Foreground="{DynamicResource SuccessBrush}" BorderBrush="{DynamicResource SuccessBrush}"
-                                                Command="{Binding DataContext.ApproveCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                CommandParameter="{Binding}"/>
+                                                Click="BtnApprove_Click"/>
                                         <Button Style="{StaticResource OutlinedButton}" Content="Từ chối" Height="28" Padding="12,0" Foreground="{DynamicResource DangerBrush}" BorderBrush="{DynamicResource DangerBrush}"
-                                                Command="{Binding DataContext.RejectCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                CommandParameter="{Binding}"/>
+                                                Click="BtnReject_Click"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -104,18 +101,7 @@
                 </DataGrid>
 
                 <!-- Empty State -->
-                <controls:EmptyState>
-                    <controls:EmptyState.Style>
-                        <Style TargetType="controls:EmptyState">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding BooksView.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls:EmptyState.Style>
-                </controls:EmptyState>
+                <controls:EmptyState x:Name="emptyState" Visibility="Collapsed"/>
             </Grid>
         </Border>
     </Grid>

@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BookManagement.Controls"
-             xmlns:vm="clr-namespace:BookManagement.ViewModels.Common"
+
              mc:Ignorable="d" 
-             d:DesignHeight="700" d:DesignWidth="260"
-             d:DataContext="{d:DesignInstance vm:SidebarViewModel}">
+             d:DesignHeight="700" d:DesignWidth="260">
+
     <Border Background="{DynamicResource SidebarBackgroundBrush}" Width="260">
-        <Grid>
+    <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>   <!-- Logo/Title -->
                 <RowDefinition Height="*"/>      <!-- Menu Items -->
@@ -44,12 +44,12 @@
                      SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                      Style="{StaticResource SidebarMenuListBoxStyle}"
                      ItemContainerStyle="{StaticResource SidebarMenuListBoxItemStyle}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type vm:MenuItemViewModel}">
-                        <local:SidebarItemControl/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <local:SidebarItemControl/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
             <!-- User Profile Section -->
             <Border Grid.Row="2" 

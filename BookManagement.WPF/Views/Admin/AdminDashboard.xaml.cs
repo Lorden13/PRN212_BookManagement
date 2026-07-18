@@ -1,5 +1,7 @@
+using BookManagement.Views.Common;
+using System;
+using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace BookManagement.Views.Admin
 {
@@ -8,7 +10,80 @@ namespace BookManagement.Views.Admin
         public AdminDashboard()
         {
             InitializeComponent();
-            DataContext = App.Current.Services.GetRequiredService<AdminDashboardViewModel>();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            var user = BookManagement.Services.Utils.UserSession.CurrentUser;
+            if (user != null)
+            {
+                txtSidebarUserName.Text = user.FullName;
+                txtSidebarUserEmail.Text = user.Email;
+                if (!string.IsNullOrEmpty(user.FullName))
+                {
+                    txtSidebarUserLetter.Text = user.FullName[0].ToString().ToUpper();
+                }
+            }
+
+            // Default navigate to Home page
+            lstMenu.SelectedIndex = 0;
+            frmContent.Navigate(new AdminHomeView());
+            header.PageTitle = "Trang chủ";
+        }
+
+        private void lstMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (frmContent == null || header == null) return;
+
+            if (lstMenu.SelectedItem is ListBoxItem selectedItem)
+            {
+                string tag = selectedItem.Tag?.ToString() ?? string.Empty;
+                switch (tag)
+                {
+                    case "Home":
+                        frmContent.Navigate(new AdminHomeView());
+                        header.PageTitle = "Trang chủ";
+                        break;
+                    case "Users":
+                        frmContent.Navigate(new AdminUsersView());
+                        header.PageTitle = "Quản lý người dùng";
+                        break;
+                    case "PendingBooks":
+                        frmContent.Navigate(new AdminPendingBooksView());
+                        header.PageTitle = "Sách chưa duyệt";
+                        break;
+                    case "AllBooks":
+                        frmContent.Navigate(new AdminAllBooksView());
+                        header.PageTitle = "Tất cả đầu sách";
+                        break;
+                    case "Purchases":
+                        frmContent.Navigate(new AdminPurchasesView());
+                        header.PageTitle = "Lịch sử mua sách";
+                        break;
+                    case "ReviewHistory":
+                        frmContent.Navigate(new AdminReviewHistoryView());
+                        header.PageTitle = "Lịch sử kiểm duyệt";
+                        break;
+                    case "Reports":
+                        frmContent.Navigate(new AdminReportsView());
+                        header.PageTitle = "Báo cáo doanh thu";
+                        break;
+                    case "Profile":
+                        frmContent.Navigate(new AdminProfileView());
+                        header.PageTitle = "Thông tin cá nhân";
+                        break;
+                    case "ChangePassword":
+                        frmContent.Navigate(new ChangePasswordView());
+                        header.PageTitle = "Đổi mật khẩu";
+                        break;
+                }
+            }
+        }
+
+        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            BookManagement.Services.Utils.UserSession.CurrentUser = null!;
+            Services.Navigation.NavigationService.Instance.NavigateMain(new Login());
         }
     }
 }

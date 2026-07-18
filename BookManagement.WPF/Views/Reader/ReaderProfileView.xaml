@@ -27,53 +27,37 @@
                     <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top">
                         <Border Width="110" Height="110" CornerRadius="55" Background="{DynamicResource PrimaryPurpleLightBrush}" BorderBrush="{DynamicResource PrimaryPurpleBrush}" BorderThickness="2" Margin="0,0,0,16">
                             <Grid>
-                                <!-- Map avatar icon dynamically -->
-                                <Path Data="{Binding AvatarPath, Converter={StaticResource ResKeyToGeomConv}, FallbackValue={StaticResource IconUser}}" 
+                                <Path Data="{StaticResource IconUser}" 
                                       Fill="{DynamicResource PrimaryPurpleBrush}" 
                                       Width="40" Height="40" Stretch="Uniform" 
                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
-                        <Button Style="{StaticResource OutlinedButton}" 
-                                Command="{Binding SelectAvatarCommand}" 
-                                Content="Thay đổi ảnh" 
-                                Height="32" 
-                                Padding="12,0"/>
                     </StackPanel>
 
                     <!-- Fields Panel -->
                     <StackPanel Grid.Column="2">
                         <!-- Name -->
                         <TextBlock Text="Họ và tên *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
-                        <TextBox Style="{StaticResource ModernTextBox}" 
-                                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
+                        <TextBox x:Name="txtName" Style="{StaticResource ModernTextBox}" 
                                  Tag="Nhập họ và tên..." 
                                  Margin="0,0,0,20"/>
 
                         <!-- Email -->
                         <TextBlock Text="Địa chỉ Email *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
-                        <TextBox Style="{StaticResource ModernTextBox}" 
-                                 Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" 
+                        <TextBox x:Name="txtEmail" Style="{StaticResource ModernTextBox}" 
                                  Tag="Nhập địa chỉ email..." 
                                  Margin="0,0,0,20"/>
 
                         <!-- Phone -->
                         <TextBlock Text="Số điện thoại" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
-                        <TextBox Style="{StaticResource ModernTextBox}" 
-                                 Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" 
+                        <TextBox x:Name="txtPhone" Style="{StaticResource ModernTextBox}" 
                                  Tag="Nhập số điện thoại..." 
-                                 Margin="0,0,0,20"/>
-
-                        <!-- Joined Date -->
-                        <TextBlock Text="Ngày tham gia" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
-                        <TextBox Style="{StaticResource ModernTextBox}" 
-                                 Text="{Binding JoinedDate}" 
-                                 IsEnabled="False" 
                                  Margin="0,0,0,28"/>
 
                         <!-- Submit Button -->
                         <Button Style="{StaticResource PrimaryButton}" 
-                                Command="{Binding SaveCommand}" 
+                                Click="BtnSave_Click"
                                 Content="Lưu thay đổi" 
                                 Height="40" 
                                 HorizontalAlignment="Left" 

@@ -16,8 +16,8 @@
         <Border Grid.Row="0" Style="{StaticResource BaseCardStyle}" Padding="16" Margin="0,0,0,20">
             <Grid>
                 <Grid Width="300" HorizontalAlignment="Left">
-                    <TextBox Style="{StaticResource ModernTextBox}" 
-                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox x:Name="txtSearch" Style="{StaticResource ModernTextBox}" 
+                             TextChanged="txtSearch_TextChanged"
                              Tag="Tìm kiếm theo tiêu đề sách hoặc kết quả..."/>
                     <Path Data="{StaticResource IconSearch}" 
                           Fill="{DynamicResource TextMutedBrush}" 
@@ -31,7 +31,7 @@
         <!-- DataGrid Area -->
         <Border Grid.Row="1" Style="{StaticResource BaseCardStyle}" Padding="20">
             <Grid>
-                <DataGrid ItemsSource="{Binding ReviewsView}" 
+                <DataGrid x:Name="dgReviews"
                           Style="{StaticResource ModernDataGrid}">
                     <DataGrid.Columns>
                         <!-- Book Title -->
@@ -64,18 +64,7 @@
                 </DataGrid>
 
                 <!-- Empty State -->
-                <controls:EmptyState>
-                    <controls:EmptyState.Style>
-                        <Style TargetType="controls:EmptyState">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ReviewsView.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls:EmptyState.Style>
-                </controls:EmptyState>
+                <controls:EmptyState x:Name="emptyState" Visibility="Collapsed"/>
             </Grid>
         </Border>
     </Grid>

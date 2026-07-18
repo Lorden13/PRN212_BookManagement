@@ -44,7 +44,7 @@ public sealed class PurchaseTransactionService : IPurchaseTransactionService
             BookId = bookId,
             DownloadToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(32)).ToLowerInvariant(),
             IsBought = true,
-            Payment = book.Price,
+           // Payment = book.Price,
             PurchasedAt = DateTime.UtcNow
         };
         _context.Purchases.Add(purchase);

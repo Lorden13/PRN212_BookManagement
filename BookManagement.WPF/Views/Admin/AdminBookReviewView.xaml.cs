@@ -4,9 +4,12 @@ namespace BookManagement.Views.Admin
 {
     public partial class AdminBookReviewView : UserControl
     {
-        public AdminBookReviewView()
+
+        private readonly BookModel _book;
+        public AdminBookReviewView(BookModel book)
         {
             InitializeComponent();
+            _book = book;
         }
     }
 }

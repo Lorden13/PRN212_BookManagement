@@ -3,52 +3,12 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:BookManagement.Views.Admin"
       xmlns:controls="clr-namespace:BookManagement.Controls"
-      xmlns:vm="clr-namespace:BookManagement.ViewModels.Admin"
-      xmlns:vmCommon="clr-namespace:BookManagement.ViewModels.Common"
-      xmlns:views="clr-namespace:BookManagement.Views.Admin"
-      xmlns:viewsCommon="clr-namespace:BookManagement.Views.Common"
       mc:Ignorable="d" 
       d:DesignHeight="768" d:DesignWidth="1366"
       Title="Admin Dashboard"
+      Loaded="Page_Loaded"
       Style="{StaticResource PageLoadStyle}">
-
-    <Page.Resources>
-        <DataTemplate DataType="{x:Type vm:AdminHomeViewModel}">
-            <views:AdminHomeView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminUsersViewModel}">
-            <views:AdminUsersView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminReaderDetailViewModel}">
-            <views:AdminReaderDetailView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminPendingBooksViewModel}">
-            <views:AdminPendingBooksView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminBookReviewViewModel}">
-            <views:AdminBookReviewView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminAllBooksViewModel}">
-            <views:AdminAllBooksView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminPurchasesViewModel}">
-            <views:AdminPurchasesView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminReviewHistoryViewModel}">
-            <views:AdminReviewHistoryView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminReportsViewModel}">
-            <views:AdminReportsView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AdminProfileViewModel}">
-            <views:AdminProfileView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vmCommon:ChangePasswordViewModel}">
-            <viewsCommon:ChangePasswordView/>
-        </DataTemplate>
-    </Page.Resources>
 
     <Grid Background="#F8F9FB">
         <Grid.ColumnDefinitions>
@@ -57,7 +17,180 @@
         </Grid.ColumnDefinitions>
 
         <!-- Sidebar Navigation -->
-        <controls:Sidebar Grid.Column="0" DataContext="{Binding Sidebar}"/>
+        <Border Grid.Column="0" Background="{DynamicResource SidebarBackgroundBrush}" Width="260">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>   <!-- Logo/Title -->
+                    <RowDefinition Height="*"/>      <!-- Menu Items -->
+                    <RowDefinition Height="Auto"/>   <!-- User Profile -->
+                    <RowDefinition Height="Auto"/>   <!-- Logout Button -->
+                </Grid.RowDefinitions>
+
+                <!-- Logo Section -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="32,30,24,24">
+                    <Path Data="{StaticResource IconBook}" 
+                          Fill="{DynamicResource PrimaryPurpleActiveBrush}" 
+                          Width="28" Height="28" 
+                          Stretch="Uniform" 
+                          VerticalAlignment="Center"/>
+                    <StackPanel Margin="12,0,0,0">
+                        <TextBlock Text="Book Management" 
+                                   Foreground="#FFFFFF" 
+                                   FontSize="16" 
+                                   FontWeight="Bold" 
+                                   FontFamily="{DynamicResource MainFontFamily}"/>
+                        <TextBlock Text="SYSTEM" 
+                                   Foreground="{DynamicResource PrimaryPurpleActiveBrush}" 
+                                   FontSize="11" 
+                                   FontWeight="Heavy" 
+                                   FontFamily="{DynamicResource MainFontFamily}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Menu ListBox -->
+                <ListBox Grid.Row="1" 
+                         x:Name="lstMenu"
+                         SelectionChanged="lstMenu_SelectionChanged"
+                         Style="{StaticResource SidebarMenuListBoxStyle}"
+                         ItemContainerStyle="{StaticResource SidebarMenuListBoxItemStyle}">
+                    <ListBoxItem Tag="Home" IsSelected="True">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconHome}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
+                            <TextBlock Text="Trang chủ" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="Users">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconUser}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
+                            <TextBlock Text="Quản lý người dùng" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="PendingBooks">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconClock}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
+                            <TextBlock Text="Sách chưa duyệt" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="AllBooks">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconBooks}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
+                            <TextBlock Text="Tất cả đầu sách" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="Purchases">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconLibrary}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
+                            <TextBlock Text="Lịch sử mua sách" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="ReviewHistory">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconHistory}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
+                            <TextBlock Text="Lịch sử kiểm duyệt" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="Reports">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconReport}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
+                            <TextBlock Text="Báo cáo doanh thu" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="Profile">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconUser}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
+                            <TextBlock Text="Thông tin cá nhân" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="ChangePassword">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconLock}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
+                            <TextBlock Text="Đổi mật khẩu" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                </ListBox>
+
+                <!-- User Profile Section -->
+                <Border Grid.Row="2" 
+                        Background="#191635" 
+                        BorderBrush="#252148" 
+                        BorderThickness="0,1,0,0" 
+                        Padding="16" 
+                        Margin="16,12,16,0" 
+                        CornerRadius="12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Avatar placeholder -->
+                        <Border Grid.Column="0" 
+                                Width="40" Height="40" 
+                                CornerRadius="20" 
+                                Background="{DynamicResource PrimaryPurpleBrush}"
+                                BorderBrush="{DynamicResource PrimaryPurpleActiveBrush}"
+                                BorderThickness="1.5">
+                            <TextBlock x:Name="txtSidebarUserLetter"
+                                       Text="A" 
+                                       Foreground="#FFFFFF" 
+                                       FontWeight="Bold" 
+                                       FontSize="16"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"
+                                       FontFamily="{DynamicResource MainFontFamily}"/>
+                        </Border>
+
+                        <!-- Username & Email -->
+                        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                            <TextBlock x:Name="txtSidebarUserName"
+                                       Text="Admin Name" 
+                                       Foreground="#FFFFFF" 
+                                       FontSize="13" 
+                                       FontWeight="SemiBold" 
+                                       TextTrimming="CharacterEllipsis"
+                                       FontFamily="{DynamicResource MainFontFamily}"/>
+                            <TextBlock x:Name="txtSidebarUserEmail"
+                                       Text="admin@email.com" 
+                                       Foreground="{DynamicResource TextSidebarBrush}" 
+                                       FontSize="11" 
+                                       TextTrimming="CharacterEllipsis"
+                                       FontFamily="{DynamicResource MainFontFamily}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Logout Button -->
+                <Button Grid.Row="3" 
+                        Click="btnLogout_Click"
+                        Style="{StaticResource IconButton}" 
+                        Width="Auto" Height="46"
+                        Margin="16,12,16,24"
+                        Padding="16,0" 
+                        HorizontalAlignment="Stretch">
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Path Grid.Column="0"
+                              Data="{StaticResource IconLogout}" 
+                              Fill="{DynamicResource TextSidebarBrush}" 
+                              Width="18" Height="18" 
+                              Stretch="Uniform" 
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" 
+                                   Text="Logout" 
+                                   Foreground="{DynamicResource TextSidebarBrush}" 
+                                   FontSize="14" 
+                                   FontWeight="SemiBold" 
+                                   Margin="12,0,0,0"
+                                   VerticalAlignment="Center"
+                                   FontFamily="{DynamicResource MainFontFamily}"/>
+                    </Grid>
+                </Button>
+            </Grid>
+        </Border>
 
         <!-- Right Side Content -->
         <Grid Grid.Column="1">
@@ -67,19 +200,10 @@
             </Grid.RowDefinitions>
 
             <!-- Reusable Header -->
-            <controls:Header Grid.Row="0"/>
+            <controls:Header Grid.Row="0" x:Name="header"/>
 
-            <!-- Main Shell Frame (Phase 3 Navigation Content) -->
-            <ContentControl Grid.Row="1" Content="{Binding CurrentPageViewModel}"/>
-
-            <!-- Toast Notification Area -->
-            <controls:NotificationControl Grid.Row="1"
-                                         Message="{Binding ToastMessage}"
-                                         Status="{Binding ToastStatus}"
-                                         IsOpen="{Binding IsToastOpen, Mode=TwoWay}"
-                                         HorizontalAlignment="Right"
-                                         VerticalAlignment="Top"
-                                         Margin="0,16,24,0"/>
+            <!-- Main Shell Frame Container -->
+            <Frame Grid.Row="1" x:Name="frmContent" NavigationUIVisibility="Hidden"/>
         </Grid>
     </Grid>
 </Page>

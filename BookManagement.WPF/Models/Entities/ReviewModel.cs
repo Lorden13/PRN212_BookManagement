@@ -2,8 +2,8 @@ namespace BookManagement.Models.Entities
 {
     public class ReviewModel
     {
-        public int Id { get; set; }
-        public int BookId { get; set; }
+        public string Id { get; set; } = string.Empty;
+        public string BookId { get; set; } = string.Empty;
         public string BookTitle { get; set; } = string.Empty;
         public string AuthorName { get; set; } = string.Empty;
         public string Result { get; set; } = string.Empty; // Approved, Rejected
