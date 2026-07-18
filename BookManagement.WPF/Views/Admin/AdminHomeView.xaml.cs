@@ -1,5 +1,6 @@
 using BookManagement.Models.Entities;
 using BookManagement.Services.Repository;
+using BookManagement.Views.Author;
 using BookManagement.WPF.Entities;
 using BookManagement.WPF.Services.Utils;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,9 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
-using NavigationService =
-BookManagement.Services.Navigation.NavigationService;
+
 namespace BookManagement.Views.Admin
 {
     public partial class AdminHomeView : UserControl
@@ -73,21 +72,6 @@ namespace BookManagement.Views.Admin
                     // 3. Load activities log dynamically
                     var activities = new List<dynamic>();
 
-                    // Fetch approvals
-                    //var approvals = db.BookApprovals.OrderByDescending(ba => ba.ReviewedAt).Take(5).ToList();
-                    //foreach (var a in approvals)
-                    //{
-                    //    var b = db.Books.FirstOrDefault(x => x.BookId == a.BookId);
-                    //    string title = b?.Title ?? "Tác phẩm ẩn";
-                    //    string res = a.Status == true ? "Đã duyệt" : "Từ chối";
-                    //    activities.Add(new
-                    //    {
-                    //        Message = $"Ấn phẩm \"{title}\" được {res.ToLower()} bởi Ban kiểm duyệt.",
-                    //        Time = a.ReviewedAt.ToString("yyyy-MM-dd HH:mm"),
-                    //        Timestamp = a.ReviewedAt
-                    //    });
-                    //}
-
                     // Fetch purchases
                     var purchases = db.Purchases.Where(p => p.IsBought).OrderByDescending(p => p.PurchasedAt).Take(5).ToList();
                     foreach (var p in purchases)
@@ -121,11 +105,8 @@ namespace BookManagement.Views.Admin
         {
             if (sender is Button btn && btn.DataContext is BookModel book)
             {
-                var nav = NavigationService.GetNavigationService(); //loi o day
-                if (nav != null)
-                {
-                    nav.NavigateContent(new AdminBookReviewView(book));  //loi ow day 
-                }
+                var nav = BookManagement.Services.Navigation.NavigationService.Instance;
+                nav.NavigateContent(new AuthorBookDetailView(book, BookDetailMode.AdminReview));
             }
         }
     }

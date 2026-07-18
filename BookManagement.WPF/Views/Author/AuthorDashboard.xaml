@@ -62,7 +62,7 @@
                     <ListBoxItem Tag="Books">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="{StaticResource IconBooks}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
-                            <TextBlock Text="Quản lý sách" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
+                            <TextBlock Text="Quản lý sách"  Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Tag="CreateBook">

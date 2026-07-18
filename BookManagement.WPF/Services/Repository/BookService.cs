@@ -72,6 +72,15 @@ namespace BookManagement.Services.Repository
             return books.Select(MapToModel).ToList();
         }
 
+        public IEnumerable<BookModel> GetAllBooks()
+        {
+            var books = _dbContext.Books
+                .Include(b => b.Author)
+                .ThenInclude(a => a.AuthorNavigation)
+                .ToList();
+            return books.Select(MapToModel).ToList();
+        }
+
         public BookModel GetBookById(string id)
         {
             if (string.IsNullOrEmpty(id)) return null!;

@@ -59,10 +59,7 @@ namespace BookManagement.Views.Admin
                         frmContent.Navigate(new AdminAllBooksView());
                         header.PageTitle = "Tất cả đầu sách";
                         break;
-                    case "Purchases":
-                        frmContent.Navigate(new AdminPurchasesView());
-                        header.PageTitle = "Lịch sử mua sách";
-                        break;
+
                     case "ReviewHistory":
                         frmContent.Navigate(new AdminReviewHistoryView());
                         header.PageTitle = "Lịch sử kiểm duyệt";

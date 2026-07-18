@@ -48,7 +48,7 @@
                 <DataGrid x:Name="dgPendingBooks" Style="{StaticResource ModernDataGrid}">
                     <DataGrid.Columns>
                         <!-- Cover Placeholder -->
-                        <DataGridTemplateColumn Header="Bìa sách" Width="80">
+                        <DataGridTemplateColumn Header="Bìa sách" Width="1*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Border Width="45" Height="60" CornerRadius="4" Background="{DynamicResource PrimaryPurpleLightBrush}" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -62,7 +62,7 @@
                         <DataGridTemplateColumn Header="Tác phẩm" Width="2.5*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -83,17 +83,17 @@
                         </DataGridTemplateColumn>
 
                         <!-- Actions -->
-                        <DataGridTemplateColumn Header="Thao tác" Width="260">
+                        <DataGridTemplateColumn Header="Thao tác" Width="3*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Button Style="{StaticResource OutlinedButton}" Content="Xét duyệt" Height="28" Padding="12,0" Margin="0,0,8,0"
+                                    <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Button Style="{StaticResource OutlinedButton}" Content="Xét duyệt" Height="26" Padding="8,0" Margin="0,2,6,2"
                                                 Click="BtnReview_Click"/>
-                                        <Button Style="{StaticResource OutlinedButton}" Content="Phê duyệt" Height="28" Padding="12,0" Margin="0,0,8,0" Foreground="{DynamicResource SuccessBrush}" BorderBrush="{DynamicResource SuccessBrush}"
+                                        <Button Style="{StaticResource OutlinedButton}" Content="Phê duyệt" Height="26" Padding="8,0" Margin="0,2,6,2" Foreground="{DynamicResource SuccessBrush}" BorderBrush="{DynamicResource SuccessBrush}"
                                                 Click="BtnApprove_Click"/>
-                                        <Button Style="{StaticResource OutlinedButton}" Content="Từ chối" Height="28" Padding="12,0" Foreground="{DynamicResource DangerBrush}" BorderBrush="{DynamicResource DangerBrush}"
+                                        <Button Style="{StaticResource OutlinedButton}" Content="Từ chối" Height="26" Padding="8,0" Margin="0,2,0,2" Foreground="{DynamicResource DangerBrush}" BorderBrush="{DynamicResource DangerBrush}"
                                                 Click="BtnReject_Click"/>
-                                    </StackPanel>
+                                    </WrapPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

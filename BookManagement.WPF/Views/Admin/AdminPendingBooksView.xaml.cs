@@ -1,5 +1,6 @@
 using BookManagement.Models.Entities;
 using BookManagement.Services.Repository;
+using BookManagement.Views.Author;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -7,8 +8,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using NavigationService =
-BookManagement.Services.Navigation.NavigationService;
+using NavigationService = BookManagement.Services.Navigation.NavigationService;
+
 namespace BookManagement.Views.Admin
 {
     public partial class AdminPendingBooksView : UserControl
@@ -70,8 +71,8 @@ namespace BookManagement.Views.Admin
             var filtered = _allPendingBooks.Where(b =>
             {
                 bool matchQuery = string.IsNullOrEmpty(query) || 
-                                  b.Title.ToLower().Contains(query) || 
-                                  b.Category.ToLower().Contains(query);
+                                   b.Title.ToLower().Contains(query) || 
+                                   b.Category.ToLower().Contains(query);
 
                 bool matchAuthor = authorFilter == "Tất cả tác giả" || b.Author.Equals(authorFilter, StringComparison.OrdinalIgnoreCase);
 
@@ -86,11 +87,8 @@ namespace BookManagement.Views.Admin
         {
             if (sender is Button btn && btn.DataContext is BookModel book)
             {
-                var nav = NavigationService.GetNavigationService();
-                if (nav != null)
-                {
-                    nav.NavigateContent(new AdminBookReviewView(book));
-                }
+                var nav = NavigationService.Instance;
+                nav.NavigateContent(new AuthorBookDetailView(book, BookDetailMode.AdminReview));
             }
         }
 

@@ -33,8 +33,7 @@
             <!-- Right Controls -->
             <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                 
-                <!-- Reusable Search Box -->
-                <local:SearchBox Width="220" Margin="0,0,16,0" VerticalAlignment="Center" Tag="Tìm kiếm sách, tác giả..."/>
+        
                 
                 <!-- Notification Button -->
                 <local:NotificationButton Margin="0,0,16,0" Visibility="Collapsed"/>

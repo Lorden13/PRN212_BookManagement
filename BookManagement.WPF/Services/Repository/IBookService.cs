@@ -7,6 +7,7 @@ namespace BookManagement.Services.Repository
         IEnumerable<BookModel> GetApprovedBooks();
         IEnumerable<BookModel> GetPendingBooks();
         IEnumerable<BookModel> GetMyBooks(string authorId);
+        IEnumerable<BookModel> GetAllBooks();
         BookModel GetBookById(string id);
         void CreateBook(BookModel book);
         void UpdateBook(BookModel book);
