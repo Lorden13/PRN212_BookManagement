@@ -104,8 +104,8 @@
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <Button Style="{StaticResource OutlinedButton}" Content="Chi tiết" Height="28" Padding="12,0" Margin="0,0,8,0"
                                                 Click="BtnViewDetail_Click"/>
-                                        <Button Style="{StaticResource OutlinedButton}" Content="Sửa" Height="28" Padding="12,0" Margin="0,0,8,0"
-                                                Click="BtnEdit_Click"/>
+                                        <!--<Button Style="{StaticResource OutlinedButton}" Content="Sửa" Height="28" Padding="12,0" Margin="0,0,8,0"
+                                                Click="BtnEdit_Click"/>-->
                                         <Button Style="{StaticResource OutlinedButton}" Content="Xóa" Height="28" Padding="12,0" Foreground="{DynamicResource DangerBrush}" BorderBrush="{DynamicResource DangerBrush}"
                                                 Click="BtnDelete_Click"/>
                                     </StackPanel>

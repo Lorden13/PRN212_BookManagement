@@ -99,14 +99,14 @@ namespace BookManagement.Views.Admin
             }
         }
 
-        private void BtnEdit_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.DataContext is BookModel book)
-            {
-                var nav = BookManagement.Services.Navigation.NavigationService.Instance;
-                nav.NavigateContent(new AuthorBookDetailView(book, BookDetailMode.AdminReview));
-            }
-        }
+        //private void BtnEdit_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (sender is Button btn && btn.DataContext is BookModel book)
+        //    {
+        //        var nav = BookManagement.Services.Navigation.NavigationService.Instance;
+        //        nav.NavigateContent(new AuthorBookDetailView(book, BookDetailMode.AdminReview));
+        //    }
+        //}
 
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {

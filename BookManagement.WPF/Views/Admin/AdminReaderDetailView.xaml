@@ -19,7 +19,8 @@
 
         <!-- TabControl -->
         <Border Grid.Row="1" Style="{StaticResource BaseCardStyle}" Padding="20">
-            <TabControl Style="{StaticResource ModernTabControl}">
+            <!--<TabControl Style="{StaticResource ModernTabControl}">-->
+            <TabControl Style="{x:Null}">
                 <!-- TAB 1: INFORMATION -->
                 <TabItem Header="Thông tin chung">
                     <Grid Margin="0,20,0,0">

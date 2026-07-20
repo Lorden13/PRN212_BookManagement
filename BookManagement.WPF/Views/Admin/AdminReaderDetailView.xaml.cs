@@ -8,8 +8,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using NavigationService =
-BookManagement.Services.Navigation.NavigationService;
+using NavigationService = BookManagement.Services.Navigation.NavigationService;
+
 namespace BookManagement.Views.Admin
 {
     public partial class AdminReaderDetailView : UserControl
@@ -37,7 +37,7 @@ namespace BookManagement.Views.Admin
             {
                 using (var db = new ProjectPrnContext())
                 {
-                    // 1. Fetch user general information
+                    // 1. Fetch user general information safely
                     var user = db.Accounts
                         .Include(a => a.Role)
                         .FirstOrDefault(a => a.AccountId == _userId);
@@ -48,59 +48,81 @@ namespace BookManagement.Views.Admin
                         return;
                     }
 
-                    txtReaderNameHeader.Text = user.FullName;
+                    txtReaderNameHeader.Text = user.FullName ?? "Unknown User";
                     if (!string.IsNullOrEmpty(user.FullName))
                     {
                         txtReaderNameLetter.Text = user.FullName[0].ToString().ToUpper();
                     }
+                    else
+                    {
+                        txtReaderNameLetter.Text = "U";
+                    }
+
                     txtReaderStatus.Content = user.IsActive ? "Active" : "Inactive";
-                    txtReaderId.Text = $"#USR-{user.AccountId.Substring(0, 8).ToUpper()}";
-                    txtReaderEmail.Text = user.Email;
+                    
+                    string displayUserId = (user.AccountId ?? string.Empty);
+                    if (displayUserId.Length >= 8)
+                    {
+                        displayUserId = displayUserId.Substring(0, 8);
+                    }
+                    txtReaderId.Text = $"#USR-{displayUserId.ToUpper()}";
+                    txtReaderEmail.Text = user.Email ?? "N/A";
                     txtReaderPhone.Text = user.Phone ?? "N/A";
                     txtReaderRole.Text = user.Role?.RoleName ?? "Reader";
 
-                    // 2. Fetch spending metrics
+                    // 2. Fetch spending metrics safely
                     var myPurchases = db.Purchases
                         .Include(p => p.Book)
                         .Where(p => p.ReaderId == _userId)
                         .ToList();
 
                     int totalPurchasesCount = myPurchases.Count(p => p.IsBought);
-                    decimal totalSpendingAmount = myPurchases.Where(p => p.IsBought).Sum(p => p.Book.Price);
+                    decimal totalSpendingAmount = myPurchases
+                        .Where(p => p.IsBought && p.Book != null)
+                        .Sum(p => p.Book.Price);
 
                     txtTotalPurchases.Text = $"{totalPurchasesCount} đơn hàng";
                     txtTotalSpending.Text = $"${totalSpendingAmount:F2}";
 
-                    // 3. Bind Purchase History Grid
-                    var purchaseHistoryList = myPurchases.Select(p => new
-                    {
-                        Id = $"#TXN-{p.PurchaseId.Substring(0, 8).ToUpper()}",
-                        BookTitle = p.Book?.Title ?? "Unknown Title",
-                        Price = (double)p.Book.Price,
-                        PurchaseDate = p.PurchasedAt.ToString("yyyy-MM-dd HH:mm"),
-                        Status = p.IsBought ? "Completed" : "Failed"
+                    // 3. Bind Purchase History Grid safely
+                    var purchaseHistoryList = myPurchases.Select(p => {
+                        string txId = p.PurchaseId ?? string.Empty;
+                        if (txId.Length >= 8)
+                        {
+                            txId = txId.Substring(0, 8);
+                        }
+                        return new
+                        {
+                            Id = $"#TXN-{txId.ToUpper()}",
+                            BookTitle = p.Book?.Title ?? "Unknown Title",
+                            Price = p.Book != null ? (double)p.Book.Price : 0.0,
+                            PurchaseDate = p.PurchasedAt.ToString("yyyy-MM-dd HH:mm"),
+                            Status = p.IsBought ? "Completed" : "Failed"
+                        };
                     }).ToList();
                     dgPurchases.ItemsSource = purchaseHistoryList;
 
-                    // 4. Bind Favorites
+                    // 4. Bind Favorites safely
                     var favoriteList = db.Favorites
                         .Include(f => f.Book)
                         .Where(f => f.ReaderId == _userId)
                         .ToList();
 
-                    var favoriteBooks = favoriteList.Select(f => new BookModel
-                    {
-                        Id = f.Book.BookId,
-                        Title = f.Book.Title,
-                        Author = "Author", // Seed fallback or lookup
-                        Category = f.Book.Category,
-                        Price = (double)f.Book.Price,
-                        Status = f.Book.Status == true ? "Approved" : "Pending",
-                        CoverImagePath = "/Assets/Covers/placeholder.jpg"
-                    }).ToList();
+                    var favoriteBooks = favoriteList
+                        .Where(f => f.Book != null)
+                        .Select(f => new BookModel
+                        {
+                            Id = f.Book.BookId,
+                            Title = f.Book.Title ?? "Unknown Title",
+                            Author = "Author", // Seed fallback
+                            Category = f.Book.Category ?? "Unknown",
+                            Price = (double)f.Book.Price,
+                            Status = f.Book.Status == true ? "Approved" : "Pending",
+                            CoverImagePath = "/Assets/Covers/placeholder.jpg"
+                        }).ToList();
                     icFavorites.ItemsSource = favoriteBooks;
 
-                    // 5. Bind Activities
+                    // 5. Bind Activities safely
                     var activities = new List<dynamic>();
 
                     foreach (var p in myPurchases)
@@ -117,12 +139,15 @@ namespace BookManagement.Views.Admin
 
                     foreach (var f in favoriteList)
                     {
-                        activities.Add(new
+                        if (f.Book != null)
                         {
-                            Message = $"Đã thêm cuốn sách \"{f.Book?.Title ?? "Unknown Title"}\" vào danh sách yêu thích.",
-                            Time = "Gần đây",
-                            Timestamp = DateTime.Now.AddDays(-1)
-                        });
+                            activities.Add(new
+                            {
+                                Message = $"Đã thêm cuốn sách \"{f.Book.Title ?? "Unknown Title"}\" vào danh sách yêu thích.",
+                                Time = "Gần đây",
+                                Timestamp = DateTime.Now.AddDays(-1)
+                            });
+                        }
                     }
 
                     icActivities.ItemsSource = activities.OrderByDescending(a => a.Timestamp).ToList();
@@ -136,12 +161,12 @@ namespace BookManagement.Views.Admin
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
-            var nav = NavigationService.GetNavigationService();
-            if (nav != null && nav.CanGoBack())
+            var nav = NavigationService.Instance;
+            if (nav.CanGoBack())
             {
                 nav.GoBack();
             }
-            else if (nav != null)
+            else
             {
                 nav.NavigateContent(new AdminUsersView());
             }

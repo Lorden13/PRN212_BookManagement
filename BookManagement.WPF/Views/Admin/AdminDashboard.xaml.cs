@@ -64,14 +64,8 @@ namespace BookManagement.Views.Admin
                         frmContent.Navigate(new AdminReviewHistoryView());
                         header.PageTitle = "Lịch sử kiểm duyệt";
                         break;
-                    case "Reports":
-                        frmContent.Navigate(new AdminReportsView());
-                        header.PageTitle = "Báo cáo doanh thu";
-                        break;
-                    case "Profile":
-                        frmContent.Navigate(new AdminProfileView());
-                        header.PageTitle = "Thông tin cá nhân";
-                        break;
+
+
                     case "ChangePassword":
                         frmContent.Navigate(new ChangePasswordView());
                         header.PageTitle = "Đổi mật khẩu";

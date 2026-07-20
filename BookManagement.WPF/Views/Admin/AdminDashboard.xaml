@@ -84,18 +84,8 @@
                             <TextBlock Text="Lịch sử kiểm duyệt" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
                         </StackPanel>
                     </ListBoxItem>
-                    <ListBoxItem Tag="Reports">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Data="{StaticResource IconReport}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
-                            <TextBlock Text="Báo cáo doanh thu" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
-                        </StackPanel>
-                    </ListBoxItem>
-                    <ListBoxItem Tag="Profile">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Data="{StaticResource IconUser}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
-                            <TextBlock Text="Thông tin cá nhân" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
-                        </StackPanel>
-                    </ListBoxItem>
+
+
                     <ListBoxItem Tag="ChangePassword">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="{StaticResource IconLock}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>

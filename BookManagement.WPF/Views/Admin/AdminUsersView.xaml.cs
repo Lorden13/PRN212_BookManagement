@@ -105,12 +105,10 @@ namespace BookManagement.Views.Admin
         {
             if (sender is Button btn && btn.DataContext is AdminUserItemModel user)
             {
-                var nav = NavigationService.GetNavigationService();
-                if (nav != null)
-                {
-                    nav.NavigateContent(new AdminReaderDetailView(user.Id));
-                }
+                var nav = NavigationService.Instance;
+                nav.NavigateContent(new AdminReaderDetailView(user.Id));
             }
+            
         }
 
         private void BtnEditUser_Click(object sender, RoutedEventArgs e)
@@ -154,7 +152,8 @@ namespace BookManagement.Views.Admin
                             var acc = db.Accounts.FirstOrDefault(a => a.AccountId == user.Id);
                             if (acc != null)
                             {
-                                db.Accounts.Remove(acc);
+                                acc.IsActive = false;
+                                //db.Accounts.Remove(acc);
                                 db.SaveChanges();
                                 MessageBox.Show($"Đã xóa tài khoản {acc.FullName}.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
                                 RefreshData();
@@ -164,7 +163,12 @@ namespace BookManagement.Views.Admin
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Xóa tài khoản thất bại: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                       // MessageBox.Show($"Xóa tài khoản thất bại: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(
+        ex.ToString(),
+        "Lỗi",
+        MessageBoxButton.OK,
+        MessageBoxImage.Error);
                     }
                 }
             }
