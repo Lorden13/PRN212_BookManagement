@@ -14,12 +14,13 @@
 
         <!-- Back Button Toolbar -->
         <Grid Grid.Row="0" Margin="0,0,0,20">
-            <Button Style="{StaticResource OutlinedButton}" Content="← Quay lại danh sách" Height="36" HorizontalAlignment="Left" Command="{Binding BackCommand}"/>
+            <Button Style="{StaticResource OutlinedButton}" Click="BtnBack_Click" Content="← Quay lại danh sách" Height="36" HorizontalAlignment="Left"/>
         </Grid>
 
         <!-- TabControl -->
         <Border Grid.Row="1" Style="{StaticResource BaseCardStyle}" Padding="20">
-            <TabControl Style="{StaticResource ModernTabControl}">
+            <!--<TabControl Style="{StaticResource ModernTabControl}">-->
+            <TabControl Style="{x:Null}">
                 <!-- TAB 1: INFORMATION -->
                 <TabItem Header="Thông tin chung">
                     <Grid Margin="0,20,0,0">
@@ -30,9 +31,11 @@
 
                         <!-- Avatar Card -->
                         <StackPanel Grid.Column="0" HorizontalAlignment="Center">
-                            <controls:AvatarCard Width="100" Height="100" DataContext="{Binding Reader}"/>
-                            <TextBlock Text="{Binding Reader.Name}" Style="{StaticResource TextBlockBold}" FontSize="16" HorizontalAlignment="Center" Margin="0,12,0,0" TextAlignment="Center"/>
-                            <controls:StatusBadge Content="{Binding Reader.Status}" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                            <Border Width="100" Height="100" CornerRadius="50" Background="{DynamicResource PrimaryPurpleLightBrush}" BorderBrush="{DynamicResource PrimaryPurpleActiveBrush}" BorderThickness="1.5" VerticalAlignment="Center">
+                                <TextBlock x:Name="txtReaderNameLetter" Text="R" Foreground="{DynamicResource PrimaryPurpleBrush}" FontWeight="Bold" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                            </Border>
+                            <TextBlock x:Name="txtReaderNameHeader" Text="Reader Name" Style="{StaticResource TextBlockBold}" FontSize="16" HorizontalAlignment="Center" Margin="0,12,0,0" TextAlignment="Center"/>
+                            <controls:StatusBadge x:Name="txtReaderStatus" Content="Active" HorizontalAlignment="Center" Margin="0,8,0,0"/>
                         </StackPanel>
 
                         <!-- Info Grid -->
@@ -53,30 +56,25 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="12"/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="12"/>
-                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Mã độc giả:" Style="{StaticResource TextBlockMuted}"/>
-                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Reader.Id, StringFormat='#USR{0:D5}'}" Style="{StaticResource TextBlockBold}"/>
+                            <TextBlock x:Name="txtReaderId" Grid.Row="0" Grid.Column="1" Text="#USR00001" Style="{StaticResource TextBlockBold}"/>
 
                             <TextBlock Grid.Row="2" Grid.Column="0" Text="Email:" Style="{StaticResource TextBlockMuted}"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Reader.Email}" Style="{StaticResource TextBlockNormal}"/>
+                            <TextBlock x:Name="txtReaderEmail" Grid.Row="2" Grid.Column="1" Text="reader@email.com" Style="{StaticResource TextBlockNormal}"/>
 
                             <TextBlock Grid.Row="4" Grid.Column="0" Text="Số điện thoại:" Style="{StaticResource TextBlockMuted}"/>
-                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Reader.Phone}" Style="{StaticResource TextBlockNormal}"/>
+                            <TextBlock x:Name="txtReaderPhone" Grid.Row="4" Grid.Column="1" Text="0123456789" Style="{StaticResource TextBlockNormal}"/>
 
-                            <TextBlock Grid.Row="6" Grid.Column="0" Text="Địa chỉ:" Style="{StaticResource TextBlockMuted}"/>
-                            <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Reader.Address}" Style="{StaticResource TextBlockNormal}" TextWrapping="Wrap"/>
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="Vai trò:" Style="{StaticResource TextBlockMuted}"/>
+                            <TextBlock x:Name="txtReaderRole" Grid.Row="6" Grid.Column="1" Text="Reader" Style="{StaticResource TextBlockNormal}"/>
 
-                            <TextBlock Grid.Row="8" Grid.Column="0" Text="Ngày đăng ký:" Style="{StaticResource TextBlockMuted}"/>
-                            <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding Reader.JoinedDate}" Style="{StaticResource TextBlockNormal}"/>
+                            <TextBlock Grid.Row="8" Grid.Column="0" Text="Tổng đơn mua:" Style="{StaticResource TextBlockMuted}"/>
+                            <TextBlock x:Name="txtTotalPurchases" Grid.Row="8" Grid.Column="1" Text="0 đơn hàng" Style="{StaticResource TextBlockBold}" Foreground="{DynamicResource PrimaryPurpleBrush}"/>
 
-                            <TextBlock Grid.Row="10" Grid.Column="0" Text="Tổng đơn mua:" Style="{StaticResource TextBlockMuted}"/>
-                            <TextBlock Grid.Row="10" Grid.Column="1" Text="{Binding TotalPurchases, StringFormat='{}{0} đơn hàng'}" Style="{StaticResource TextBlockBold}" Foreground="{DynamicResource PrimaryPurpleBrush}"/>
-
-                            <TextBlock Grid.Row="12" Grid.Column="0" Text="Tổng tiền chi tiêu:" Style="{StaticResource TextBlockMuted}"/>
-                            <TextBlock Grid.Row="12" Grid.Column="1" Text="{Binding TotalSpending, StringFormat='${0:F2}'}" Style="{StaticResource TextBlockBold}" Foreground="{DynamicResource SuccessBrush}"/>
+                            <TextBlock Grid.Row="10" Grid.Column="0" Text="Tổng tiền chi tiêu:" Style="{StaticResource TextBlockMuted}"/>
+                            <TextBlock x:Name="txtTotalSpending" Grid.Row="10" Grid.Column="1" Text="$0.00" Style="{StaticResource TextBlockBold}" Foreground="{DynamicResource SuccessBrush}"/>
                         </Grid>
                     </Grid>
                 </TabItem>
@@ -84,9 +82,9 @@
                 <!-- TAB 2: PURCHASE HISTORY -->
                 <TabItem Header="Lịch sử mua sách">
                     <Grid Margin="0,20,0,0">
-                        <DataGrid ItemsSource="{Binding PurchaseHistory}" Style="{StaticResource ModernDataGrid}">
+                        <DataGrid x:Name="dgPurchases" Style="{StaticResource ModernDataGrid}" AutoGenerateColumns="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Mã giao dịch" Binding="{Binding Id, StringFormat='#TXN{0:D5}'}" Width="1.5*"/>
+                                <DataGridTextColumn Header="Mã giao dịch" Binding="{Binding Id}" Width="1.5*"/>
                                 <DataGridTextColumn Header="Tên tác phẩm" Binding="{Binding BookTitle}" Width="3*"/>
                                 <DataGridTextColumn Header="Số tiền" Binding="{Binding Price, StringFormat='${0:F2}'}" Width="1.5*"/>
                                 <DataGridTextColumn Header="Ngày giao dịch" Binding="{Binding PurchaseDate}" Width="2*"/>
@@ -105,7 +103,7 @@
                 <!-- TAB 3: FAVORITES -->
                 <TabItem Header="Sách yêu thích">
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
-                        <ItemsControl ItemsSource="{Binding FavoriteBooks}">
+                        <ItemsControl x:Name="icFavorites">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel/>
@@ -123,7 +121,7 @@
                 <!-- TAB 4: ACTIVITIES TIMELINE -->
                 <TabItem Header="Hoạt động gần đây">
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
-                        <ItemsControl ItemsSource="{Binding Activities}">
+                        <ItemsControl x:Name="icActivities">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="0,0,0,16">

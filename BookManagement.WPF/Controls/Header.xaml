@@ -6,7 +6,10 @@
              xmlns:local="clr-namespace:BookManagement.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="70" d:DesignWidth="800">
-    <Border Style="{StaticResource HeaderContainerStyle}">
+    <UserControl.Resources>
+        <!-- Add standard geometry icon since we might need it -->
+    </UserControl.Resources>
+    <Border Style="{StaticResource HeaderContainerStyle}" Loaded="UserControl_Loaded">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>   <!-- Page Title -->
@@ -16,23 +19,23 @@
 
             <!-- Page Title -->
             <TextBlock Grid.Column="0" 
-                       Text="{Binding PageTitle, FallbackValue='Dashboard'}" 
+                       x:Name="txtPageTitle"
+                       Text="Dashboard" 
                        Style="{StaticResource TextBlockMediumHeader}" 
                        VerticalAlignment="Center"/>
 
-            <!-- Injected Content Area (Allows future pages to inject custom buttons/filters) -->
+            <!-- Injected Content Area -->
             <ContentControl Grid.Column="1" 
-                            Content="{Binding RelativeSource={RelativeSource AncestorType=local:Header}, Path=HeaderContent}" 
-                            VerticalAlignment="Center" 
-                            Margin="20,0"/>
+                             Content="{Binding RelativeSource={RelativeSource AncestorType=local:Header}, Path=HeaderContent}" 
+                             VerticalAlignment="Center" 
+                             Margin="20,0"/>
 
             <!-- Right Controls -->
             <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                 
-                <!-- Reusable Search Box -->
-                <local:SearchBox Width="220" Margin="0,0,16,0" VerticalAlignment="Center" Tag="Tìm kiếm sách, tác giả..."/>
+        
                 
-                <!-- Notification Button with badge count -->
+                <!-- Notification Button -->
                 <local:NotificationButton Margin="0,0,16,0" Visibility="Collapsed"/>
 
                 <!-- Divider -->
@@ -40,16 +43,18 @@
 
                 <!-- User Profile quick info -->
                 <StackPanel Orientation="Horizontal">
-                    <local:AvatarCard Width="36" Height="36" 
-                                      VerticalAlignment="Center"
-                                      DataContext="{Binding Sidebar.CurrentUser}"/>
+                    <Border Width="36" Height="36" CornerRadius="18" Background="{DynamicResource PrimaryPurpleBrush}" BorderBrush="{DynamicResource PrimaryPurpleActiveBrush}" BorderThickness="1" VerticalAlignment="Center">
+                        <TextBlock x:Name="txtAvatarLetter" Text="U" Foreground="#FFFFFF" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="{DynamicResource MainFontFamily}"/>
+                    </Border>
                     <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding Sidebar.CurrentUser.Name, FallbackValue='John Doe'}" 
+                        <TextBlock x:Name="txtUserName" 
+                                   Text="User Name" 
                                    Foreground="{DynamicResource TextPrimaryBrush}" 
                                    FontSize="13" 
                                    FontWeight="SemiBold"
                                    FontFamily="{DynamicResource MainFontFamily}"/>
-                        <TextBlock Text="{Binding Sidebar.CurrentUser.Role, FallbackValue='Reader'}" 
+                        <TextBlock x:Name="txtUserRole" 
+                                   Text="Role" 
                                    Foreground="{DynamicResource TextSecondaryBrush}" 
                                    FontSize="11"
                                    FontFamily="{DynamicResource MainFontFamily}"/>

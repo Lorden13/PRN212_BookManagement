@@ -21,7 +21,7 @@ public sealed class ApprovalService : IApprovalService
 
         if (book.Status == true)
             throw new InvalidOperationException("Sách đã được duyệt không thể gửi duyệt lại.");
-        if (book.Status is null)
+        if (book.Status is null)    
             return;
 
         book.Status = null;

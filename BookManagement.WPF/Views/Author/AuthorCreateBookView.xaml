@@ -9,12 +9,88 @@
     <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/> <!-- Header Title -->
-            <RowDefinition Height="*"/>    <!-- Shared Form Control -->
+            <RowDefinition Height="*"/>    <!-- Form Layout -->
         </Grid.RowDefinitions>
 
-        <controls:SectionTitle Grid.Row="0" Text="{Binding ActionText, StringFormat='{}Tác phẩm - {0}'}" Margin="0,0,0,24"/>
+        <controls:SectionTitle Grid.Row="0" x:Name="txtSectionTitle" Text="Đăng ký tác phẩm mới" Margin="0,0,0,24"/>
 
-        <!-- Shared Book Form -->
-        <controls:BookForm Grid.Row="1"/>
+        <!-- Form Layout -->
+        <Grid Grid.Row="1">
+            <!-- Form Fields -->
+            <StackPanel Margin="0,0,32,0" MaxWidth="700" HorizontalAlignment="Left">
+                <!-- Book Title -->
+                <TextBlock Text="Tiêu đề sách *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+                <TextBox x:Name="txtTitle" Style="{StaticResource ModernTextBox}" 
+                         Tag="Nhập tiêu đề sách..." 
+                         Margin="0,0,0,20"/>
+
+                <!-- Category and Price Row -->
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="24"/>
+                        <ColumnDefinition Width="150"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Category -->
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Thể loại *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+                        <ComboBox x:Name="cbCategory" Style="{StaticResource ModernComboBox}">
+                            <ComboBoxItem Content="Programming"/>
+                            <ComboBoxItem Content="Technology"/>
+                            <ComboBoxItem Content="Science"/>
+                            <ComboBoxItem Content="Business"/>
+                            <ComboBoxItem Content="Novel"/>
+                            <ComboBoxItem Content="Education"/>
+                            <ComboBoxItem Content="History"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- Price -->
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Giá (USD) *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+                        <TextBox x:Name="txtPrice" Style="{StaticResource ModernTextBox}" 
+                                 Tag="0.00"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Description -->
+                <TextBlock Text="Mô tả *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+                <TextBox x:Name="txtDescription" Style="{StaticResource ModernTextBox}" 
+                         Tag="Nhập mô tả tóm tắt sách..." 
+                         Height="120" 
+                         AcceptsReturn="True" 
+                         VerticalContentAlignment="Top"
+                         TextWrapping="Wrap" 
+                         Margin="0,0,0,24"/>
+
+                <!-- Form Action Buttons -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                    <!-- Cancel -->
+                    <Button Style="{StaticResource SecondaryButton}" 
+                            Content="Hủy" 
+                            Width="100" 
+                            Height="40"
+                            Click="BtnCancel_Click"
+                            Margin="0,0,12,0"/>
+                    
+                    <!-- Reset -->
+                    <Button Style="{StaticResource OutlinedButton}" 
+                            Content="Thiết lập lại" 
+                            Width="120" 
+                            Height="40"
+                            Click="BtnReset_Click"
+                            Margin="0,0,12,0"/>
+
+                    <!-- Action Button -->
+                    <Button Style="{StaticResource PrimaryButton}" 
+                            x:Name="btnSubmit"
+                            Content="Gửi yêu cầu" 
+                            Width="160" 
+                            Height="40"
+                            Click="BtnSubmit_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

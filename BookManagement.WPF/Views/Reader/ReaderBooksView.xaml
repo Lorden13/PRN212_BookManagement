@@ -29,8 +29,8 @@
 
                 <!-- Row 0: Search Box, Category, Rating -->
                 <Grid Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
-                    <TextBox Style="{StaticResource ModernTextBox}" 
-                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox x:Name="txtSearch" Style="{StaticResource ModernTextBox}" 
+                             TextChanged="FilterInput_Changed"
                              Tag="Search by title or author..."/>
                     <Path Data="{StaticResource IconSearch}" 
                           Fill="{DynamicResource TextMutedBrush}" 
@@ -39,15 +39,13 @@
                           IsHitTestVisible="False"/>
                 </Grid>
 
-                <ComboBox Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"
+                <ComboBox x:Name="cbCategory" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"
                           Style="{StaticResource ModernComboBox}" 
-                          ItemsSource="{Binding Categories}" 
-                          SelectedItem="{Binding SelectedCategory}"/>
+                          SelectionChanged="FilterInput_Changed"/>
 
-                <ComboBox Grid.Row="0" Grid.Column="4" VerticalAlignment="Center"
+                <ComboBox x:Name="cbRating" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center"
                           Style="{StaticResource ModernComboBox}" 
-                          ItemsSource="{Binding RatingOptions}" 
-                          SelectedItem="{Binding SelectedRatingOption}"/>
+                          SelectionChanged="FilterInput_Changed"/>
 
                 <!-- Row 1: Max Price input, Sort ComboBox, Clear Button -->
                 <Grid Grid.Row="1" Grid.Column="0" Margin="0,12,0,0" VerticalAlignment="Center">
@@ -60,20 +58,20 @@
                                Width="80"
                                Style="{StaticResource TextBlockNormal}"
                                VerticalAlignment="Center"/>
-                    <controls:SearchBox Grid.Column="1" VerticalAlignment="Center"
-                                        Tag="Max price..."
-                                        Text="{Binding MaxPrice, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox x:Name="txtMaxPrice" Grid.Column="1" VerticalAlignment="Center"
+                             Style="{StaticResource ModernTextBox}"
+                             Tag="Max price..."
+                             TextChanged="FilterInput_Changed"/>
                 </Grid>
 
-                <ComboBox Grid.Row="1" Grid.Column="2" Margin="0,12,0,0" VerticalAlignment="Center"
+                <ComboBox x:Name="cbSort" Grid.Row="1" Grid.Column="2" Margin="0,12,0,0" VerticalAlignment="Center"
                           Style="{StaticResource ModernComboBox}" 
-                          ItemsSource="{Binding SortOptions}" 
-                          SelectedItem="{Binding SelectedSortOption}"/>
+                          SelectionChanged="FilterInput_Changed"/>
 
                 <Button Grid.Row="1" Grid.Column="4" Margin="0,12,0,0" VerticalAlignment="Center"
                         Style="{StaticResource SecondaryButton}" 
                         Content="Clear Filters" 
-                        Command="{Binding ClearFiltersCommand}"/>
+                        Click="BtnClearFilters_Click"/>
             </Grid>
         </Border>
 
@@ -86,7 +84,7 @@
             
             <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
-                    <ItemsControl ItemsSource="{Binding PagedBooks}">
+                    <ItemsControl x:Name="icBooks">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal"/>
@@ -94,39 +92,20 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <controls:BookCard DataContext="{Binding}">
-                                    <controls:BookCard.InputBindings>
-                                        <MouseBinding MouseAction="LeftClick" 
-                                                      Command="{Binding SelectCommand}" 
-                                                      CommandParameter="{Binding}"/>
-                                    </controls:BookCard.InputBindings>
-                                </controls:BookCard>
+                                <controls:BookCard Cursor="Hand" MouseDown="BookCard_MouseDown"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
                     <!-- Empty State if no books found -->
-                    <controls:EmptyState Margin="0,40,0,0">
-                        <controls:EmptyState.Style>
-                            <Style TargetType="controls:EmptyState">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding PagedBooks.Count}" Value="0">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </controls:EmptyState.Style>
-                    </controls:EmptyState>
+                    <controls:EmptyState x:Name="emptyState" Margin="0,40,0,0" Visibility="Collapsed"/>
                 </StackPanel>
             </ScrollViewer>
             
             <!-- Pagination -->
-            <controls:Pagination Grid.Row="1" 
-                                 InfoText="{Binding PaginationInfo}" 
-                                 PageInfoText="{Binding PageInfoText}"
-                                 PrevCommand="{Binding PrevPageCommand}"
-                                 NextCommand="{Binding NextPageCommand}"/>
+            <controls:Pagination x:Name="pagination" Grid.Row="1" 
+                                 PrevClick="BtnPrevPage_Click"
+                                 NextClick="BtnNextPage_Click"/>
         </Grid>
     </Grid>
 </UserControl>

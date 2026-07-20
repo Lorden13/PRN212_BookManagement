@@ -49,7 +49,7 @@
 
             <!-- 1. Welcome Section -->
             <StackPanel Grid.Row="0" Margin="0,0,0,20">
-                <TextBlock Text="{Binding CurrentUser.Name, StringFormat='Welcome back, {0}!'}" 
+                <TextBlock x:Name="txtWelcome" Text="Welcome back!" 
                            FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" 
                            FontFamily="{DynamicResource MainFontFamily}"/>
                 <TextBlock Text="Discover your next favorite book." 
@@ -72,8 +72,7 @@
                         
                         <!-- Search text box -->
                         <Grid Grid.Column="0">
-                            <TextBox Style="{StaticResource ModernTextBox}" 
-                                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                            <TextBox x:Name="txtSearch" Style="{StaticResource ModernTextBox}" 
                                      Tag="Search by title, author or keyword..."/>
                             <Path Data="{StaticResource IconSearch}" 
                                   Fill="{DynamicResource TextMutedBrush}" 
@@ -83,17 +82,15 @@
                         </Grid>
                         
                         <!-- Category ComboBox -->
-                        <ComboBox Grid.Column="2" 
-                                  Style="{StaticResource ModernComboBox}" 
-                                  ItemsSource="{Binding Categories}" 
-                                  SelectedItem="{Binding SelectedCategory}"/>
+                        <ComboBox x:Name="cbCategory" Grid.Column="2" 
+                                  Style="{StaticResource ModernComboBox}"/>
                         
                         <!-- Search Button -->
                         <Button Grid.Column="4" 
                                 Style="{StaticResource PrimaryButton}" 
                                 Content="Search" 
                                 Height="40"
-                                Command="{Binding ExecuteSearchCommand}"/>
+                                Click="BtnSearch_Click"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -116,10 +113,10 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Popular Books" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
                         <Button Grid.Column="1" Style="{StaticResource OutlinedButton}" Content="View all" Padding="12,4" Height="28" BorderThickness="0"
-                                Command="{Binding ViewAllBooksCommand}"/>
+                                Click="BtnViewAllBooks_Click"/>
                     </Grid>
                     
-                    <ItemsControl ItemsSource="{Binding PopularBooks}" Margin="0,0,0,24">
+                    <ItemsControl x:Name="icPopularBooks" Margin="0,0,0,24">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal"/>
@@ -127,13 +124,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <controls:BookCard DataContext="{Binding}">
-                                    <controls:BookCard.InputBindings>
-                                        <MouseBinding MouseAction="LeftClick" 
-                                                      Command="{Binding SelectCommand}" 
-                                                      CommandParameter="{Binding}"/>
-                                    </controls:BookCard.InputBindings>
-                                </controls:BookCard>
+                                <controls:BookCard Cursor="Hand" MouseDown="BookCard_MouseDown"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -146,10 +137,10 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Recommended Books" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
                         <Button Grid.Column="1" Style="{StaticResource OutlinedButton}" Content="View all" Padding="12,4" Height="28" BorderThickness="0"
-                                Command="{Binding ViewAllBooksCommand}"/>
+                                Click="BtnViewAllBooks_Click"/>
                     </Grid>
                     
-                    <ItemsControl ItemsSource="{Binding RecommendedBooks}" Margin="0,0,0,24">
+                    <ItemsControl x:Name="icRecommendedBooks" Margin="0,0,0,24">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal"/>
@@ -157,13 +148,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <controls:BookCard DataContext="{Binding}">
-                                    <controls:BookCard.InputBindings>
-                                        <MouseBinding MouseAction="LeftClick" 
-                                                      Command="{Binding SelectCommand}" 
-                                                      CommandParameter="{Binding}"/>
-                                    </controls:BookCard.InputBindings>
-                                </controls:BookCard>
+                                <controls:BookCard Cursor="Hand" MouseDown="BookCard_MouseDown"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -176,12 +161,12 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Recently Purchased" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
                         <Button Grid.Column="1" Style="{StaticResource OutlinedButton}" Content="View all" Padding="12,4" Height="28" BorderThickness="0"
-                                Command="{Binding ViewAllLibraryCommand}"/>
+                                Click="BtnViewAllLibrary_Click"/>
                     </Grid>
 
                     <Border Style="{StaticResource BaseCardStyle}" Padding="16" Margin="0,0,0,24">
                         <Grid>
-                            <DataGrid ItemsSource="{Binding RecentPurchases}" 
+                            <DataGrid x:Name="dgRecentPurchases"
                                       Style="{StaticResource ModernDataGrid}" 
                                       AutoGenerateColumns="False" 
                                       HeadersVisibility="Column" 
@@ -233,7 +218,7 @@
                             <TextBlock Text="Quick Actions" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,20"/>
                             
                             <!-- Browse Books -->
-                            <Button Style="{StaticResource QuickActionButtonStyle}" Command="{Binding ViewAllBooksCommand}" Margin="0,0,0,12" Height="60">
+                            <Button Style="{StaticResource QuickActionButtonStyle}" Click="BtnViewAllBooks_Click" Margin="0,0,0,12" Height="60">
                                 <Grid Margin="12,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -252,7 +237,7 @@
                             </Button>
 
                             <!-- My Library -->
-                            <Button Style="{StaticResource QuickActionButtonStyle}" Command="{Binding ViewAllLibraryCommand}" Margin="0,0,0,12" Height="60">
+                            <Button Style="{StaticResource QuickActionButtonStyle}" Click="BtnViewAllLibrary_Click" Margin="0,0,0,12" Height="60">
                                 <Grid Margin="12,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
@@ -271,7 +256,7 @@
                             </Button>
 
                             <!-- Profile -->
-                            <Button Style="{StaticResource QuickActionButtonStyle}" Command="{Binding ViewProfileCommand}" Margin="0,0,0,12" Height="60">
+                            <Button Style="{StaticResource QuickActionButtonStyle}" Click="BtnViewProfile_Click" Margin="0,0,0,12" Height="60">
                                 <Grid Margin="12,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>

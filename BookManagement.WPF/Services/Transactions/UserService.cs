@@ -1,11 +1,12 @@
 using BookManagement.Models.Entities;
+using BookManagement.Services.Repository;
 using BookManagement.WPF.Entities;
 using BookManagement.WPF.Services.Utils;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
-namespace BookManagement.Services.Repository
+namespace BookManagement.WPF.Services.Transactions
 {
     public class UserService : IUserService
     {
@@ -35,6 +36,7 @@ namespace BookManagement.Services.Repository
                 if (account.Password == password)
                 {
                     account.Password = hashed;
+                    _prnContext.Accounts.Update(account);
                     _prnContext.SaveChanges();
                     return account;
                 }
@@ -46,37 +48,6 @@ namespace BookManagement.Services.Repository
                 Console.WriteLine(ex.ToString());
                 return null;
             }
-        }
-
-        public UserProfileModel AuthenticateDemo(string role)
-        {
-            // Read from dynamic UserSession if available
-            var currentUser = BookManagement.Services.Utils.UserSession.CurrentUser;
-            if (currentUser != null)
-            {
-                return new UserProfileModel
-                {
-                    Name = currentUser.FullName,
-                    Email = currentUser.Email,
-                    Role = role,
-                    JoinedDate = "2026-02-15", // placeholder as schema doesn't have it
-                    PhoneNumber = currentUser.Phone ?? "",
-                    Address = currentUser.Address ?? "",
-                    AvatarPath = role == "Author" ? "/Assets/Avatars/author.png" : (role == "Reader" ? "/Assets/Avatars/reader.png" : "/Assets/Avatars/admin.png")
-                };
-            }
-
-            // Fallback for design-time / no session
-            return new UserProfileModel
-            {
-                Name = $"Demo {role}",
-                Email = "demo@email.com",
-                Role = role,
-                JoinedDate = "2026-02-15",
-                AvatarPath = "/Assets/Avatars/author.png",
-                PhoneNumber = "",
-                Address = ""
-            };
         }
     }
 }

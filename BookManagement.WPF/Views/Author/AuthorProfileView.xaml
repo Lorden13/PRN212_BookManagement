@@ -30,47 +30,32 @@
                                 <Path Data="{StaticResource IconUser}" Fill="{DynamicResource PrimaryPurpleBrush}" Width="40" Height="40" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
-                        <TextBlock Text="Tác Giả Demo" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Center"/>
-                        <TextBlock Text="Alice Johnson" Style="{StaticResource TextBlockMuted}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                        <TextBlock x:Name="txtProfileTitle" Text="Tác Giả" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Center"/>
                     </StackPanel>
 
                     <!-- Fields Panel -->
                     <StackPanel Grid.Column="2">
                         <!-- Name -->
                         <TextBlock Text="Họ và tên tác giả *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
-                        <TextBox Style="{StaticResource ModernTextBox}" 
-                                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
+                        <TextBox x:Name="txtName" Style="{StaticResource ModernTextBox}" 
                                  Tag="Nhập họ tên tác giả..." 
                                  Margin="0,0,0,20"/>
 
                         <!-- Email -->
                         <TextBlock Text="Địa chỉ Email *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
-                        <TextBox Style="{StaticResource ModernTextBox}" 
-                                 Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" 
+                        <TextBox x:Name="txtEmail" Style="{StaticResource ModernTextBox}" 
                                  Tag="Nhập email..." 
                                  Margin="0,0,0,20"/>
 
-                        <!-- Bio -->
-                        <TextBlock Text="Tiểu sử / Giới thiệu bản thân" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
-                        <TextBox Style="{StaticResource ModernTextBox}" 
-                                 Text="{Binding Bio, UpdateSourceTrigger=PropertyChanged}" 
-                                 Tag="Nhập tiểu sử tác giả..." 
-                                 Height="80" 
-                                 AcceptsReturn="True" 
-                                 VerticalContentAlignment="Top"
-                                 TextWrapping="Wrap" 
-                                 Margin="0,0,0,20"/>
-
-                        <!-- Joined Date -->
-                        <TextBlock Text="Ngày tham gia hệ thống" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
-                        <TextBox Style="{StaticResource ModernTextBox}" 
-                                 Text="{Binding JoinedDate}" 
-                                 IsEnabled="False" 
+                        <!-- Phone -->
+                        <TextBlock Text="Số điện thoại" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+                        <TextBox x:Name="txtPhone" Style="{StaticResource ModernTextBox}" 
+                                 Tag="Nhập số điện thoại..." 
                                  Margin="0,0,0,28"/>
 
                         <!-- Submit Button -->
                         <Button Style="{StaticResource PrimaryButton}" 
-                                Command="{Binding SaveCommand}" 
+                                Click="BtnSave_Click" 
                                 Content="Lưu thông tin" 
                                 Height="40" 
                                 HorizontalAlignment="Left" 

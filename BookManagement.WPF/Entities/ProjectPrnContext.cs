@@ -35,6 +35,7 @@ public partial class ProjectPrnContext : DbContext
 
     public virtual DbSet<Token> Tokens { get; set; }
 
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
@@ -218,7 +219,7 @@ public partial class ProjectPrnContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.IsBought).HasDefaultValue(true);
-            entity.Property(e => e.Payment).HasColumnType("decimal(18, 2)");
+           // entity.Property(e => e.Payment).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.PurchasedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");

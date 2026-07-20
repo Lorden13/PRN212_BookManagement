@@ -16,13 +16,13 @@
 
             <!-- Stat Cards Row -->
             <UniformGrid Grid.Row="0" Columns="4" Margin="-8,0,-8,20">
-                <controls:StatisticCard Title="Tổng số tài khoản" Value="{Binding TotalUsers}" IconKey="IconUsers" TrendText="Độc giả + Tác giả + Admin"/>
-                <controls:StatisticCard Title="Tổng số độc giả" Value="{Binding TotalReaders}" IconKey="IconUser" TrendText="Bạn đọc đã đăng ký"/>
-                <controls:StatisticCard Title="Tổng số tác giả" Value="{Binding TotalAuthors}" IconKey="IconPen" TrendText="Nhà sáng tác nội dung"/>
-                <controls:StatisticCard Title="Tổng số sách" Value="{Binding TotalBooks}" IconKey="IconBook" TrendText="Sách trong hệ thống"/>
-                <controls:StatisticCard Title="Yêu cầu chờ duyệt" Value="{Binding PendingBooks}" IconKey="IconClock" TrendText="Sách đang đợi kiểm duyệt" TrendBrush="{DynamicResource WarningBrush}"/>
-                <controls:StatisticCard Title="Doanh thu tích lũy" Value="{Binding TotalRevenue, StringFormat='${0:F2}'}" IconKey="IconCart" TrendText="Tổng giao dịch mua sách" TrendBrush="{DynamicResource SuccessBrush}"/>
-                <controls:StatisticCard Title="Doanh thu hôm nay" Value="{Binding TodaySales, StringFormat='${0:F2}'}" IconKey="IconCheck" TrendText="Doanh thu ngày hôm nay" TrendBrush="{DynamicResource InfoBrush}"/>
+                <controls:StatisticCard x:Name="cardTotalUsers" Title="Tổng số tài khoản" Value="0" IconKey="IconUsers" TrendText="Độc giả + Tác giả + Admin"/>
+                <controls:StatisticCard x:Name="cardTotalReaders" Title="Tổng số độc giả" Value="0" IconKey="IconUser" TrendText="Bạn đọc đã đăng ký"/>
+                <controls:StatisticCard x:Name="cardTotalAuthors" Title="Tổng số tác giả" Value="0" IconKey="IconPen" TrendText="Nhà sáng tác nội dung"/>
+                <controls:StatisticCard x:Name="cardTotalBooks" Title="Tổng số sách" Value="0" IconKey="IconBook" TrendText="Sách trong hệ thống"/>
+                <controls:StatisticCard x:Name="cardPendingBooks" Title="Yêu cầu chờ duyệt" Value="0" IconKey="IconClock" TrendText="Sách đang đợi kiểm duyệt" TrendBrush="{DynamicResource WarningBrush}"/>
+                <controls:StatisticCard x:Name="cardTotalRevenue" Title="Doanh thu tích lũy" Value="$0.00" IconKey="IconCart" TrendText="Tổng giao dịch mua sách" TrendBrush="{DynamicResource SuccessBrush}"/>
+                <controls:StatisticCard x:Name="cardTodaySales" Title="Doanh thu hôm nay" Value="$0.00" IconKey="IconCheck" TrendText="Doanh thu ngày hôm nay" TrendBrush="{DynamicResource InfoBrush}"/>
             </UniformGrid>
 
             <!-- Widgets Grid (Charts) -->
@@ -78,33 +78,33 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="60"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Đã duyệt" Style="{StaticResource TextBlockNormal}" VerticalAlignment="Center"/>
-                                <ProgressBar Grid.Column="1" Value="75" Height="10" Foreground="#10B981" Background="#F3F4F6" BorderThickness="0"/>
-                                <TextBlock Grid.Column="2" Text="75%" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                <ProgressBar x:Name="pbApprovedStatus" Grid.Column="1" Value="0" Height="10" Foreground="#10B981" Background="#F3F4F6" BorderThickness="0"/>
+                                <TextBlock x:Name="lblApprovedPercent" Grid.Column="2" Text="0%" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </Grid>
                             <!-- Pending -->
                             <Grid Margin="0,0,0,12">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="60"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Chờ duyệt" Style="{StaticResource TextBlockNormal}" VerticalAlignment="Center"/>
-                                <ProgressBar Grid.Column="1" Value="15" Height="10" Foreground="#F59E0B" Background="#F3F4F6" BorderThickness="0"/>
-                                <TextBlock Grid.Column="2" Text="15%" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                <ProgressBar x:Name="pbPendingStatus" Grid.Column="1" Value="0" Height="10" Foreground="#F59E0B" Background="#F3F4F6" BorderThickness="0"/>
+                                <TextBlock x:Name="lblPendingPercent" Grid.Column="2" Text="0%" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </Grid>
                             <!-- Rejected -->
                             <Grid Margin="0,0,0,12">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="60"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Từ chối" Style="{StaticResource TextBlockNormal}" VerticalAlignment="Center"/>
-                                <ProgressBar Grid.Column="1" Value="7" Height="10" Foreground="#EF4444" Background="#F3F4F6" BorderThickness="0"/>
-                                <TextBlock Grid.Column="2" Text="7%" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                <ProgressBar x:Name="pbRejectedStatus" Grid.Column="1" Value="0" Height="10" Foreground="#EF4444" Background="#F3F4F6" BorderThickness="0"/>
+                                <TextBlock x:Name="lblRejectedPercent" Grid.Column="2" Text="0%" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </Grid>
                         </StackPanel>
                     </StackPanel>
@@ -123,7 +123,7 @@
                 <Border Grid.Column="0" Style="{StaticResource BaseCardStyle}" Padding="20">
                     <StackPanel>
                         <TextBlock Text="Đề xuất chờ kiểm duyệt gần đây" Style="{StaticResource TextBlockBold}" FontSize="16" Margin="0,0,0,16"/>
-                        <DataGrid ItemsSource="{Binding LatestPendingBooks}" Style="{StaticResource ModernDataGrid}" AutoGenerateColumns="False">
+                        <DataGrid x:Name="dgPendingBooks" Style="{StaticResource ModernDataGrid}" AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Tên tác phẩm" Binding="{Binding Title}" Width="2*"/>
                                 <DataGridTextColumn Header="Tác giả" Binding="{Binding Author}" Width="1.5*"/>
@@ -131,7 +131,7 @@
                                 <DataGridTemplateColumn Header="Thao tác" Width="100">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Style="{StaticResource OutlinedButton}" Content="Xét duyệt" Height="26" Padding="8,0" Command="{Binding SelectCommand}" CommandParameter="{Binding}"/>
+                                            <Button Style="{StaticResource OutlinedButton}" Content="Xét duyệt" Height="26" Padding="8,0" Click="BtnReviewBook_Click"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -144,7 +144,7 @@
                 <Border Grid.Column="2" Style="{StaticResource BaseCardStyle}" Padding="20">
                     <StackPanel>
                         <TextBlock Text="Nhật ký hoạt động hệ thống" Style="{StaticResource TextBlockBold}" FontSize="16" Margin="0,0,0,16"/>
-                        <ItemsControl ItemsSource="{Binding RecentActivities}">
+                        <ItemsControl x:Name="icActivities">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="0,0,0,12">

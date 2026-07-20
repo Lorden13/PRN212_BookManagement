@@ -18,7 +18,7 @@ namespace BookManagement.Services.Navigation
    
 
         // Register frames
-        public void     RegisterMainFrame(Frame frame)
+        public void RegisterMainFrame(Frame frame)
         {
             _mainFrame = frame;
         }
@@ -51,6 +51,19 @@ namespace BookManagement.Services.Navigation
         {
            
         }
+        public static NavigationService GetNavigationService()
+        {
+            return Instance;
+        }
+        public bool CanGoBack()
+        {
+            return _contentFrame != null && _contentFrame.CanGoBack;
+        }
 
+        public void GoBack()
+        {
+            if (_contentFrame != null && _contentFrame.CanGoBack)
+                _contentFrame.GoBack();
+        }
     }
 }

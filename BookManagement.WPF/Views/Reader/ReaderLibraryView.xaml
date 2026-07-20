@@ -16,8 +16,8 @@
         <Border Grid.Row="0" Style="{StaticResource BaseCardStyle}" Padding="16" Margin="0,0,0,20">
             <Grid>
                 <Grid Grid.Column="0" Width="320" HorizontalAlignment="Left">
-                    <TextBox Style="{StaticResource ModernTextBox}" 
-                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox x:Name="txtSearch" Style="{StaticResource ModernTextBox}" 
+                             TextChanged="txtSearch_TextChanged"
                              Tag="Search by title, author or status..."/>
                     <Path Data="{StaticResource IconSearch}" 
                           Fill="{DynamicResource TextMutedBrush}" 
@@ -31,7 +31,7 @@
         <!-- Purchases DataGrid -->
         <Border Grid.Row="1" Style="{StaticResource BaseCardStyle}" Padding="20">
             <Grid>
-                <DataGrid ItemsSource="{Binding LibraryItemsView}" 
+                <DataGrid x:Name="dgLibrary" 
                           Style="{StaticResource ModernDataGrid}"
                           AutoGenerateColumns="False"
                           HeadersVisibility="Column"
@@ -93,8 +93,7 @@
                                             Height="28" 
                                             Padding="12,0" 
                                             VerticalAlignment="Center"
-                                            Command="{Binding DataContext.ReadCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                            CommandParameter="{Binding}"/>
+                                            Click="BtnRead_Click"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -103,18 +102,7 @@
                 </DataGrid>
 
                 <!-- Empty State -->
-                <controls:EmptyState>
-                    <controls:EmptyState.Style>
-                        <Style TargetType="controls:EmptyState">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding LibraryItemsView.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls:EmptyState.Style>
-                </controls:EmptyState>
+                <controls:EmptyState x:Name="emptyState" Visibility="Collapsed"/>
             </Grid>
         </Border>
     </Grid>

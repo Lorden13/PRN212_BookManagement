@@ -16,10 +16,10 @@
 
             <!-- Stat Cards Row -->
             <UniformGrid Grid.Row="0" Columns="4" Margin="-10,0,-10,20">
-                <controls:StatisticCard Title="Tổng số sách" Value="{Binding TotalBooks}" IconKey="IconBook" TrendText="Tác phẩm đã đăng ký"/>
-                <controls:StatisticCard Title="Đã phê duyệt" Value="{Binding ApprovedBooks}" IconKey="IconCheck" TrendText="Hiển thị với độc giả"/>
-                <controls:StatisticCard Title="Đang chờ duyệt" Value="{Binding PendingBooks}" IconKey="IconClock" TrendText="Đang trong hàng đợi duyệt"/>
-                <controls:StatisticCard Title="Yêu cầu sửa đổi" Value="{Binding RejectedBooks}" IconKey="IconWarning" TrendText="Cần chỉnh sửa lại"/>
+                <controls:StatisticCard x:Name="cardTotal" Title="Tổng số sách" Value="0" IconKey="IconBook" TrendText="Tác phẩm đã đăng ký"/>
+                <controls:StatisticCard x:Name="cardApproved" Title="Đã phê duyệt" Value="0" IconKey="IconCheck" TrendText="Hiển thị với độc giả"/>
+                <controls:StatisticCard x:Name="cardPending" Title="Đang chờ duyệt" Value="0" IconKey="IconClock" TrendText="Đang trong hàng đợi duyệt"/>
+                <controls:StatisticCard x:Name="cardRejected" Title="Yêu cầu sửa đổi" Value="0" IconKey="IconWarning" TrendText="Cần chỉnh sửa lại"/>
             </UniformGrid>
 
             <!-- Charts / Info breakdown row -->
@@ -40,11 +40,11 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="80"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="Đã phê duyệt" Style="{StaticResource TextBlockNormal}" VerticalAlignment="Center"/>
-                            <ProgressBar Grid.Column="1" Value="{Binding ApprovedBooks}" Maximum="{Binding TotalBooks}" Height="12" Foreground="#10B981" Background="#F3F4F6" BorderThickness="0"/>
-                            <TextBlock Grid.Column="2" Text="{Binding ApprovedBooks, StringFormat='{}{0} cuốn'}" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <ProgressBar x:Name="pbApproved" Grid.Column="1" Value="0" Maximum="100" Height="12" Foreground="#10B981" Background="#F3F4F6" BorderThickness="0"/>
+                            <TextBlock x:Name="lblApproved" Grid.Column="2" Text="0 cuốn" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                         </Grid>
 
                         <!-- Pending Progress Bar -->
@@ -52,11 +52,11 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="80"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="Đang chờ duyệt" Style="{StaticResource TextBlockNormal}" VerticalAlignment="Center"/>
-                            <ProgressBar Grid.Column="1" Value="{Binding PendingBooks}" Maximum="{Binding TotalBooks}" Height="12" Foreground="#6366F1" Background="#F3F4F6" BorderThickness="0"/>
-                            <TextBlock Grid.Column="2" Text="{Binding PendingBooks, StringFormat='{}{0} cuốn'}" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <ProgressBar x:Name="pbPending" Grid.Column="1" Value="0" Maximum="100" Height="12" Foreground="#6366F1" Background="#F3F4F6" BorderThickness="0"/>
+                            <TextBlock x:Name="lblPending" Grid.Column="2" Text="0 cuốn" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                         </Grid>
 
                         <!-- Rejected Progress Bar -->
@@ -64,11 +64,11 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="80"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="Yêu cầu chỉnh sửa" Style="{StaticResource TextBlockNormal}" VerticalAlignment="Center"/>
-                            <ProgressBar Grid.Column="1" Value="{Binding RejectedBooks}" Maximum="{Binding TotalBooks}" Height="12" Foreground="#EF4444" Background="#F3F4F6" BorderThickness="0"/>
-                            <TextBlock Grid.Column="2" Text="{Binding RejectedBooks, StringFormat='{}{0} cuốn'}" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <ProgressBar x:Name="pbRejected" Grid.Column="1" Value="0" Maximum="100" Height="12" Foreground="#EF4444" Background="#F3F4F6" BorderThickness="0"/>
+                            <TextBlock x:Name="lblRejected" Grid.Column="2" Text="0 cuốn" Style="{StaticResource TextBlockBold}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                         </Grid>
                     </StackPanel>
                 </Border>
@@ -79,7 +79,7 @@
                         <TextBlock Text="Thao tác nhanh" Style="{StaticResource TextBlockBold}" FontSize="16" Margin="0,0,0,16"/>
                         
                         <Button Style="{StaticResource PrimaryButton}" 
-                                Command="{Binding CreateBookCommand}" 
+                                Click="BtnCreateBook_Click" 
                                 Content="+ Đăng ký sách mới" 
                                 Height="42" 
                                 Margin="0,0,0,12" 
@@ -98,7 +98,7 @@
                 <StackPanel>
                     <TextBlock Text="Các tác phẩm vừa đăng ký" Style="{StaticResource TextBlockBold}" FontSize="16" Margin="0,0,0,16"/>
                     
-                    <DataGrid ItemsSource="{Binding RecentBooks}" 
+                    <DataGrid x:Name="dgRecentBooks" 
                               Style="{StaticResource ModernDataGrid}">
                         <DataGrid.Columns>
                             <!-- Title -->
@@ -136,8 +136,7 @@
                                                 Content="Xem" 
                                                 Height="28" 
                                                 Padding="12,0" 
-                                                Command="{Binding SelectCommand}"
-                                                CommandParameter="{Binding}"/>
+                                                Click="BtnViewBook_Click"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

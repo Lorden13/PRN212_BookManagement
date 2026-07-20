@@ -1,5 +1,6 @@
 using BookManagement.Services.AccessTokenService;
 using BookManagement.Services.RoleService;
+using BookManagement.Services.Utils;
 using BookManagement.SQLite;
 using BookManagement.WPF.Entities;
 using BookManagement.WPF.Services.AccountService;
@@ -8,6 +9,13 @@ using BookManagement.WPF.Services.AuthorSetvice;
 using BookManagement.WPF.Services.ReaderService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace BookManagement.Views.Common
 {
@@ -19,38 +27,24 @@ namespace BookManagement.Views.Common
         private readonly AdminService _admin;
         private readonly RoleService _role;
         private readonly AccessTokenService _token;
+        private bool _isUpdatingPassword = false;
+
         public Login()
         {
             InitializeComponent();
 
-            var vm = App.Current.Services.GetRequiredService<LoginViewModel>();
-            DataContext = vm;
-            vm.PropertyChanged += Vm_PropertyChanged;
             _author = new BookManagement.WPF.Services.AuthorSetvice.AuthorService();
             _reader = new BookManagement.WPF.Services.ReaderService.ReaderService();
-
             _account = new AccountService();
             _admin = new AdminService();
             _role = new RoleService();
             _token = new AccessTokenService();
-            registerRole.ItemsSource = new List<string>()
-            {
-                "Reader",
-                "Author"
-            };
-            loginRole.ItemsSource = new List<string>()
-            {
-                "Reader",
-                "Author",
-                "Admin"
-            };
+
+            registerRole.ItemsSource = new List<string> { "Reader", "Author" };
+            loginRole.ItemsSource = new List<string> { "Reader", "Author", "Admin" };
         }
 
-        
-
-        private bool _isUpdatingPassword = false;
-
-        private void PasswordBox_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             if (_isUpdatingPassword) return;
             if (sender is not PasswordBox passwordBox) return;
@@ -82,6 +76,7 @@ namespace BookManagement.Views.Common
                 _isUpdatingPassword = false;
             }
         }
+
         private void txtRegisterPasswordPlain_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (_isUpdatingPassword) return;
@@ -103,6 +98,54 @@ namespace BookManagement.Views.Common
                 _isUpdatingPassword = true;
                 txtRegisterConfirmPassword.Password = textBox.Text;
                 _isUpdatingPassword = false;
+            }
+        }
+
+        private void BtnToggleLoginPassword_Click(object sender, RoutedEventArgs e)
+        {
+            if (txtPassword.Visibility == Visibility.Visible)
+            {
+                txtPassword.Visibility = Visibility.Collapsed;
+                txtPasswordPlain.Visibility = Visibility.Visible;
+                pathLoginEye.Data = (Geometry)FindResource("IconEyeOff");
+            }
+            else
+            {
+                txtPassword.Visibility = Visibility.Visible;
+                txtPasswordPlain.Visibility = Visibility.Collapsed;
+                pathLoginEye.Data = (Geometry)FindResource("IconEye");
+            }
+        }
+
+        private void BtnToggleRegisterPassword_Click(object sender, RoutedEventArgs e)
+        {
+            if (txtRegisterPassword.Visibility == Visibility.Visible)
+            {
+                txtRegisterPassword.Visibility = Visibility.Collapsed;
+                txtRegisterPasswordPlain.Visibility = Visibility.Visible;
+                pathRegisterEye.Data = (Geometry)FindResource("IconEyeOff");
+            }
+            else
+            {
+                txtRegisterPassword.Visibility = Visibility.Visible;
+                txtRegisterPasswordPlain.Visibility = Visibility.Collapsed;
+                pathRegisterEye.Data = (Geometry)FindResource("IconEye");
+            }
+        }
+
+        private void BtnToggleRegisterConfirmPassword_Click(object sender, RoutedEventArgs e)
+        {
+            if (txtRegisterConfirmPassword.Visibility == Visibility.Visible)
+            {
+                txtRegisterConfirmPassword.Visibility = Visibility.Collapsed;
+                txtRegisterConfirmPasswordPlain.Visibility = Visibility.Visible;
+                pathRegisterConfirmEye.Data = (Geometry)FindResource("IconEyeOff");
+            }
+            else
+            {
+                txtRegisterConfirmPassword.Visibility = Visibility.Visible;
+                txtRegisterConfirmPasswordPlain.Visibility = Visibility.Collapsed;
+                pathRegisterConfirmEye.Data = (Geometry)FindResource("IconEye");
             }
         }
 
@@ -130,10 +173,9 @@ namespace BookManagement.Views.Common
             errFullName.Text = string.Empty;
             errEmail.Text = string.Empty;
             errPhone.Text = string.Empty;
-            errAddress.Text = string.Empty;
+            errRole.Text = string.Empty;
             errPassword.Text = string.Empty;
             errConfirmPassword.Text = string.Empty;
-            errRole.Text = string.Empty;
             Message.Text = string.Empty;
         }
 
@@ -147,7 +189,7 @@ namespace BookManagement.Views.Common
                 string email = registerEmail.Text;
                 string address = registerAddress.Text;
                 string password = txtRegisterPassword.Password;
-                string confirmPassword = txtRegisterConfirmPasswordPlain.Text;
+                string confirmPassword = txtRegisterConfirmPassword.Password;
                 string phone = registerPhone.Text;
                 string role = (string)registerRole.SelectedItem;
 
@@ -195,13 +237,13 @@ namespace BookManagement.Views.Common
 
                 if (string.IsNullOrWhiteSpace(address))
                 {
-                    errAddress.Text = "Vui lòng nhập địa chỉ.";
+                    MessageBox.Show("Vui lòng nhập địa chỉ.", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
                 if (address.Length > 255)
                 {
-                    errAddress.Text = "Địa chỉ không được vượt quá 255 ký tự.";
+                    MessageBox.Show("Địa chỉ không được vượt quá 255 ký tự.", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
@@ -236,11 +278,6 @@ namespace BookManagement.Views.Common
                     Message.Text = "Tạo thành công";
                     await Task.Delay(1500);
 
-                    if (DataContext is LoginViewModel vm)
-                    {
-                        vm.IsRegisterMode = false;
-                    }
-
                     registerForm.Visibility = Visibility.Hidden;
                     loginForm.Visibility = Visibility.Visible;
                 }
@@ -249,9 +286,7 @@ namespace BookManagement.Views.Common
                     Message.Text = "Email hoặc số điện thoại đã được sử dụng.";
                 }
             }
-
             catch (Exception ex)
-
             {
                 Message.Text = $"Lỗi hệ thống: {ex.Message}";
                 Console.WriteLine(ex.ToString());
@@ -260,30 +295,21 @@ namespace BookManagement.Views.Common
 
         private async void ButtonLogin_Clicked(object sender, RoutedEventArgs e)
         {
-
-            if (DataContext is LoginViewModel vm)
-            {
-                vm.ErrorMessage = string.Empty;
-            }
+            txtError.Text = string.Empty;
 
             string email = txtEmail.Text;
             string password = txtPassword.Password;
             string roleChoice = (string)loginRole.SelectedItem;
 
-
             if (string.IsNullOrEmpty(roleChoice))
-
             {
-                if (DataContext is LoginViewModel vm2)
-                {
-                    vm2.ErrorMessage = "Vui lòng chọn vai trò.";
-                }
+                txtError.Text = "Vui lòng chọn vai trò.";
                 return;
             }
 
             try
             {
-                Role role = null;
+                Role role = null!;
                 if (roleChoice == "Author")
                 {
                     role = await _role.GetByNameAsync("Author");
@@ -299,18 +325,23 @@ namespace BookManagement.Views.Common
 
                 if (role == null)
                 {
-                    if (DataContext is LoginViewModel vm2)
-                    {
-                        vm2.ErrorMessage = "Không tìm thấy vai trò đã chọn.";
-                    }
+                    txtError.Text = "Không tìm thấy vai trò đã chọn.";
                     return;
                 }
 
                 Account accountDb = await _account.CheckLoginAsync(email, password, role.RoleId);
                 if (accountDb != null)
                 {
-                    // Save authenticated user to static session
-                    BookManagement.Services.Utils.UserSession.CurrentUser = accountDb;
+                    UserSession.CurrentUser = new CurrentUserModel
+                    {
+                        AccountId = accountDb.AccountId,
+                        FullName = accountDb.FullName,
+                        Email = accountDb.Email,
+                        Phone = accountDb.Phone,
+                        Address = accountDb.Address,
+                        IsActive = accountDb.IsActive,
+                        Role = accountDb.Role.RoleName
+                    };
 
                     string accessToken = await _token.GenerateAccessTokenAsync(accountDb.AccountId);
                     UserSecretContext sqliteContext = new UserSecretContext();
@@ -347,31 +378,13 @@ namespace BookManagement.Views.Common
                 }
                 else
                 {
-                    if (DataContext is LoginViewModel vm2)
-                    {
-                        vm2.ErrorMessage = "Email hoặc mật khẩu không chính xác.";
-                    }
+                    txtError.Text = "Email hoặc mật khẩu không chính xác.";
                 }
-
             }
             catch (Exception ex)
             {
-
-                if (DataContext is LoginViewModel vm2)
-                {
-                    vm2.ErrorMessage = $"Lỗi kết nối cơ sở dữ liệu: {ex.Message}";
-                }
+                txtError.Text = $"Lỗi kết nối cơ sở dữ liệu: {ex.Message}";
                 Console.WriteLine(ex.ToString());
-            }
-        }
-
-        private void Vm_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(LoginViewModel.IsRegisterMode))
-            {
-                if (txtPassword != null) txtPassword.Password = string.Empty;
-                if (txtRegisterPassword != null) txtRegisterPassword.Password = string.Empty;
-                if (txtRegisterConfirmPassword != null) txtRegisterConfirmPassword.Password = string.Empty;
             }
         }
 

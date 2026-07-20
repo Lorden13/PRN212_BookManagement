@@ -24,8 +24,11 @@ namespace BookManagement.WPF.Services.AccountService
         public async Task<Account?> CheckLoginAsync(string email, string password, string roleId)
         {
             string hashed = HashBuilder.ComputeSha256Hash(password + PRIVATEKEY);
-            Account? account = await _prnContext.Accounts.FirstOrDefaultAsync(q =>
-                q.IsActive && q.Email == email.Trim() && q.RoleId == roleId);
+            //Account? account = await _prnContext.Accounts.FirstOrDefaultAsync(q =>
+            //q.IsActive && q.Email == email.Trim() && q.RoleId == roleId);
+
+            Account ? account = await _prnContext.Accounts.Include(q => q.Role)
+                .FirstOrDefaultAsync(q => q.IsActive && q.Email == email.Trim() && q.RoleId == roleId);
 
             if (account == null)
                 return null;

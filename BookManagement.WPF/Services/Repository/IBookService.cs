@@ -6,11 +6,13 @@ namespace BookManagement.Services.Repository
     {
         IEnumerable<BookModel> GetApprovedBooks();
         IEnumerable<BookModel> GetPendingBooks();
-        IEnumerable<BookModel> GetMyBooks(int authorId);
-        BookModel GetBookById(int id);
+        IEnumerable<BookModel> GetMyBooks(string authorId);
+        IEnumerable<BookModel> GetAllBooks();
+        BookModel GetBookById(string id);
         void CreateBook(BookModel book);
         void UpdateBook(BookModel book);
-        void ApproveBook(int bookId);
-        void RejectBook(int bookId, string comment);
+        void ApproveBook(string bookId);
+        void RejectBook(string bookId, string comment);
+        void DeleteBook(string bookId);
     }
 }

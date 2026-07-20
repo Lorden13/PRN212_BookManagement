@@ -1,13 +1,13 @@
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace BookManagement.Controls
 {
     public partial class Pagination : UserControl
     {
         public static readonly DependencyProperty InfoTextProperty =
-            DependencyProperty.Register(nameof(InfoText), typeof(string), typeof(Pagination), new PropertyMetadata("Showing 1 to 8 of 48 items"));
+            DependencyProperty.Register(nameof(InfoText), typeof(string), typeof(Pagination), new PropertyMetadata("Showing 0 to 0 of 0 items"));
 
         public string InfoText
         {
@@ -24,27 +24,22 @@ namespace BookManagement.Controls
             set => SetValue(PageInfoTextProperty, value);
         }
 
-        public static readonly DependencyProperty PrevCommandProperty =
-            DependencyProperty.Register(nameof(PrevCommand), typeof(ICommand), typeof(Pagination), new PropertyMetadata(null));
-
-        public ICommand PrevCommand
-        {
-            get => (ICommand)GetValue(PrevCommandProperty);
-            set => SetValue(PrevCommandProperty, value);
-        }
-
-        public static readonly DependencyProperty NextCommandProperty =
-            DependencyProperty.Register(nameof(NextCommand), typeof(ICommand), typeof(Pagination), new PropertyMetadata(null));
-
-        public ICommand NextCommand
-        {
-            get => (ICommand)GetValue(NextCommandProperty);
-            set => SetValue(NextCommandProperty, value);
-        }
+        public event RoutedEventHandler? PrevClick;
+        public event RoutedEventHandler? NextClick;
 
         public Pagination()
         {
             InitializeComponent();
+        }
+
+        private void BtnPrev_Click(object sender, RoutedEventArgs e)
+        {
+            PrevClick?.Invoke(this, e);
+        }
+
+        private void BtnNext_Click(object sender, RoutedEventArgs e)
+        {
+            NextClick?.Invoke(this, e);
         }
     }
 }

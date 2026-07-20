@@ -19,12 +19,11 @@ namespace BookManagement
 
 
             // Register Services
-            services.AddSingleton<IBookService, BookService>();
+            services.AddSingleton<IBookService, BookManagement.Services.Repository.BookService>();
             services.AddSingleton<IAuthorService, BookManagement.Services.Repository.AuthorService>();
             services.AddSingleton<IReaderService, BookManagement.Services.Repository.ReaderService>();
-            services.AddSingleton<IUserService, BookManagement.Services.Repository.UserService>();
-            services.AddSingleton<IPurchaseService, MockPurchaseService>();
-            services.AddSingleton<IReviewService, MockReviewService>();
+            services.AddSingleton<IUserService, BookManagement.WPF.Services.Transactions.UserService>();
+            services.AddSingleton<IReviewService, BookManagement.WPF.Services.Transactions.ReviewService>();
             services.AddTransient<BookManagement.WPF.Entities.ProjectPrnContext>();
             services.AddTransient<BookManagement.WPF.Services.Transactions.IApprovalService, BookManagement.WPF.Services.Transactions.ApprovalService>();
             services.AddTransient<BookManagement.WPF.Services.Transactions.IPurchaseTransactionService, BookManagement.WPF.Services.Transactions.PurchaseTransactionService>();
@@ -35,12 +34,7 @@ namespace BookManagement
             services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IDialogService, DialogService>();
 
-            // Register ViewModels
-            services.AddTransient<LoginViewModel>();
-            services.AddTransient<ForgotPasswordViewModel>();
-            services.AddTransient<ReaderDashboardViewModel>();
-            services.AddTransient<AuthorDashboardViewModel>();
-            services.AddTransient<AdminDashboardViewModel>();
+          
 
             return services.BuildServiceProvider();
         }

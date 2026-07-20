@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:BookManagement.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="700" d:DesignWidth="1000">
+             d:DesignHeight="700" d:DesignWidth="1000"
+             Loaded="UserControl_Loaded">
     <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/> <!-- Toolbar -->
@@ -19,33 +20,33 @@
                     <ColumnDefinition Width="Auto"/> <!-- Search -->
                     <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="Auto"/> <!-- Category Filter -->
-                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="Auto"/> <!-- Status Filter -->
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Search -->
                 <Grid Grid.Column="0" Width="300" HorizontalAlignment="Left">
-                    <TextBox Style="{StaticResource ModernTextBox}" 
-                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox x:Name="txtSearch" Style="{StaticResource ModernTextBox}" 
+                             TextChanged="FilterInput_Changed"
                              Tag="Tìm kiếm theo tên sách, tác giả..."/>
                     <Path Data="{StaticResource IconSearch}" 
-                          Fill="{DynamicResource TextMutedBrush}" 
-                          Width="16" Height="16" Stretch="Uniform" 
-                          HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,14,0" 
-                          IsHitTestVisible="False"/>
+                           Fill="{DynamicResource TextMutedBrush}" 
+                           Width="16" Height="16" Stretch="Uniform" 
+                           HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,14,0" 
+                           IsHitTestVisible="False"/>
                 </Grid>
 
                 <!-- Category Filter -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
                     <TextBlock Text="Thể loại:" VerticalAlignment="Center" Margin="0,0,8,0" Style="{StaticResource TextBlockNormal}"/>
-                    <ComboBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Width="150" Style="{StaticResource ModernComboBox}"/>
+                    <ComboBox x:Name="cbCategory" Width="150" Style="{StaticResource ModernComboBox}" SelectionChanged="FilterInput_Changed"/>
                 </StackPanel>
 
                 <!-- Status Filter -->
                 <StackPanel Grid.Column="4" Orientation="Horizontal">
                     <TextBlock Text="Trạng thái:" VerticalAlignment="Center" Margin="0,0,8,0" Style="{StaticResource TextBlockNormal}"/>
-                    <ComboBox ItemsSource="{Binding Statuses}" SelectedItem="{Binding SelectedStatus}" Width="150" Style="{StaticResource ModernComboBox}"/>
+                    <ComboBox x:Name="cbStatus" Width="150" Style="{StaticResource ModernComboBox}" SelectionChanged="FilterInput_Changed"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -53,10 +54,10 @@
         <!-- DataGrid of Books -->
         <Border Grid.Row="1" Style="{StaticResource BaseCardStyle}" Padding="20">
             <Grid>
-                <DataGrid ItemsSource="{Binding BooksView}" Style="{StaticResource ModernDataGrid}">
+                <DataGrid x:Name="dgBooks" Style="{StaticResource ModernDataGrid}">
                     <DataGrid.Columns>
                         <!-- Cover Placeholder -->
-                        <DataGridTemplateColumn Header="Bìa sách" Width="80">
+                        <DataGridTemplateColumn Header="Bìa sách" Width="1*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Border Width="45" Height="60" CornerRadius="4" Background="{DynamicResource PrimaryPurpleLightBrush}" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -70,22 +71,22 @@
                         <DataGridTemplateColumn Header="Tác phẩm" Width="2.5*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
                         <!-- Author -->
-                        <DataGridTextColumn Header="Tác giả" Binding="{Binding Author}" Width="1.8*"/>
+                        <DataGridTextColumn Header="Tác giả" Binding="{Binding Author}" Width="1.5*"/>
 
                         <!-- Category -->
-                        <DataGridTextColumn Header="Thể loại" Binding="{Binding Category}" Width="1.5*"/>
+                        <DataGridTextColumn Header="Thể loại" Binding="{Binding Category}" Width="1.2*"/>
 
                         <!-- Price -->
-                        <DataGridTextColumn Header="Giá bán" Binding="{Binding Price, StringFormat='${0:F2}'}" Width="1.2*"/>
+                        <DataGridTextColumn Header="Giá bán" Binding="{Binding Price, StringFormat='${0:F2}'}" Width="1*"/>
 
                         <!-- Status Badge -->
-                        <DataGridTemplateColumn Header="Trạng thái" Width="1.5*">
+                        <DataGridTemplateColumn Header="Trạng thái" Width="1.2*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <controls:StatusBadge Content="{Binding Status}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -93,20 +94,20 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
+                        <!-- Created Date -->
+                        <DataGridTextColumn Header="Ngày đăng ký" Binding="{Binding SubmittedDate}" Width="1.5*"/>
+
                         <!-- Actions -->
-                        <DataGridTemplateColumn Header="Thao tác" Width="240">
+                        <DataGridTemplateColumn Header="Thao tác" Width="2.5*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <Button Style="{StaticResource OutlinedButton}" Content="Chi tiết" Height="28" Padding="12,0" Margin="0,0,8,0"
-                                                Command="{Binding DataContext.ViewCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                CommandParameter="{Binding}"/>
-                                        <Button Style="{StaticResource OutlinedButton}" Content="Sửa" Height="28" Padding="12,0" Margin="0,0,8,0"
-                                                Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                CommandParameter="{Binding}"/>
+                                                Click="BtnViewDetail_Click"/>
+                                        <!--<Button Style="{StaticResource OutlinedButton}" Content="Sửa" Height="28" Padding="12,0" Margin="0,0,8,0"
+                                                Click="BtnEdit_Click"/>-->
                                         <Button Style="{StaticResource OutlinedButton}" Content="Xóa" Height="28" Padding="12,0" Foreground="{DynamicResource DangerBrush}" BorderBrush="{DynamicResource DangerBrush}"
-                                                Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                CommandParameter="{Binding}"/>
+                                                Click="BtnDelete_Click"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -115,18 +116,7 @@
                 </DataGrid>
 
                 <!-- Empty State -->
-                <controls:EmptyState>
-                    <controls:EmptyState.Style>
-                        <Style TargetType="controls:EmptyState">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding BooksView.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls:EmptyState.Style>
-                </controls:EmptyState>
+                <controls:EmptyState x:Name="emptyState" Visibility="Collapsed"/>
             </Grid>
         </Border>
     </Grid>

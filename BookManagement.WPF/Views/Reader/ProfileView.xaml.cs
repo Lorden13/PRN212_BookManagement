@@ -1,6 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
-using BookManagement.WPF.ViewModels;
+
 
 namespace BookManagement.WPF.Views.Reader
 {
@@ -11,28 +11,29 @@ namespace BookManagement.WPF.Views.Reader
             InitializeComponent();
         }
 
+        private string _currentPassword = "";
+
         private void CurrentPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ProfileViewModel vm && sender is PasswordBox pb)
+            if (sender is PasswordBox pb)
             {
-                vm.CurrentPassword = pb.Password;
+                _currentPassword = pb.Password;
             }
         }
 
+        private string _newPassword = "";
+        private string _confirmPassword = "";
+
         private void NewPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ProfileViewModel vm && sender is PasswordBox pb)
-            {
-                vm.NewPassword = pb.Password;
-            }
+            if (sender is PasswordBox pb)
+                _newPassword = pb.Password;
         }
 
         private void ConfirmNewPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ProfileViewModel vm && sender is PasswordBox pb)
-            {
-                vm.ConfirmNewPassword = pb.Password;
-            }
+            if (sender is PasswordBox pb)
+                _confirmPassword = pb.Password;
         }
     }
 }
