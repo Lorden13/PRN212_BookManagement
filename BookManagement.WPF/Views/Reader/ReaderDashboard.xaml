@@ -68,15 +68,15 @@
                     <ListBoxItem Tag="Favorites">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="{StaticResource IconHeart}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
-                            <TextBlock Text="Sách yêu thích" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
+                            <TextBlock Text="Giỏ hàng" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
                         </StackPanel>
                     </ListBoxItem>
-                    <ListBoxItem Tag="Library">
+                    <!--<ListBoxItem Tag="Library">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="{StaticResource IconLibrary}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
                             <TextBlock Text="Tủ sách cá nhân" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
                         </StackPanel>
-                    </ListBoxItem>
+                    </ListBoxItem>-->
                     <ListBoxItem Tag="Profile">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="{StaticResource IconUser}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>

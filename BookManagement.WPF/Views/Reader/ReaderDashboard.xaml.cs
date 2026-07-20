@@ -55,10 +55,10 @@ namespace BookManagement.Views.Reader
                         frmContent.Navigate(new ReaderFavoriteView());
                         header.PageTitle = "Sách yêu thích";
                         break;
-                    case "Library":
-                        frmContent.Navigate(new ReaderLibraryView());
-                        header.PageTitle = "Tủ sách cá nhân";
-                        break;
+                    //case "Library":
+                    //    frmContent.Navigate(new ReaderLibraryView());
+                    //    header.PageTitle = "Tủ sách cá nhân";
+                    //    break;
                     case "Profile":
                         frmContent.Navigate(new ReaderProfileView());
                         header.PageTitle = "Thông tin cá nhân";
