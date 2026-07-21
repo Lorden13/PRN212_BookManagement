@@ -112,7 +112,7 @@ namespace BookManagement.Views.Admin
         {
             if (sender is Button btn && btn.DataContext is BookModel book)
             {
-                var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa tác phẩm \"{book.Title}\"? Hành động này không thể hoàn tác.", "Xác nhận xóa", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa tác phẩm \"{book.Title}\"? Hành động này không thể hoàn tác.", "Xác nhận xóa", MessageBoxButton.YesNo, MessageBoxImage.Warning); 
                 if (result == MessageBoxResult.Yes)
                 {
                     try

@@ -192,13 +192,9 @@ namespace BookManagement.Services.Repository
             var book = _dbContext.Books.FirstOrDefault(b => b.BookId == bookId);
             if (book != null)
             {
-                // Optionally delete physical file
-                //if (!string.IsNullOrEmpty(book.FilePath))
-                //{
-                //    FileStorageHelper.DeletePdfFromStorage(book.FilePath); //error here
-                //}
+                book.Status = false;
 
-                _dbContext.Books.Remove(book);
+              //  _dbContext.Books.Remove(book);
                 _dbContext.SaveChanges();
             }
         }
