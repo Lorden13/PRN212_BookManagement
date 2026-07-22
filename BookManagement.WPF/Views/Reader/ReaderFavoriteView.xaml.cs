@@ -82,6 +82,13 @@ namespace BookManagement.Views.Reader
                 var user = UserSession.CurrentUser;
                 if (user == null) return;
 
+                var answer = MessageBox.Show(
+                    $"Bạn muốn mua sách {book.Title}?",
+                    "Xác nhận mua sách",
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Question);
+                if (answer != MessageBoxResult.OK) return;
+
                 try
                 {
                     await _purchaseTransactionService.PurchaseAsync(user.AccountId, book.Id);
