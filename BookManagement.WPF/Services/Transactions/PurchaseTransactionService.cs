@@ -22,7 +22,9 @@ public sealed class PurchaseTransactionService : IPurchaseTransactionService
         if (!await _context.Readers.AnyAsync(r => r.ReaderId == readerId, cancellationToken))
             throw new InvalidOperationException("Không tìm thấy Reader.");
 
-        var book = await _context.Books.SingleOrDefaultAsync(
+        var book = await _context.Books
+            .Include(b => b.StockInfo)
+            .SingleOrDefaultAsync(
             b => b.BookId == bookId && b.Status == true, cancellationToken);
         if (book is null)
             throw new InvalidOperationException("Chỉ có thể mua sách đã được duyệt.");
@@ -32,10 +34,11 @@ public sealed class PurchaseTransactionService : IPurchaseTransactionService
         var existing = await _context.Purchases.SingleOrDefaultAsync(
             p => p.ReaderId == readerId && p.BookId == bookId && p.IsBought, cancellationToken);
         if (existing is not null)
-        {
-            await transaction.CommitAsync(cancellationToken);
-            return existing;
-        }
+            throw new InvalidOperationException("Bạn đã mua sách này rồi.");
+        if (book.StockInfo is null)
+            throw new InvalidOperationException("Chưa có dữ liệu tồn kho cho sách này.");
+        if (book.StockInfo.Quantity <= 0)
+            throw new InvalidOperationException("Sách đã hết hàng.");
 
         var purchase = await _context.Purchases.FirstOrDefaultAsync(
             p => p.ReaderId == readerId && p.BookId == bookId && !p.IsBought,
@@ -48,6 +51,7 @@ public sealed class PurchaseTransactionService : IPurchaseTransactionService
 
         purchase.IsBought = true;
         purchase.PurchasedAt = DateTime.UtcNow;
+        book.StockInfo!.Quantity -= 1;
         await _context.SaveChangesAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);
         return purchase;
@@ -66,8 +70,16 @@ public sealed class PurchaseTransactionService : IPurchaseTransactionService
 
         if (!await _context.Readers.AnyAsync(r => r.ReaderId == readerId, cancellationToken))
             throw new InvalidOperationException("Không tìm thấy độc giả.");
-        if (!await _context.Books.AnyAsync(b => b.BookId == bookId && b.Status == true, cancellationToken))
+        var book = await _context.Books
+            .Include(b => b.StockInfo)
+            .SingleOrDefaultAsync(
+            b => b.BookId == bookId && b.Status == true, cancellationToken);
+        if (book is null)
             throw new InvalidOperationException("Chỉ có thể thêm sách đã được duyệt vào giỏ hàng.");
+        if (book.StockInfo is null)
+            throw new InvalidOperationException("Chưa có dữ liệu tồn kho cho sách này.");
+        if (book.StockInfo.Quantity <= 0)
+            throw new InvalidOperationException("Sách đã hết hàng.");
         if (await _context.Purchases.AnyAsync(
                 p => p.ReaderId == readerId && p.BookId == bookId,
                 cancellationToken))
@@ -127,16 +139,24 @@ public sealed class PurchaseTransactionService : IPurchaseTransactionService
 
         var cartItems = await _context.Purchases
             .Include(p => p.Book)
+            .ThenInclude(b => b.StockInfo)
             .Where(p => p.ReaderId == readerId && !p.IsBought && p.Book.Status == true)
             .ToListAsync(cancellationToken);
         if (cartItems.Count < 2)
             throw new InvalidOperationException("Giỏ hàng cần ít nhất 2 sách để thanh toán.");
+        var missingStockItem = cartItems.FirstOrDefault(item => item.Book.StockInfo is null);
+        if (missingStockItem is not null)
+            throw new InvalidOperationException($"Chưa có dữ liệu tồn kho cho sách '{missingStockItem.Book.Title}'.");
+        var outOfStockItem = cartItems.FirstOrDefault(item => item.Book.StockInfo!.Quantity <= 0);
+        if (outOfStockItem is not null)
+            throw new InvalidOperationException($"Sách '{outOfStockItem.Book.Title}' đã hết hàng.");
 
         var purchasedAt = DateTime.UtcNow;
         foreach (var item in cartItems)
         {
             item.IsBought = true;
             item.PurchasedAt = purchasedAt;
+            item.Book.StockInfo!.Quantity -= 1;
         }
 
         await _context.SaveChangesAsync(cancellationToken);

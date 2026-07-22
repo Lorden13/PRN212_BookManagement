@@ -20,8 +20,6 @@ namespace BookManagement.Views.Reader
         private readonly IBookService _bookService;
         private readonly IPurchaseTransactionService _purchaseService;
         private readonly IFavoriteService _favoriteService;
-        private readonly IReaderReviewService _reviewService;
-
         private BookModel _book;
 
         public ReaderBookDetailView(BookModel book, bool isReadOnly = false)
@@ -34,8 +32,6 @@ namespace BookManagement.Views.Reader
             _bookService = App.Current.Services.GetRequiredService<IBookService>();
             _purchaseService = App.Current.Services.GetRequiredService<IPurchaseTransactionService>();
             _favoriteService = App.Current.Services.GetRequiredService<IFavoriteService>();
-            _reviewService = App.Current.Services.GetRequiredService<IReaderReviewService>();
-
             Loaded += ReaderBookDetailView_Loaded;
         }
 
@@ -51,21 +47,12 @@ namespace BookManagement.Views.Reader
             txtCategory.Content = _book.Category;
             txtTitle.Text = _book.Title;
             txtAuthor.Text = $"Tác giả: {_book.Author}";
-            txtRating.Text = $"{_book.Rating:F1} / 5.0";
+            txtStock.Text = $"Còn lại: {_book.Stock} cuốn";
             txtPrice.Text = $"${_book.Price:F2}";
             txtDescription.Text = _book.Description;
 
             try
             {
-                // Load reviews
-                var reviews = await _reviewService.GetByBookIdAsync(_book.Id);
-                icReviews.ItemsSource = reviews;
-                emptyReviewsState.Visibility = reviews.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-                _book.Rating = reviews.Count == 0
-                    ? 0
-                    : Math.Round(reviews.Average(r => r.Rating), 1, MidpointRounding.AwayFromZero);
-                txtRating.Text = $"{_book.Rating:F1} / 5.0";
-
                 // Load recommendations
                 var recommendations = _bookService.GetApprovedBooks()
                     .Where(b => b.Id != _book.Id && b.Category == _book.Category)
@@ -117,6 +104,8 @@ namespace BookManagement.Views.Reader
             try
             {
                 await _purchaseService.PurchaseAsync(user.AccountId, _book.Id);
+                _book.Stock = Math.Max(0, _book.Stock - 1);
+                txtStock.Text = $"Còn lại: {_book.Stock} cuốn";
                 MessageBox.Show($"Đã mua sách thành công: {_book.Title}", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
@@ -147,36 +136,6 @@ namespace BookManagement.Views.Reader
             }
         }
 
-        private void BtnShowReview_Click(object sender, RoutedEventArgs e)
-        {
-            reviewEditor.Visibility = Visibility.Visible;
-        }
-
-        private void BtnCancelReview_Click(object sender, RoutedEventArgs e)
-        {
-            reviewEditor.Visibility = Visibility.Collapsed;
-        }
-
-        private async void BtnSubmitReview_Click(object sender, RoutedEventArgs e)
-        {
-            var user = UserSession.CurrentUser;
-            if (user is null || cbReviewRating.SelectedItem is not ComboBoxItem selectedRating) return;
-
-            try
-            {
-                var rating = int.Parse(selectedRating.Tag.ToString()!);
-                await _reviewService.SubmitAsync(user.AccountId, _book.Id, rating, txtReviewComment.Text);
-                MessageBox.Show("Đánh giá của bạn đã được lưu.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                reviewEditor.Visibility = Visibility.Collapsed;
-                txtReviewComment.Clear();
-                await LoadBookDetailsAsync();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Không thể lưu đánh giá: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
         private async void BtnFavorite_Click(object sender, RoutedEventArgs e)
         {
             var user = UserSession.CurrentUser;
@@ -199,7 +158,6 @@ namespace BookManagement.Views.Reader
             if (sender is FrameworkElement card && card.DataContext is BookModel clickedBook)
             {
                 _book = clickedBook;
-                reviewEditor.Visibility = Visibility.Collapsed;
                 await LoadBookDetailsAsync();
             }
         }

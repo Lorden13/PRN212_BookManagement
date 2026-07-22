@@ -92,6 +92,7 @@ namespace BookManagement.Views.Reader
                 try
                 {
                     await _purchaseTransactionService.PurchaseAsync(user.AccountId, book.Id);
+                    book.Stock = Math.Max(0, book.Stock - 1);
                     MessageBox.Show($"Đã mua sách thành công: {book.Title}", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)

@@ -24,7 +24,6 @@ namespace BookManagement
             services.AddSingleton<IReaderService, BookManagement.Services.Repository.ReaderService>();
             services.AddSingleton<IUserService, BookManagement.WPF.Services.Transactions.UserService>();
             services.AddSingleton<IReviewService, BookManagement.WPF.Services.Transactions.ReviewService>();
-            services.AddTransient<IReaderReviewService, BookManagement.WPF.Services.Transactions.ReaderReviewService>();
             services.AddTransient<BookManagement.WPF.Entities.ProjectPrnContext>();
             services.AddTransient<BookManagement.WPF.Services.Transactions.IApprovalService, BookManagement.WPF.Services.Transactions.ApprovalService>();
             services.AddTransient<BookManagement.WPF.Services.Transactions.IPurchaseTransactionService, BookManagement.WPF.Services.Transactions.PurchaseTransactionService>();

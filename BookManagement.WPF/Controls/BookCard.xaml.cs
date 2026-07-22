@@ -37,6 +37,7 @@ namespace BookManagement.Controls
                 {
                     var service = App.Current.Services.GetRequiredService<IPurchaseTransactionService>();
                     await service.PurchaseAsync(user.AccountId, book.Id);
+                    book.Stock = Math.Max(0, book.Stock - 1);
                     MessageBox.Show($"Đã mua sách thành công: {book.Title}", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)

@@ -61,10 +61,6 @@ namespace BookManagement.Views.Reader
                 cbCategory.SelectedIndex = 0;
             }
 
-            // Populate Rating ComboBox
-            cbRating.ItemsSource = new List<string> { "Tất cả đánh giá", "3.0+ ★", "4.0+ ★", "4.5+ ★" };
-            cbRating.SelectedIndex = 0;
-
             // Populate Sort ComboBox
             cbSort.ItemsSource = new List<string> { "Sắp xếp mặc định", "Tên: A-Z", "Tên: Z-A", "Giá: Thấp đến Cao", "Giá: Cao đến Thấp" };
             cbSort.SelectedIndex = 0;
@@ -92,7 +88,6 @@ namespace BookManagement.Views.Reader
         {
             string query = txtSearch.Text.Trim().ToLower();
             string category = cbCategory.SelectedItem?.ToString() ?? "Tất cả";
-            string ratingOpt = cbRating.SelectedItem?.ToString() ?? "Tất cả đánh giá";
             string sortOpt = cbSort.SelectedItem?.ToString() ?? "Sắp xếp mặc định";
 
             double maxPrice = double.MaxValue;
@@ -113,12 +108,7 @@ namespace BookManagement.Views.Reader
 
                 bool matchPrice = b.Price <= maxPrice;
 
-                bool matchRating = true;
-                if (ratingOpt == "3.0+ ★") matchRating = b.Rating >= 3.0;
-                else if (ratingOpt == "4.0+ ★") matchRating = b.Rating >= 4.0;
-                else if (ratingOpt == "4.5+ ★") matchRating = b.Rating >= 4.5;
-
-                return matchQuery && matchCategory && matchPrice && matchRating;
+                return matchQuery && matchCategory && matchPrice;
             }).ToList();
 
             // 2. Sort
@@ -168,7 +158,6 @@ namespace BookManagement.Views.Reader
             _isInitializing = true;
             txtSearch.Text = string.Empty;
             cbCategory.SelectedIndex = 0;
-            cbRating.SelectedIndex = 0;
             cbSort.SelectedIndex = 0;
             txtMaxPrice.Text = string.Empty;
             _currentPage = 1;

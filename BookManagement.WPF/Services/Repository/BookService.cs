@@ -16,27 +16,6 @@ namespace BookManagement.Services.Repository
         public BookService()
         {
             _dbContext = new ProjectPrnContext();
-            EnsureReaderReviewsTable();
-        }
-
-        private void EnsureReaderReviewsTable()
-        {
-            _dbContext.Database.ExecuteSqlRaw(@"
-IF OBJECT_ID(N'[dbo].[ReaderReviews]', N'U') IS NULL
-BEGIN
-    CREATE TABLE [dbo].[ReaderReviews]
-    (
-        [ReviewID] varchar(400) NOT NULL CONSTRAINT [PK_ReaderReviews] PRIMARY KEY,
-        [ReaderID] varchar(400) NOT NULL,
-        [BookID] varchar(400) NOT NULL,
-        [Rating] int NOT NULL CONSTRAINT [CK_ReaderReviews_Rating] CHECK ([Rating] >= 1 AND [Rating] <= 5),
-        [Comment] nvarchar(1000) NOT NULL,
-        [CreatedAt] datetime NOT NULL CONSTRAINT [DF_ReaderReviews_CreatedAt] DEFAULT (getdate()),
-        CONSTRAINT [FK_ReaderReviews_Reader] FOREIGN KEY ([ReaderID]) REFERENCES [dbo].[Reader]([ReaderID]),
-        CONSTRAINT [FK_ReaderReviews_Books] FOREIGN KEY ([BookID]) REFERENCES [dbo].[Books]([BookID]),
-        CONSTRAINT [UX_ReaderReviews_Reader_Book] UNIQUE ([ReaderID], [BookID])
-    );
-END");
         }
 
        
@@ -61,9 +40,7 @@ END");
                 SubmittedDate = entity.CreatedAt.ToString("yyyy-MM-dd HH:mm"),
                 IsDeleted = entity.IsDeleted,
                 CoverImagePath = "/Assets/Covers/placeholder.jpg",
-                Rating = entity.ReaderReviews.Count == 0
-                    ? 0
-                    : Math.Round(entity.ReaderReviews.Average(r => r.Rating), 1, MidpointRounding.AwayFromZero)
+                Stock = entity.StockInfo?.Quantity ?? 0
             };
         }
 
@@ -73,7 +50,7 @@ END");
                 .AsNoTracking()
                 .Include(b => b.Author)
                 .ThenInclude(a => a.AuthorNavigation)
-                .Include(b => b.ReaderReviews)
+                .Include(b => b.StockInfo)
                 .Where(b => b.Status == true && !b.IsDeleted)
                 .ToList();
             return books.Select(MapToModel).ToList();
@@ -85,7 +62,7 @@ END");
                 .AsNoTracking()
                 .Include(b => b.Author)
                 .ThenInclude(a => a.AuthorNavigation)
-                .Include(b => b.ReaderReviews)
+                .Include(b => b.StockInfo)
                 .Where(b => b.Status == null && !b.IsDeleted)
                 .ToList();
             return books.Select(MapToModel).ToList();
@@ -97,7 +74,7 @@ END");
                 .AsNoTracking()
                 .Include(b => b.Author )
                 .ThenInclude(a => a.AuthorNavigation)
-                .Include(b => b.ReaderReviews)
+                .Include(b => b.StockInfo)
                 .Where(b => b.AuthorId == authorId && !b.IsDeleted)
                 .ToList();
             return books.Select(MapToModel).ToList();
@@ -108,7 +85,7 @@ END");
             var books = _dbContext.Books.AsNoTracking().Where(b => !b.IsDeleted)
                 .Include(b => b.Author)
                 .ThenInclude(a => a.AuthorNavigation)
-                .Include(b => b.ReaderReviews)
+                .Include(b => b.StockInfo)
                 .ToList();
             return books.Select(MapToModel).ToList();
         }
@@ -121,7 +98,7 @@ END");
         .AsNoTracking()
         .Include(b => b.Author)
         .ThenInclude(a => a.AuthorNavigation)
-        .Include(b => b.ReaderReviews)
+        .Include(b => b.StockInfo)
        .FirstOrDefault(b =>b.BookId == id && !b.IsDeleted);
             return book != null ? MapToModel(book) : null!;
            
@@ -162,13 +139,17 @@ END");
                 Description = bookModel.Description,
                 Category = bookModel.Category,
                 Price = (decimal)bookModel.Price,
-                
                 Status = null,
                 IsDeleted = false,
                 CreatedAt = DateTime.Now
             };
 
             _dbContext.Books.Add(book);
+            _dbContext.Stocks.Add(new Stock
+            {
+                BookId = book.BookId,
+                Quantity = 100
+            });
             _dbContext.SaveChanges();
 
             bookModel.Id = book.BookId;

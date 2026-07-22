@@ -5,7 +5,7 @@ namespace BookManagement.Models.Entities
 {
     public class BookModel : INotifyPropertyChanged
     {
-        private double _rating;
+        private int _stock = 100;
 
         public string Id { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
@@ -14,13 +14,13 @@ namespace BookManagement.Models.Entities
         public double Price { get; set; }
         public string Status { get; set; } = "Draft"; // Approved, Pending, Rejected, Draft
         public string CoverImagePath { get; set; } = string.Empty;
-        public double Rating
+        public int Stock
         {
-            get => _rating;
+            get => _stock;
             set
             {
-                if (Math.Abs(_rating - value) < double.Epsilon) return;
-                _rating = value;
+                if (_stock == value) return;
+                _stock = value;
                 OnPropertyChanged();
             }
         }

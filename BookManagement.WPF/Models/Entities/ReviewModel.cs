@@ -10,15 +10,4 @@ namespace BookManagement.Models.Entities
         public string AdminComment { get; set; } = string.Empty;
         public string Date { get; set; } = string.Empty;
     }
-
-    public class ReaderReviewModel
-    {
-        public string Id { get; set; } = string.Empty;
-        public string BookId { get; set; } = string.Empty;
-        public string ReaderId { get; set; } = string.Empty;
-        public string ReaderName { get; set; } = string.Empty;
-        public int Rating { get; set; }
-        public string Comment { get; set; } = string.Empty;
-        public string Date { get; set; } = string.Empty;
-    }
 }

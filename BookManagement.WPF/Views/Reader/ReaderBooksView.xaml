@@ -24,10 +24,10 @@
                     <ColumnDefinition Width="16"/>     <!-- Gap -->
                     <ColumnDefinition Width="200"/>    <!-- Category & Sort -->
                     <ColumnDefinition Width="16"/>     <!-- Gap -->
-                    <ColumnDefinition Width="200"/>    <!-- Rating & Clear -->
+                    <ColumnDefinition Width="200"/>    <!-- Clear -->
                 </Grid.ColumnDefinitions>
 
-                <!-- Row 0: Search Box, Category, Rating -->
+                <!-- Row 0: Search Box and Category -->
                 <Grid Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
                     <TextBox x:Name="txtSearch" Style="{StaticResource ModernTextBox}" 
                              TextChanged="FilterInput_Changed"
@@ -40,10 +40,6 @@
                 </Grid>
 
                 <ComboBox x:Name="cbCategory" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"
-                          Style="{StaticResource ModernComboBox}" 
-                          SelectionChanged="FilterInput_Changed"/>
-
-                <ComboBox x:Name="cbRating" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center"
                           Style="{StaticResource ModernComboBox}" 
                           SelectionChanged="FilterInput_Changed"/>
 

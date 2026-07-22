@@ -49,10 +49,9 @@
                             <TextBlock x:Name="txtTitle" Text="Book Title" Style="{StaticResource TextBlockMediumHeader}" FontSize="24" TextWrapping="Wrap" Margin="0,0,0,4"/>
                             <TextBlock x:Name="txtAuthor" Text="Tác giả: Name" Style="{StaticResource TextBlockNormal}" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,12"/>
                             
-                            <!-- Rating -->
+                            <!-- Stock -->
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
-                                <Path Data="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" Fill="#FBBF24" Width="16" Height="16" Stretch="Uniform" VerticalAlignment="Center"/>
-                                <TextBlock x:Name="txtRating" Text="0.0 / 5.0" Style="{StaticResource TextBlockBold}" FontSize="14" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="txtStock" Text="Còn lại: 100 cuốn" Style="{StaticResource TextBlockBold}" FontSize="14" VerticalAlignment="Center"/>
                             </StackPanel>
 
                             <!-- Price -->
@@ -60,10 +59,6 @@
 
                             <!-- Action Buttons -->
                             <Grid x:Name="actionButtonsPanel" HorizontalAlignment="Left">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"/>
                                     <ColumnDefinition Width="12"/>
@@ -86,57 +81,9 @@
                                         Click="BtnFavorite_Click"
                                         Content="Yêu thích"
                                         Height="40"/>
-                                <Button Grid.Row="1" Grid.Column="0"
-                                        Style="{StaticResource OutlinedButton}"
-                                        Click="BtnShowReview_Click"
-                                        Content="Đánh giá"
-                                        Height="36"
-                                        Margin="0,10,0,0"/>
                             </Grid>
                         </StackPanel>
                     </Grid>
-                </Border>
-
-                <Border x:Name="reviewEditor"
-                        Style="{StaticResource BaseCardStyle}"
-                        Padding="24"
-                        Margin="0,0,0,24"
-                        Visibility="Collapsed">
-                    <StackPanel>
-                        <controls:SectionTitle Text="Đánh giá sách" Margin="0,0,0,12"/>
-                        <ComboBox x:Name="cbReviewRating"
-                                  Style="{StaticResource ModernComboBox}"
-                                  Width="180"
-                                  HorizontalAlignment="Left"
-                                  SelectedIndex="4">
-                            <ComboBoxItem Content="1 sao" Tag="1"/>
-                            <ComboBoxItem Content="2 sao" Tag="2"/>
-                            <ComboBoxItem Content="3 sao" Tag="3"/>
-                            <ComboBoxItem Content="4 sao" Tag="4"/>
-                            <ComboBoxItem Content="5 sao" Tag="5"/>
-                        </ComboBox>
-                        <TextBox x:Name="txtReviewComment"
-                                 Style="{StaticResource ModernTextBox}"
-                                 Tag="Nhập nhận xét của bạn..."
-                                 MaxLength="1000"
-                                 MinHeight="80"
-                                 AcceptsReturn="True"
-                                 TextWrapping="Wrap"
-                                 Margin="0,12,0,12"/>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Content="Gửi đánh giá"
-                                    Style="{StaticResource PrimaryButton}"
-                                    Width="130"
-                                    Height="36"
-                                    Margin="0,0,10,0"
-                                    Click="BtnSubmitReview_Click"/>
-                            <Button Content="Hủy"
-                                    Style="{StaticResource SecondaryButton}"
-                                    Width="80"
-                                    Height="36"
-                                    Click="BtnCancelReview_Click"/>
-                        </StackPanel>
-                    </StackPanel>
                 </Border>
 
                 <!-- Description Card -->
@@ -144,52 +91,6 @@
                     <StackPanel>
                         <controls:SectionTitle Text="Giới thiệu sách" Margin="0,0,0,12"/>
                         <TextBlock x:Name="txtDescription" Text="Book Description" Style="{StaticResource TextBlockNormal}" TextWrapping="Wrap" LineHeight="20"/>
-                    </StackPanel>
-                </Border>
-
-                <!-- Reviews Section -->
-                <Border Style="{StaticResource BaseCardStyle}" Padding="24">
-                    <StackPanel>
-                        <controls:SectionTitle Text="Đánh giá từ độc giả" Margin="0,0,0,16"/>
-
-                        <!-- Reviews List -->
-                        <ItemsControl x:Name="icReviews">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,0,0,16" Margin="0,0,0,16">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-                                            
-                                            <!-- Reviewer Name & Date -->
-                                            <Grid Grid.Row="0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="{Binding ReaderName}" Style="{StaticResource TextBlockBold}"/>
-                                                <TextBlock Grid.Column="1" Text="{Binding Date}" Style="{StaticResource TextBlockMuted}"/>
-                                            </Grid>
-
-                                            <!-- Rating -->
-                                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,4,0,8">
-                                                <TextBlock Text="★" Foreground="#FBBF24" FontSize="16"/>
-                                                <TextBlock Text="{Binding Rating, StringFormat=' {0}/5'}" FontWeight="SemiBold"/>
-                                            </StackPanel>
-
-                                            <!-- Comment text -->
-                                            <TextBlock Grid.Row="2" Text="{Binding Comment}" Style="{StaticResource TextBlockNormal}" TextWrapping="Wrap"/>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
-                        <!-- Empty State if no reviews -->
-                        <controls:EmptyState x:Name="emptyReviewsState" Margin="0,10,0,0" Visibility="Collapsed"/>
                     </StackPanel>
                 </Border>
 

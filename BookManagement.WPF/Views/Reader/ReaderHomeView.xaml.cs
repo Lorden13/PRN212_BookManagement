@@ -45,8 +45,7 @@ namespace BookManagement.Views.Reader
                 // 1. Load books from database
                 var approvedBooks = _bookService.GetApprovedBooks().ToList();
                 
-                // Popular: Top 4 books sorted by Rating (we can seed a rating or fallback to a standard sorting)
-                var popular = approvedBooks.OrderByDescending(b => b.Rating).Take(4).ToList();
+                var popular = approvedBooks.Take(4).ToList();
                 icPopularBooks.ItemsSource = popular;
 
                 // Recommended: Top 4 books of same/different categories

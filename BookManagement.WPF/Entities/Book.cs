@@ -33,5 +33,6 @@ public partial class Book
 
     public virtual ICollection<Purchase> Purchases { get; set; } = new List<Purchase>();
 
-    public virtual ICollection<ReaderReview> ReaderReviews { get; set; } = new List<ReaderReview>();
+    public virtual Stock? StockInfo { get; set; }
+
 }
