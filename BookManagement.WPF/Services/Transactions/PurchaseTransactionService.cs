@@ -64,23 +64,23 @@ public sealed class PurchaseTransactionService : IPurchaseTransactionService
             cancellationToken);
     }
 
-    public async Task<string> GetAuthorizedFilePathAsync(
-        string readerId,
-        string bookId,
-        string downloadToken,
-        CancellationToken cancellationToken = default)
-    {
-        var filePath = await _context.Purchases.AsNoTracking()
-            .Where(p => p.ReaderId == readerId && p.BookId == bookId &&
-                        p.DownloadToken == downloadToken && p.IsBought)
-            .Select(p => p.Book.FilePath)
-            .SingleOrDefaultAsync(cancellationToken);
+    //public async Task<string> GetAuthorizedFilePathAsync(
+    //    string readerId,
+    //    string bookId,
+    //    string downloadToken,
+    //    CancellationToken cancellationToken = default)
+    //{
+    //    //var filePath = await _context.Purchases.AsNoTracking()
+    //    //    .Where(p => p.ReaderId == readerId && p.BookId == bookId &&
+    //    //                p.DownloadToken == downloadToken && p.IsBought)
+    //    //    .Select(p => p.Book.FilePath)
+    //    //    .SingleOrDefaultAsync(cancellationToken);
 
-        if (string.IsNullOrWhiteSpace(filePath))
-            throw new UnauthorizedAccessException("Bạn chưa mua sách hoặc token tải xuống không hợp lệ.");
+    //    if (string.IsNullOrWhiteSpace(filePath))
+    //        throw new UnauthorizedAccessException("Bạn chưa mua sách hoặc token tải xuống không hợp lệ.");
 
-        return filePath;
-    }
+    //    return filePath;
+    //}
 
     public async Task<IReadOnlyList<Purchase>> GetHistoryAsync(string readerId, CancellationToken cancellationToken = default) =>
         await _context.Purchases.AsNoTracking().Include(p => p.Book)

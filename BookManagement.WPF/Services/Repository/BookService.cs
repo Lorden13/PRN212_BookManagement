@@ -18,6 +18,7 @@ namespace BookManagement.Services.Repository
             _dbContext = new ProjectPrnContext();
         }
 
+       
         private BookModel MapToModel(Book entity)
         {
             string authorName = entity.Author?.AuthorNavigation?.FullName ?? "Unknown Author";
@@ -37,7 +38,7 @@ namespace BookManagement.Services.Repository
                 },
                 Description = entity.Description,
                 SubmittedDate = entity.CreatedAt.ToString("yyyy-MM-dd HH:mm"),
-                FilePath = entity.FilePath,
+                //FilePath = entity.FilePath,
                 CoverImagePath = "/Assets/Covers/placeholder.jpg"
             };
         }
@@ -74,7 +75,7 @@ namespace BookManagement.Services.Repository
 
         public IEnumerable<BookModel> GetAllBooks()
         {
-            var books = _dbContext.Books
+            var books = _dbContext.Books.Where(b => b.Status == true || b.Status == null)
                 .Include(b => b.Author)
                 .ThenInclude(a => a.AuthorNavigation)
                 .ToList();
@@ -86,19 +87,17 @@ namespace BookManagement.Services.Repository
             if (string.IsNullOrEmpty(id)) return null!;
 
             var book = _dbContext.Books
-                .Include(b => b.Author)
-                .ThenInclude(a => a.AuthorNavigation)
-                .FirstOrDefault(b => b.BookId == id);
+        .Include(b => b.Author)
+        .ThenInclude(a => a.AuthorNavigation)
+        .FirstOrDefault(b => b.BookId == id && b.Status == true);
             return book != null ? MapToModel(book) : null!;
+           
+
         }
 
         public void CreateBook(BookModel bookModel)
         {
-            string relativeFilePath = "Manuscripts/default_manuscript.pdf";
-            //if (!string.IsNullOrEmpty(bookModel.FilePath) && File.Exists(bookModel.FilePath))
-            //{
-            //    relativeFilePath = FileStorageHelper.CopyPdfToStorage(bookModel.FilePath, bookModel.Title);   //error here
-            //}
+           
 
             string authorId = "c1916a5c-7dba-489d-b88c-a48d1738a765"; // seeded fallback Admin/Author
             
@@ -130,7 +129,7 @@ namespace BookManagement.Services.Repository
                 Description = bookModel.Description,
                 Category = bookModel.Category,
                 Price = (decimal)bookModel.Price,
-                FilePath = relativeFilePath,
+                
                 Status = null, // Pending by default
                 CreatedAt = DateTime.Now
             };
@@ -139,7 +138,6 @@ namespace BookManagement.Services.Repository
             _dbContext.SaveChanges();
 
             bookModel.Id = book.BookId;
-            bookModel.FilePath = relativeFilePath;
         }
 
         public void UpdateBook(BookModel bookModel)
@@ -153,6 +151,13 @@ namespace BookManagement.Services.Repository
                 existing.Description = bookModel.Description;
                 existing.Category = bookModel.Category;
                 existing.Price = (decimal)bookModel.Price;
+
+                // Reset Status to null (Pending) if it was Rejected (false) so Admin can re-evaluate the updated manuscript
+                if (existing.Status == false)
+                {
+                    existing.Status = null;
+                    bookModel.Status = "Pending";
+                }
 
                 _dbContext.Books.Update(existing);
                 _dbContext.SaveChanges();
@@ -194,9 +199,29 @@ namespace BookManagement.Services.Repository
             {
                 book.Status = false;
 
-              //  _dbContext.Books.Remove(book);
+                //  _dbContext.Books.Remove(book);
                 _dbContext.SaveChanges();
             }
         }
+        //public void DeleteBook(string bookId)
+        //{
+        //    if (string.IsNullOrEmpty(bookId)) return;
+
+        //    var book = _dbContext.Books.FirstOrDefault(b => b.BookId == bookId);
+
+        //    if (book != null)
+        //    {
+        //        book.Status = false;
+
+        //        int affected = _dbContext.SaveChanges();
+
+        //        MessageBox.Show($"SaveChanges = {affected}");
+
+        //        var check = _dbContext.Books
+        //            .FirstOrDefault(b => b.BookId == bookId);
+
+        //        MessageBox.Show($"Status sau save = {check?.Status}");
+        //    }
+        //}
     }
 }

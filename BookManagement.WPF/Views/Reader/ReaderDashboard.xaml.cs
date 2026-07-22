@@ -2,14 +2,13 @@ using BookManagement.Views.Common;
 using System;
 using System.Windows;
 using System.Windows.Controls;
-
 namespace BookManagement.Views.Reader
 {
     public partial class ReaderDashboard : Page
     {
         public ReaderDashboard()
         {
-            InitializeComponent();
+            InitializeComponent();  //lỗi  ambigous 
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -57,7 +56,7 @@ namespace BookManagement.Views.Reader
                         break;
 
                     case "Profile":
-                        frmContent.Navigate(new ReaderProfileView());
+                        frmContent.Navigate(new UserProfileView());
                         header.PageTitle = "Thông tin cá nhân";
                         break;
                     case "ChangePassword":

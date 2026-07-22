@@ -17,7 +17,9 @@ public partial class Book
 
     public decimal Price { get; set; }
 
-    public string FilePath { get; set; } = null!;
+    public bool IsDeleted { get; set; }
+
+    //  public string FilePath { get; set; } = null!;
 
     public bool? Status { get; set; }
 

@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
 using System.Windows.Controls;
-
+using BookManagement.Services.Repository;
 namespace BookManagement.Views.Author
 {
     public partial class AuthorCreateBookView : UserControl
@@ -94,7 +94,7 @@ namespace BookManagement.Views.Author
                         Category = category,
                         Price = price,
                         Description = description,
-                        FilePath = "Manuscripts/default_manuscript.pdf",
+                      //  FilePath = "Manuscripts/default_manuscript.pdf",
                         Status = "Pending"
                     };
 

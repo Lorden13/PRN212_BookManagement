@@ -58,7 +58,7 @@ namespace BookManagement.Views.Author
                         break;
 
                     case "Profile":
-                        frmContent.Navigate(new AuthorProfileView());
+                        frmContent.Navigate(new UserProfileView());
                         header.PageTitle = "Thông tin cá nhân";
                         break;
                     case "ChangePassword":

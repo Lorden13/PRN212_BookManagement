@@ -83,6 +83,15 @@
                         <!-- Created At -->
                         <DataGridTextColumn Header="Ngày đăng ký" Binding="{Binding SubmittedDate}" Width="1.5*"/>
 
+                        <!-- Status Badge -->
+                        <DataGridTemplateColumn Header="Trạng thái" Width="1.2*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <controls:StatusBadge Content="{Binding Status}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
                         <!-- Actions -->
                         <DataGridTemplateColumn Header="Thao tác" Width="180">
                             <DataGridTemplateColumn.CellTemplate>

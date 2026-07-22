@@ -149,7 +149,7 @@
                     <StackPanel x:Name="panelAuthorButtons" Orientation="Horizontal" HorizontalAlignment="Right">
                         <!-- Cancel -->
                         <Button Style="{StaticResource SecondaryButton}" 
-                                Content="Hủy bỏ" 
+                                Content="Hủy bỏ thay đổi" 
                                 Width="120" 
                                 Height="40"
                                 Click="BtnCancel_Click"

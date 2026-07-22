@@ -63,17 +63,17 @@ namespace BookManagement.Services.Repository
             }
         }
 
-        private AuthorModel MapToModel(Account account)
-        {
-            return new AuthorModel
+            private AuthorModel MapToModel(Account account)
             {
-                Id = account.AccountId,
-                Name = account.FullName,
-                Email = account.Email,
-                Phone = account.Phone ?? "",
-                Address = account.Address ?? "",
-                Status = account.IsActive ? "Active" : "Inactive"
-            };
-        }
+                return new AuthorModel
+                {
+                    Id = account.AccountId,
+                    Name = account.FullName,
+                    Email = account.Email,
+                    Phone = account.Phone ?? "",
+                    Address = account.Address ?? "",
+                    Status = account.IsActive ? "Active" : "Inactive"
+                };
+            }
     }
 }

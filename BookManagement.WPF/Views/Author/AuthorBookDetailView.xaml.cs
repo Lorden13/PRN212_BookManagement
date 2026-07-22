@@ -1,12 +1,17 @@
 using BookManagement.Models.Entities;
 using BookManagement.Services.Repository;
+using BookManagement.Views.Author;
+using BookManagement.WPF.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-
+using System.Windows.Media.Imaging;
+using BookManagement.Services.Repository;
 namespace BookManagement.Views.Author
 {
     public enum BookDetailMode
@@ -36,36 +41,56 @@ namespace BookManagement.Views.Author
             _reviewService = App.Current.Services.GetRequiredService<IReviewService>();
         }
 
+
+        private void LoadBook(BookModel book)
+        {
+            txtBookId.Text = book.Id;
+            txtCreatedAt.Text = book.SubmittedDate;
+            txtAuthor.Text = book.Author;
+            txtStatus.Text = book.Status;
+
+            txtTitle.Text = book.Title;
+            txtPrice.Text = book.Price.ToString("F2");
+            txtDescription.Text = book.Description;
+
+            foreach (ComboBoxItem item in cbCategory.Items)
+            {
+                if (item.Content?.ToString() == book.Category)
+                {
+                    cbCategory.SelectedItem = item;
+                    break;
+                }
+            }
+        }
+
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (_book != null)
+
+            if (_book == null) return;
+
+            _originalBook = new BookModel
             {
-                // Populate base readonly fields
-                txtBookId.Text = _book.Id;
-                txtCreatedAt.Text = _book.SubmittedDate;
-                txtAuthor.Text = _book.Author;
-                txtStatus.Text = _book.Status;
+                Id = _book.Id,
+                Title = _book.Title,
+                Description = _book.Description,
+                Category = _book.Category,
+                Price = _book.Price,
+                Author = _book.Author,
+                SubmittedDate = _book.SubmittedDate,
+                Status = _book.Status
+            };
 
-                // Populate editable/viewable fields
-                txtTitle.Text = _book.Title;
-                txtPrice.Text = _book.Price.ToString("F2");
-                txtDescription.Text = _book.Description;
+            LoadBook(_book);
 
-                foreach (ComboBoxItem item in cbCategory.Items)
-                {
-                    if (item.Content?.ToString() == _book.Category)
-                    {
-                        cbCategory.SelectedItem = item;
-                        break;
-                    }
-                }
-
-                // Populate Review History
-                LoadReviewHistory();
-            }
-
-            // Configure layout according to mode
+            LoadReviewHistory();
             ApplyModeConfiguration();
+    //        _dbContext.Books
+    //.Where(b => b.Status == true)
+    //.ToList();
+
+           // _bookService.GetBookById(_book.Id);
+            
         }
 
         private void LoadReviewHistory()
@@ -176,7 +201,7 @@ namespace BookManagement.Views.Author
 
                 MessageBox.Show("Cập nhật thông tin tác phẩm thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 
-                BookManagement.Services.Navigation.NavigationService.Instance.GoBack();
+                BookManagement.Services.Navigation.NavigationService.Instance.NavigateContent(new AuthorBooksView());
             }
             catch (Exception ex)
             {
@@ -184,9 +209,19 @@ namespace BookManagement.Views.Author
             }
         }
 
+        private BookModel _originalBook;
+
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-            BookManagement.Services.Navigation.NavigationService.Instance.GoBack();
+            var nav = BookManagement.Services.Navigation.NavigationService.Instance;
+            if (nav.CanGoBack())
+            {
+                nav.GoBack();
+            }
+            else
+            {
+                nav.NavigateContent(new AuthorBooksView());
+            }
         }
 
         private void BtnApprove_Click(object sender, RoutedEventArgs e)
@@ -267,6 +302,7 @@ namespace BookManagement.Views.Author
                     MessageBox.Show($"Xóa sách thất bại: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+            NavigationService.Instance.NavigateContent(new AuthorBooksView());
         }
     }
 }

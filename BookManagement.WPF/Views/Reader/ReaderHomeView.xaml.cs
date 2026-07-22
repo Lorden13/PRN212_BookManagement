@@ -12,7 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using BookManagement.Services.Utils;
-
+using BookManagement.Views.Common;
 using NavigationService =
 BookManagement.Services.Navigation.NavigationService;
 namespace BookManagement.Views.Reader
@@ -117,22 +117,18 @@ namespace BookManagement.Views.Reader
             }
         }
 
-        private void BtnViewAllLibrary_Click(object sender, RoutedEventArgs e)
-        {
-            var nav = NavigationService.GetNavigationService();
-            if (nav != null)
-            {
-                nav.NavigateContent(new ReaderLibraryView());
-            }
-        }
+        //private void BtnViewAllLibrary_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var nav = NavigationService.GetNavigationService();
+        //    if (nav != null)
+        //    {
+        //        nav.NavigateContent(new ReaderLibraryView());
+        //    }
+        //}
 
         private void BtnViewProfile_Click(object sender, RoutedEventArgs e)
         {
-            var nav = NavigationService.GetNavigationService();
-            if (nav != null)
-            {
-                nav.NavigateContent(new ReaderProfileView());
-            }
+            NavigationService.Instance.NavigateContent(new UserProfileView());
         }
     }
 }

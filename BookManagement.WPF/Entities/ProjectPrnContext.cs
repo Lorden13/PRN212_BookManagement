@@ -128,9 +128,9 @@ public partial class ProjectPrnContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.FilePath)
-                .HasMaxLength(255)
-                .IsUnicode(false);
+            //entity.Property(e => e.FilePath)
+            //    .HasMaxLength(255)
+            //    .IsUnicode(false);
             entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.Status).HasDefaultValueSql("(NULL)");
             entity.Property(e => e.Title).HasMaxLength(255);

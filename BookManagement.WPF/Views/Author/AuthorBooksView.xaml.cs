@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using BookManagement.Services.Utils;
+
 using NavigationService =
 BookManagement.Services.Navigation.NavigationService;
 
@@ -41,7 +42,7 @@ namespace BookManagement.Views.Author
 
         private void InitializeFilters()
         {
-            cbStatus.ItemsSource = new List<string> { "Tất cả trạng thái", "Đang chờ duyệt", "Đã phê duyệt", "Yêu cầu sửa đổi" };
+            cbStatus.ItemsSource = new List<string> { "Tất cả trạng thái", "Đang chờ duyệt", "Đã phê duyệt", "Bị từ chối" };
             cbStatus.SelectedIndex = 0;
         }
 
@@ -58,6 +59,7 @@ namespace BookManagement.Views.Author
             {
                 MessageBox.Show($"Lỗi nạp danh sách sách: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+           
         }
 
         private void FilterInput_Changed(object sender, EventArgs e)
@@ -80,7 +82,7 @@ namespace BookManagement.Views.Author
                 bool matchStatus = true;
                 if (statusFilter == "Đang chờ duyệt") matchStatus = b.Status == "Pending";
                 else if (statusFilter == "Đã phê duyệt") matchStatus = b.Status == "Approved";
-                else if (statusFilter == "Yêu cầu sửa đổi") matchStatus = b.Status == "Rejected";
+                else if (statusFilter == "Bị từ chối" || statusFilter == "Yêu cầu sửa đổi") matchStatus = b.Status == "Rejected";
 
                 return matchQuery && matchStatus;
             }).ToList();
@@ -131,6 +133,8 @@ namespace BookManagement.Views.Author
                         MessageBox.Show("Đã xóa tác phẩm thành công.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                         RefreshData();
                         ApplyFilters();
+                        NavigationService.Instance.NavigateContent(new AuthorBooksView());
+
                     }
                     catch (Exception ex)
                     {
