@@ -114,7 +114,7 @@ namespace BookManagement.Views.Author
                     MessageBox.Show("Cập nhật thông tin sách thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
 
-                NavigateBack();
+                //NavigateBack();
             }
             catch (Exception ex)
             {

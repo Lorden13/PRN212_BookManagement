@@ -55,10 +55,7 @@ namespace BookManagement.Views.Reader
                         frmContent.Navigate(new ReaderFavoriteView());
                         header.PageTitle = "Sách yêu thích";
                         break;
-                    //case "Library":
-                    //    frmContent.Navigate(new ReaderLibraryView());
-                    //    header.PageTitle = "Tủ sách cá nhân";
-                    //    break;
+
                     case "Profile":
                         frmContent.Navigate(new ReaderProfileView());
                         header.PageTitle = "Thông tin cá nhân";
@@ -75,6 +72,11 @@ namespace BookManagement.Views.Reader
         {
             BookManagement.Services.Utils.UserSession.CurrentUser = null!;
             Services.Navigation.NavigationService.Instance.NavigateMain(new Login());
+        }
+
+        private void header_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

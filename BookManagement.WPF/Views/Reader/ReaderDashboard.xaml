@@ -8,7 +8,7 @@
       d:DesignHeight="768" d:DesignWidth="1366"
       Title="Reader Dashboard"
       Loaded="Page_Loaded"
-      Style="{StaticResource PageLoadStyle}">
+      Style="{StaticResource PageLoadStyle}"> 
 
     <Grid Background="#F8F9FB">
         <Grid.ColumnDefinitions>
@@ -71,12 +71,7 @@
                             <TextBlock Text="Giỏ hàng" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
                         </StackPanel>
                     </ListBoxItem>
-                    <!--<ListBoxItem Tag="Library">
-                        <StackPanel Orientation="Horizontal">
-                            <Path Data="{StaticResource IconLibrary}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
-                            <TextBlock Text="Tủ sách cá nhân" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
-                        </StackPanel>
-                    </ListBoxItem>-->
+
                     <ListBoxItem Tag="Profile">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="{StaticResource IconUser}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
@@ -182,7 +177,7 @@
             </Grid.RowDefinitions>
 
             <!-- Reusable Header -->
-            <controls:Header Grid.Row="0" x:Name="header"/>
+            <controls:Header Grid.Row="0" x:Name="header" Loaded="header_Loaded"/>
 
             <!-- Main Shell Frame Container -->
             <Frame Grid.Row="1" x:Name="frmContent" NavigationUIVisibility="Hidden"/>

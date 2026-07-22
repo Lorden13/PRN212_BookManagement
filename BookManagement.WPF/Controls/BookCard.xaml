@@ -100,7 +100,7 @@
                         Height="32" 
                         Padding="12,0"
                         Command="{Binding DataContext.BuyCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        CommandParameter="{Binding}"/>
+                        CommandParameter="{Binding}" VerticalAlignment="Top" Click="BtnBuy_Click"/>
             </Grid>
         </Grid>
     </Border>
