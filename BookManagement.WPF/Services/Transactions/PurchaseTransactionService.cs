@@ -37,20 +37,111 @@ public sealed class PurchaseTransactionService : IPurchaseTransactionService
             return existing;
         }
 
-        var purchase = new Purchase
+        var purchase = await _context.Purchases.FirstOrDefaultAsync(
+            p => p.ReaderId == readerId && p.BookId == bookId && !p.IsBought,
+            cancellationToken);
+        if (purchase is null)
         {
-            PurchaseId = Guid.NewGuid().ToString(),
-            ReaderId = readerId,
-            BookId = bookId,
-            DownloadToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(32)).ToLowerInvariant(),
-            IsBought = true,
-           // Payment = book.Price,
-            PurchasedAt = DateTime.UtcNow
-        };
-        _context.Purchases.Add(purchase);
+            purchase = CreateCartPurchase(readerId, bookId);
+            _context.Purchases.Add(purchase);
+        }
+
+        purchase.IsBought = true;
+        purchase.PurchasedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);
         return purchase;
+    }
+
+    public async Task<bool> AddToCartAsync(
+        string readerId,
+        string bookId,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(readerId);
+        ArgumentException.ThrowIfNullOrWhiteSpace(bookId);
+
+        await using var transaction = await _context.Database.BeginTransactionAsync(
+            IsolationLevel.Serializable, cancellationToken);
+
+        if (!await _context.Readers.AnyAsync(r => r.ReaderId == readerId, cancellationToken))
+            throw new InvalidOperationException("Không tìm thấy độc giả.");
+        if (!await _context.Books.AnyAsync(b => b.BookId == bookId && b.Status == true, cancellationToken))
+            throw new InvalidOperationException("Chỉ có thể thêm sách đã được duyệt vào giỏ hàng.");
+        if (await _context.Purchases.AnyAsync(
+                p => p.ReaderId == readerId && p.BookId == bookId,
+                cancellationToken))
+        {
+            await transaction.CommitAsync(cancellationToken);
+            return false;
+        }
+
+        _context.Purchases.Add(CreateCartPurchase(readerId, bookId));
+        await _context.SaveChangesAsync(cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+        return true;
+    }
+
+    public async Task<bool> RemoveFromCartAsync(
+        string readerId,
+        string bookId,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(readerId);
+        ArgumentException.ThrowIfNullOrWhiteSpace(bookId);
+
+        var item = await _context.Purchases.FirstOrDefaultAsync(
+            p => p.ReaderId == readerId && p.BookId == bookId && !p.IsBought,
+            cancellationToken);
+        if (item is null) return false;
+
+        _context.Purchases.Remove(item);
+        await _context.SaveChangesAsync(cancellationToken);
+        return true;
+    }
+
+    public async Task<IReadOnlyList<Purchase>> GetCartAsync(
+        string readerId,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(readerId);
+
+        return await _context.Purchases
+            .AsNoTracking()
+            .Include(p => p.Book)
+            .ThenInclude(b => b.Author)
+            .ThenInclude(a => a.AuthorNavigation)
+            .Where(p => p.ReaderId == readerId && !p.IsBought && p.Book.Status == true)
+            .OrderByDescending(p => p.PurchasedAt)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IReadOnlyList<Purchase>> CheckoutAsync(
+        string readerId,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(readerId);
+
+        await using var transaction = await _context.Database.BeginTransactionAsync(
+            IsolationLevel.Serializable, cancellationToken);
+
+        var cartItems = await _context.Purchases
+            .Include(p => p.Book)
+            .Where(p => p.ReaderId == readerId && !p.IsBought && p.Book.Status == true)
+            .ToListAsync(cancellationToken);
+        if (cartItems.Count < 2)
+            throw new InvalidOperationException("Giỏ hàng cần ít nhất 2 sách để thanh toán.");
+
+        var purchasedAt = DateTime.UtcNow;
+        foreach (var item in cartItems)
+        {
+            item.IsBought = true;
+            item.PurchasedAt = purchasedAt;
+        }
+
+        await _context.SaveChangesAsync(cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+        return cartItems;
     }
 
     public Task<bool> CanDownloadAsync(string readerId, string bookId, string downloadToken, CancellationToken cancellationToken = default)
@@ -87,4 +178,14 @@ public sealed class PurchaseTransactionService : IPurchaseTransactionService
             .Where(p => p.ReaderId == readerId && p.IsBought)
             .OrderByDescending(p => p.PurchasedAt)
             .ToListAsync(cancellationToken);
+
+    private static Purchase CreateCartPurchase(string readerId, string bookId) => new()
+    {
+        PurchaseId = Guid.NewGuid().ToString(),
+        ReaderId = readerId,
+        BookId = bookId,
+        DownloadToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(32)).ToLowerInvariant(),
+        IsBought = false,
+        PurchasedAt = DateTime.UtcNow
+    };
 }

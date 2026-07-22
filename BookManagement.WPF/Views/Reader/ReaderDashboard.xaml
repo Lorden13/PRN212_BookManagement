@@ -74,7 +74,19 @@
                     <ListBoxItem Tag="Favorites">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="{StaticResource IconHeart}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
+                            <TextBlock Text="Yêu thích" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="Cart">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconCart}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
                             <TextBlock Text="Giỏ hàng" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="MyBooks">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource IconBooks}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Width="18" Height="18" Stretch="Uniform" VerticalAlignment="Center"/>
+                            <TextBlock Text="Sách của tôi" Margin="12,0,0,0" VerticalAlignment="Center" FontFamily="{StaticResource MainFontFamily}" FontSize="14"/>
                         </StackPanel>
                     </ListBoxItem>
 

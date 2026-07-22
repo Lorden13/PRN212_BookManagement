@@ -16,6 +16,27 @@ namespace BookManagement.Services.Repository
         public BookService()
         {
             _dbContext = new ProjectPrnContext();
+            EnsureReaderReviewsTable();
+        }
+
+        private void EnsureReaderReviewsTable()
+        {
+            _dbContext.Database.ExecuteSqlRaw(@"
+IF OBJECT_ID(N'[dbo].[ReaderReviews]', N'U') IS NULL
+BEGIN
+    CREATE TABLE [dbo].[ReaderReviews]
+    (
+        [ReviewID] varchar(400) NOT NULL CONSTRAINT [PK_ReaderReviews] PRIMARY KEY,
+        [ReaderID] varchar(400) NOT NULL,
+        [BookID] varchar(400) NOT NULL,
+        [Rating] int NOT NULL CONSTRAINT [CK_ReaderReviews_Rating] CHECK ([Rating] >= 1 AND [Rating] <= 5),
+        [Comment] nvarchar(1000) NOT NULL,
+        [CreatedAt] datetime NOT NULL CONSTRAINT [DF_ReaderReviews_CreatedAt] DEFAULT (getdate()),
+        CONSTRAINT [FK_ReaderReviews_Reader] FOREIGN KEY ([ReaderID]) REFERENCES [dbo].[Reader]([ReaderID]),
+        CONSTRAINT [FK_ReaderReviews_Books] FOREIGN KEY ([BookID]) REFERENCES [dbo].[Books]([BookID]),
+        CONSTRAINT [UX_ReaderReviews_Reader_Book] UNIQUE ([ReaderID], [BookID])
+    );
+END");
         }
 
        
@@ -39,15 +60,20 @@ namespace BookManagement.Services.Repository
                 Description = entity.Description,
                 SubmittedDate = entity.CreatedAt.ToString("yyyy-MM-dd HH:mm"),
                 IsDeleted = entity.IsDeleted,
-                CoverImagePath = "/Assets/Covers/placeholder.jpg"
+                CoverImagePath = "/Assets/Covers/placeholder.jpg",
+                Rating = entity.ReaderReviews.Count == 0
+                    ? 0
+                    : Math.Round(entity.ReaderReviews.Average(r => r.Rating), 1, MidpointRounding.AwayFromZero)
             };
         }
 
         public IEnumerable<BookModel> GetApprovedBooks()
         {
             var books = _dbContext.Books
+                .AsNoTracking()
                 .Include(b => b.Author)
                 .ThenInclude(a => a.AuthorNavigation)
+                .Include(b => b.ReaderReviews)
                 .Where(b => b.Status == true && !b.IsDeleted)
                 .ToList();
             return books.Select(MapToModel).ToList();
@@ -56,8 +82,10 @@ namespace BookManagement.Services.Repository
         public IEnumerable<BookModel> GetPendingBooks()
         {
             var books = _dbContext.Books
+                .AsNoTracking()
                 .Include(b => b.Author)
                 .ThenInclude(a => a.AuthorNavigation)
+                .Include(b => b.ReaderReviews)
                 .Where(b => b.Status == null && !b.IsDeleted)
                 .ToList();
             return books.Select(MapToModel).ToList();
@@ -66,8 +94,10 @@ namespace BookManagement.Services.Repository
         public IEnumerable<BookModel> GetMyBooks(string authorId)
         {
             var books = _dbContext.Books
+                .AsNoTracking()
                 .Include(b => b.Author )
                 .ThenInclude(a => a.AuthorNavigation)
+                .Include(b => b.ReaderReviews)
                 .Where(b => b.AuthorId == authorId && !b.IsDeleted)
                 .ToList();
             return books.Select(MapToModel).ToList();
@@ -75,9 +105,10 @@ namespace BookManagement.Services.Repository
 
         public IEnumerable<BookModel> GetAllBooks()
         {
-            var books = _dbContext.Books.Where(b => !b.IsDeleted)
+            var books = _dbContext.Books.AsNoTracking().Where(b => !b.IsDeleted)
                 .Include(b => b.Author)
                 .ThenInclude(a => a.AuthorNavigation)
+                .Include(b => b.ReaderReviews)
                 .ToList();
             return books.Select(MapToModel).ToList();
         }
@@ -87,8 +118,10 @@ namespace BookManagement.Services.Repository
             if (string.IsNullOrEmpty(id)) return null!;
 
             var book = _dbContext.Books
+        .AsNoTracking()
         .Include(b => b.Author)
         .ThenInclude(a => a.AuthorNavigation)
+        .Include(b => b.ReaderReviews)
        .FirstOrDefault(b =>b.BookId == id && !b.IsDeleted);
             return book != null ? MapToModel(book) : null!;
            

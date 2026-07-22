@@ -97,6 +97,7 @@ namespace BookManagement.Views.Reader
 
         private void BookCard_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (BookManagement.Controls.BookCard.IsActionButtonClick(e)) return;
             if (sender is FrameworkElement card && card.DataContext is BookModel clickedBook)
             {
                 var detailView = new ReaderBookDetailView(clickedBook);

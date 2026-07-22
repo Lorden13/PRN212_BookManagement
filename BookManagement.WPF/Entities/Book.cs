@@ -32,4 +32,6 @@ public partial class Book
     public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
 
     public virtual ICollection<Purchase> Purchases { get; set; } = new List<Purchase>();
+
+    public virtual ICollection<ReaderReview> ReaderReviews { get; set; } = new List<ReaderReview>();
 }

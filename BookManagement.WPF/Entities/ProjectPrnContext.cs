@@ -29,6 +29,8 @@ public partial class ProjectPrnContext : DbContext
 
     public virtual DbSet<Purchase> Purchases { get; set; }
 
+    public virtual DbSet<ReaderReview> ReaderReviews { get; set; }
+
     public virtual DbSet<Reader> Readers { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
@@ -237,6 +239,41 @@ public partial class ProjectPrnContext : DbContext
                 .HasForeignKey(d => d.ReaderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Purchases_Reader");
+        });
+
+        modelBuilder.Entity<ReaderReview>(entity =>
+        {
+            entity.HasKey(e => e.ReviewId).HasName("PK_ReaderReviews");
+
+            entity.HasIndex(e => new { e.ReaderId, e.BookId }, "UX_ReaderReviews_Reader_Book")
+                .IsUnique();
+
+            entity.Property(e => e.ReviewId)
+                .HasMaxLength(400)
+                .IsUnicode(false)
+                .HasColumnName("ReviewID");
+            entity.Property(e => e.ReaderId)
+                .HasMaxLength(400)
+                .IsUnicode(false)
+                .HasColumnName("ReaderID");
+            entity.Property(e => e.BookId)
+                .HasMaxLength(400)
+                .IsUnicode(false)
+                .HasColumnName("BookID");
+            entity.Property(e => e.Comment).HasMaxLength(1000);
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+
+            entity.HasOne(d => d.Book).WithMany(p => p.ReaderReviews)
+                .HasForeignKey(d => d.BookId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ReaderReviews_Books");
+
+            entity.HasOne(d => d.Reader).WithMany(p => p.ReaderReviews)
+                .HasForeignKey(d => d.ReaderId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ReaderReviews_Reader");
         });
 
         modelBuilder.Entity<Reader>(entity =>

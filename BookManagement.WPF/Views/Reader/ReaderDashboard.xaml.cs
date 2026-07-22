@@ -1,4 +1,5 @@
 using BookManagement.Views.Common;
+using BookManagement.WPF.Views.Reader;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -53,6 +54,14 @@ namespace BookManagement.Views.Reader
                     case "Favorites":
                         frmContent.Navigate(new ReaderFavoriteView());
                         header.PageTitle = "Sách yêu thích";
+                        break;
+                    case "Cart":
+                        frmContent.Navigate(new ReaderCartView());
+                        header.PageTitle = "Giỏ hàng";
+                        break;
+                    case "MyBooks":
+                        frmContent.Navigate(new PurchaseHistoryView());
+                        header.PageTitle = "Sách của tôi";
                         break;
 
                     case "Profile":

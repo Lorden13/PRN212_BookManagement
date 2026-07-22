@@ -20,30 +20,31 @@ namespace BookManagement.Views.Reader
         private readonly IBookService _bookService;
         private readonly IPurchaseTransactionService _purchaseService;
         private readonly IFavoriteService _favoriteService;
-        private readonly IReviewService _reviewService;
+        private readonly IReaderReviewService _reviewService;
 
         private BookModel _book;
 
-        public ReaderBookDetailView(BookModel book)
+        public ReaderBookDetailView(BookModel book, bool isReadOnly = false)
         {
             InitializeComponent();
 
             _book = book;
+            actionButtonsPanel.Visibility = isReadOnly ? Visibility.Collapsed : Visibility.Visible;
 
             _bookService = App.Current.Services.GetRequiredService<IBookService>();
             _purchaseService = App.Current.Services.GetRequiredService<IPurchaseTransactionService>();
             _favoriteService = App.Current.Services.GetRequiredService<IFavoriteService>();
-            _reviewService = App.Current.Services.GetRequiredService<IReviewService>();
+            _reviewService = App.Current.Services.GetRequiredService<IReaderReviewService>();
 
             Loaded += ReaderBookDetailView_Loaded;
         }
 
-        private void ReaderBookDetailView_Loaded(object sender, RoutedEventArgs e)
+        private async void ReaderBookDetailView_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadBookDetails();
+            await LoadBookDetailsAsync();
         }
 
-        private void LoadBookDetails()
+        private async Task LoadBookDetailsAsync()
         {
             if (_book == null) return;
 
@@ -57,9 +58,13 @@ namespace BookManagement.Views.Reader
             try
             {
                 // Load reviews
-                var reviews = _reviewService.GetReviewsByBookId(_book.Id).ToList();
+                var reviews = await _reviewService.GetByBookIdAsync(_book.Id);
                 icReviews.ItemsSource = reviews;
                 emptyReviewsState.Visibility = reviews.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+                _book.Rating = reviews.Count == 0
+                    ? 0
+                    : Math.Round(reviews.Average(r => r.Rating), 1, MidpointRounding.AwayFromZero);
+                txtRating.Text = $"{_book.Rating:F1} / 5.0";
 
                 // Load recommendations
                 var recommendations = _bookService.GetApprovedBooks()
@@ -102,6 +107,13 @@ namespace BookManagement.Views.Reader
             var user = UserSession.CurrentUser;
             if (user == null) return;
 
+            var answer = MessageBox.Show(
+                $"Bạn muốn mua sách {_book.Title}?",
+                "Xác nhận mua sách",
+                MessageBoxButton.OKCancel,
+                MessageBoxImage.Question);
+            if (answer != MessageBoxResult.OK) return;
+
             try
             {
                 await _purchaseService.PurchaseAsync(user.AccountId, _book.Id);
@@ -110,6 +122,58 @@ namespace BookManagement.Views.Reader
             catch (Exception ex)
             {
                 MessageBox.Show($"Mua sách thất bại: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void BtnAddToCart_Click(object sender, RoutedEventArgs e)
+        {
+            var user = UserSession.CurrentUser;
+            if (user is null) return;
+
+            try
+            {
+                var added = await _purchaseService.AddToCartAsync(user.AccountId, _book.Id);
+                MessageBox.Show(
+                    added
+                        ? $"Đã thêm {_book.Title} vào giỏ hàng."
+                        : $"{_book.Title} đã có trong giỏ hàng hoặc đã được mua.",
+                    "Thông báo",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Không thể thêm vào giỏ hàng: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void BtnShowReview_Click(object sender, RoutedEventArgs e)
+        {
+            reviewEditor.Visibility = Visibility.Visible;
+        }
+
+        private void BtnCancelReview_Click(object sender, RoutedEventArgs e)
+        {
+            reviewEditor.Visibility = Visibility.Collapsed;
+        }
+
+        private async void BtnSubmitReview_Click(object sender, RoutedEventArgs e)
+        {
+            var user = UserSession.CurrentUser;
+            if (user is null || cbReviewRating.SelectedItem is not ComboBoxItem selectedRating) return;
+
+            try
+            {
+                var rating = int.Parse(selectedRating.Tag.ToString()!);
+                await _reviewService.SubmitAsync(user.AccountId, _book.Id, rating, txtReviewComment.Text);
+                MessageBox.Show("Đánh giá của bạn đã được lưu.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                reviewEditor.Visibility = Visibility.Collapsed;
+                txtReviewComment.Clear();
+                await LoadBookDetailsAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Không thể lưu đánh giá: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -129,12 +193,14 @@ namespace BookManagement.Views.Reader
             }
         }
 
-        private void RecommendedBookCard_MouseDown(object sender, MouseButtonEventArgs e)
+        private async void RecommendedBookCard_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (BookManagement.Controls.BookCard.IsActionButtonClick(e)) return;
             if (sender is FrameworkElement card && card.DataContext is BookModel clickedBook)
             {
                 _book = clickedBook;
-                LoadBookDetails();
+                reviewEditor.Visibility = Visibility.Collapsed;
+                await LoadBookDetailsAsync();
             }
         }
     }
