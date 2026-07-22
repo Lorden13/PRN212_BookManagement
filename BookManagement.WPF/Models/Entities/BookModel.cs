@@ -12,7 +12,7 @@ namespace BookManagement.Models.Entities
         public double Rating { get; set; }
         public string Description { get; set; } = string.Empty;
         public string SubmittedDate { get; set; } = string.Empty;
-    //    public string FilePath { get; set; } = string.Empty;
+        public bool IsDeleted { get; set; }
 
         public Guid BookId { get; set; }
     }

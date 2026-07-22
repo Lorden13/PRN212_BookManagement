@@ -38,7 +38,7 @@ namespace BookManagement.Services.Repository
                 },
                 Description = entity.Description,
                 SubmittedDate = entity.CreatedAt.ToString("yyyy-MM-dd HH:mm"),
-                //FilePath = entity.FilePath,
+                IsDeleted = entity.IsDeleted,
                 CoverImagePath = "/Assets/Covers/placeholder.jpg"
             };
         }
@@ -48,7 +48,7 @@ namespace BookManagement.Services.Repository
             var books = _dbContext.Books
                 .Include(b => b.Author)
                 .ThenInclude(a => a.AuthorNavigation)
-                .Where(b => b.Status == true)
+                .Where(b => b.Status == true && !b.IsDeleted)
                 .ToList();
             return books.Select(MapToModel).ToList();
         }
@@ -58,7 +58,7 @@ namespace BookManagement.Services.Repository
             var books = _dbContext.Books
                 .Include(b => b.Author)
                 .ThenInclude(a => a.AuthorNavigation)
-                .Where(b => b.Status == null)
+                .Where(b => b.Status == null && !b.IsDeleted)
                 .ToList();
             return books.Select(MapToModel).ToList();
         }
@@ -66,16 +66,16 @@ namespace BookManagement.Services.Repository
         public IEnumerable<BookModel> GetMyBooks(string authorId)
         {
             var books = _dbContext.Books
-                .Include(b => b.Author)
+                .Include(b => b.Author )
                 .ThenInclude(a => a.AuthorNavigation)
-                .Where(b => b.AuthorId == authorId)
+                .Where(b => b.AuthorId == authorId && !b.IsDeleted)
                 .ToList();
             return books.Select(MapToModel).ToList();
         }
 
         public IEnumerable<BookModel> GetAllBooks()
         {
-            var books = _dbContext.Books.Where(b => b.Status == true || b.Status == null)
+            var books = _dbContext.Books.Where(b => !b.IsDeleted)
                 .Include(b => b.Author)
                 .ThenInclude(a => a.AuthorNavigation)
                 .ToList();
@@ -89,7 +89,7 @@ namespace BookManagement.Services.Repository
             var book = _dbContext.Books
         .Include(b => b.Author)
         .ThenInclude(a => a.AuthorNavigation)
-        .FirstOrDefault(b => b.BookId == id && b.Status == true);
+       .FirstOrDefault(b =>b.BookId == id && !b.IsDeleted);
             return book != null ? MapToModel(book) : null!;
            
 
@@ -130,7 +130,8 @@ namespace BookManagement.Services.Repository
                 Category = bookModel.Category,
                 Price = (decimal)bookModel.Price,
                 
-                Status = null, // Pending by default
+                Status = null,
+                IsDeleted = false,
                 CreatedAt = DateTime.Now
             };
 
@@ -197,31 +198,10 @@ namespace BookManagement.Services.Repository
             var book = _dbContext.Books.FirstOrDefault(b => b.BookId == bookId);
             if (book != null)
             {
-                book.Status = false;
-
-                //  _dbContext.Books.Remove(book);
+                book.IsDeleted = true;
                 _dbContext.SaveChanges();
             }
         }
-        //public void DeleteBook(string bookId)
-        //{
-        //    if (string.IsNullOrEmpty(bookId)) return;
-
-        //    var book = _dbContext.Books.FirstOrDefault(b => b.BookId == bookId);
-
-        //    if (book != null)
-        //    {
-        //        book.Status = false;
-
-        //        int affected = _dbContext.SaveChanges();
-
-        //        MessageBox.Show($"SaveChanges = {affected}");
-
-        //        var check = _dbContext.Books
-        //            .FirstOrDefault(b => b.BookId == bookId);
-
-        //        MessageBox.Show($"Status sau save = {check?.Status}");
-        //    }
-        //}
+      
     }
 }

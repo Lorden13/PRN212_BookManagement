@@ -21,5 +21,6 @@ namespace BookManagement.WPF.Models
         public BookStatus Status { get; set; } = BookStatus.Pending;
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public int AuthorId { get; set; }
+    //    public bool IsDeleted { get; set; } = false;
     }
 }
