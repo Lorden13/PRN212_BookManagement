@@ -56,7 +56,8 @@
                             </StackPanel>
 
                             <!-- Price -->
-                            <TextBlock x:Name="txtPrice" Text="$0.00" Foreground="{DynamicResource PrimaryPurpleBrush}" FontSize="28" FontWeight="Bold" Margin="0,0,0,20"/>
+                            <TextBlock x:Name="txtPrice" Text="$0.00" Foreground="{DynamicResource PrimaryPurpleBrush}" FontSize="28" FontWeight="Bold" Margin="0,0,0,4"/>
+                            <TextBlock x:Name="txtStock" Text="Còn 10 cuốn" FontSize="13" FontWeight="SemiBold" Foreground="#16A34A" Margin="0,0,0,16"/>
 
                             <!-- Action Buttons -->
                             <Grid x:Name="actionButtonsPanel" HorizontalAlignment="Left">
@@ -71,12 +72,12 @@
                                     <ColumnDefinition Width="12"/>
                                     <ColumnDefinition Width="110"/>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Row="0" Grid.Column="0"
+                                <Button x:Name="btnBuy" Grid.Row="0" Grid.Column="0"
                                         Style="{StaticResource PrimaryButton}"
                                         Content="Mua ngay"
                                         Click="BtnBuy_Click"
                                         Height="40"/>
-                                <Button Grid.Row="0" Grid.Column="2"
+                                <Button x:Name="btnAddToCart" Grid.Row="0" Grid.Column="2"
                                         Style="{StaticResource SecondaryButton}"
                                         Click="BtnAddToCart_Click"
                                         Content="Thêm vào giỏ"

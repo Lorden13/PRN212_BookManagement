@@ -33,14 +33,53 @@ public partial class ReaderCartView : UserControl
         {
             _cartItems = await _purchaseService.GetCartAsync(user.AccountId);
             dgCart.ItemsSource = _cartItems;
-            txtCartSummary.Text = $"{_cartItems.Count} sách trong giỏ hàng";
-            txtTotal.Text = $"${_cartItems.Sum(item => item.Book.Price):F2}";
+            int totalItems = _cartItems.Sum(item => item.Quantity > 0 ? item.Quantity : 1);
+            decimal totalPrice = _cartItems.Sum(item => item.Book.Price * (item.Quantity > 0 ? item.Quantity : 1));
+
+            txtCartSummary.Text = $"{totalItems} sản phẩm trong giỏ hàng";
+            txtTotal.Text = $"${totalPrice:F2}";
             emptyState.Visibility = _cartItems.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-            btnCheckout.Visibility = _cartItems.Count >= 2 ? Visibility.Visible : Visibility.Collapsed;
+            btnCheckout.Visibility = _cartItems.Count >= 1 ? Visibility.Visible : Visibility.Collapsed;
         }
         catch (Exception ex)
         {
             MessageBox.Show($"Không thể tải giỏ hàng: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private async void BtnIncrease_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button { DataContext: Purchase item }) return;
+        var user = UserSession.CurrentUser;
+        if (user is null) return;
+
+        try
+        {
+            int currentQty = item.Quantity > 0 ? item.Quantity : 1;
+            await _purchaseService.UpdateCartQuantityAsync(user.AccountId, item.BookId, currentQty + 1);
+            await RefreshCartAsync();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Không thể tăng số lượng: {ex.Message}", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+    }
+
+    private async void BtnDecrease_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button { DataContext: Purchase item }) return;
+        var user = UserSession.CurrentUser;
+        if (user is null) return;
+
+        try
+        {
+            int currentQty = item.Quantity > 0 ? item.Quantity : 1;
+            await _purchaseService.UpdateCartQuantityAsync(user.AccountId, item.BookId, currentQty - 1);
+            await RefreshCartAsync();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Không thể giảm số lượng: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -64,11 +103,12 @@ public partial class ReaderCartView : UserControl
     private async void BtnCheckout_Click(object sender, RoutedEventArgs e)
     {
         var user = UserSession.CurrentUser;
-        if (user is null || _cartItems.Count < 2) return;
+        if (user is null || _cartItems.Count < 1) return;
 
-        var total = _cartItems.Sum(item => item.Book.Price);
+        var total = _cartItems.Sum(item => item.Book.Price * (item.Quantity > 0 ? item.Quantity : 1));
+        int totalItems = _cartItems.Sum(item => item.Quantity > 0 ? item.Quantity : 1);
         var answer = MessageBox.Show(
-            $"Bạn muốn thanh toán {_cartItems.Count} sách với tổng tiền ${total:F2}?",
+            $"Bạn muốn thanh toán {totalItems} sản phẩm ({_cartItems.Count} loại sách) với tổng tiền ${total:F2}?",
             "Xác nhận thanh toán",
             MessageBoxButton.OKCancel,
             MessageBoxImage.Question);

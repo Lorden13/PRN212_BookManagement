@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace BookManagement.WPF.Entities;
@@ -19,7 +19,9 @@ public partial class Book
 
     public bool IsDeleted { get; set; }
 
-    //  public string FilePath { get; set; } = null!;
+
+
+    public int Stock { get; set; }
 
     public bool? Status { get; set; }
 

@@ -38,9 +38,25 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Tên sách" Binding="{Binding Book.Title}" Width="2*"/>
                         <DataGridTextColumn Header="Tác giả" Binding="{Binding Book.Author.AuthorNavigation.FullName}" Width="1.5*"/>
-                        <DataGridTextColumn Header="Thể loại" Binding="{Binding Book.Category}" Width="1.2*"/>
-                        <DataGridTextColumn Header="Giá" Binding="{Binding Book.Price, StringFormat='${0:F2}'}" Width="1*"/>
-                        <DataGridTemplateColumn Header="Thao tác" Width="110">
+                        <DataGridTextColumn Header="Thể loại" Binding="{Binding Book.Category}" Width="1*"/>
+                        <DataGridTextColumn Header="Giá" Binding="{Binding Book.Price, StringFormat='${0:F2}'}" Width="0.8*"/>
+                        <DataGridTemplateColumn Header="Số lượng" Width="120">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Button Content="−" Width="28" Height="28" FontSize="14" FontWeight="Bold"
+                                                Style="{StaticResource OutlinedButton}" Padding="0"
+                                                Click="BtnDecrease_Click"/>
+                                        <TextBlock Text="{Binding Quantity}" Width="32" TextAlignment="Center"
+                                                   VerticalAlignment="Center" FontWeight="SemiBold" FontSize="14"/>
+                                        <Button Content="+" Width="28" Height="28" FontSize="14" FontWeight="Bold"
+                                                Style="{StaticResource OutlinedButton}" Padding="0"
+                                                Click="BtnIncrease_Click"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Thao tác" Width="80">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button Content="Xóa"

@@ -51,6 +51,7 @@ namespace BookManagement.Views.Author
 
             txtTitle.Text = book.Title;
             txtPrice.Text = book.Price.ToString("F2");
+            txtStock.Text = book.Stock.ToString();
             txtDescription.Text = book.Description;
 
             foreach (ComboBoxItem item in cbCategory.Items)
@@ -76,6 +77,7 @@ namespace BookManagement.Views.Author
                 Description = _book.Description,
                 Category = _book.Category,
                 Price = _book.Price,
+                Stock = _book.Stock,
                 Author = _book.Author,
                 SubmittedDate = _book.SubmittedDate,
                 Status = _book.Status
@@ -85,12 +87,6 @@ namespace BookManagement.Views.Author
 
             LoadReviewHistory();
             ApplyModeConfiguration();
-    //        _dbContext.Books
-    //.Where(b => b.Status == true)
-    //.ToList();
-
-           // _bookService.GetBookById(_book.Id);
-            
         }
 
         private void LoadReviewHistory()
@@ -116,7 +112,7 @@ namespace BookManagement.Views.Author
             {
                 txtSectionTitle.Text = "Kiểm duyệt chi tiết tác phẩm";
 
-                // Disable all form fields
+                // Disable all form fields (including Stock - Admin cannot edit stock)
                 txtTitle.IsReadOnly = true;
                 txtTitle.Background = disabledBrush;
 
@@ -125,13 +121,22 @@ namespace BookManagement.Views.Author
                 txtPrice.IsReadOnly = true;
                 txtPrice.Background = disabledBrush;
 
+                txtStock.IsReadOnly = true;
+                txtStock.Background = disabledBrush;
+
                 txtDescription.IsReadOnly = true;
                 txtDescription.Background = disabledBrush;
 
                 // Show Admin review sections
-                panelFeedback.Visibility = Visibility.Visible;
+                panelFeedback.Visibility = _book.Status == "Approved" ? Visibility.Collapsed : Visibility.Visible;
                 panelAdminButtons.Visibility = Visibility.Visible;
                 panelAuthorButtons.Visibility = Visibility.Collapsed;
+
+                if (btnApprove != null && btnReject != null)
+                {
+                    btnApprove.Visibility = _book.Status == "Approved" ? Visibility.Collapsed : Visibility.Visible;
+                    btnReject.Visibility = _book.Status == "Approved" ? Visibility.Collapsed : Visibility.Visible;
+                }
             }
             else // AuthorEdit mode
             {
@@ -145,6 +150,9 @@ namespace BookManagement.Views.Author
 
                 txtPrice.IsReadOnly = false;
                 txtPrice.Background = enabledBrush;
+
+                txtStock.IsReadOnly = false;
+                txtStock.Background = enabledBrush;
 
                 txtDescription.IsReadOnly = false;
                 txtDescription.Background = enabledBrush;
@@ -163,6 +171,7 @@ namespace BookManagement.Views.Author
             string title = txtTitle.Text.Trim();
             string category = (cbCategory.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? string.Empty;
             string priceText = txtPrice.Text.Trim();
+            string stockText = txtStock.Text.Trim();
             string description = txtDescription.Text.Trim();
 
             // Validation
@@ -190,12 +199,19 @@ namespace BookManagement.Views.Author
                 return;
             }
 
+            if (!int.TryParse(stockText, out int stock) || stock < 0)
+            {
+                MessageBox.Show("Số lượng tồn kho phải là số nguyên lớn hơn hoặc bằng 0.", "Validation Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             try
             {
                 _book.Title = title;
                 _book.Description = description;
                 _book.Category = category;
                 _book.Price = price;
+                _book.Stock = stock;
 
                 _bookService.UpdateBook(_book);
 
@@ -214,7 +230,11 @@ namespace BookManagement.Views.Author
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             var nav = BookManagement.Services.Navigation.NavigationService.Instance;
-            if (nav.CanGoBack())
+            if (_mode == BookDetailMode.AdminReview)
+            {
+                nav.NavigateContent(new AdminPendingBooksView());
+            }
+            else if (nav.CanGoBack())
             {
                 nav.GoBack();
             }
@@ -244,7 +264,7 @@ namespace BookManagement.Views.Author
                 _reviewService.SubmitReview(review);
 
                 MessageBox.Show($"Đã phê duyệt cuốn sách \"{_book.Title}\" thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
-                BookManagement.Services.Navigation.NavigationService.Instance.GoBack();
+                BookManagement.Services.Navigation.NavigationService.Instance.NavigateContent(new AdminPendingBooksView());
             }
             catch (Exception ex)
             {
@@ -275,8 +295,8 @@ namespace BookManagement.Views.Author
                 };
                 _reviewService.SubmitReview(review);
 
-                MessageBox.Show($"Đã từ chối cuốn sách \"{_book.Title}\".", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                BookManagement.Services.Navigation.NavigationService.Instance.GoBack();
+                MessageBox.Show($"Đã từ chối cuốn sách \"{_book.Title}\".", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                BookManagement.Services.Navigation.NavigationService.Instance.NavigateContent(new AdminPendingBooksView());
             }
             catch (Exception ex)
             {
@@ -295,14 +315,13 @@ namespace BookManagement.Views.Author
                 {
                     _bookService.DeleteBook(_book.Id);
                     MessageBox.Show("Đã xóa tác phẩm thành công.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                    BookManagement.Services.Navigation.NavigationService.Instance.GoBack();
+                    BookManagement.Services.Navigation.NavigationService.Instance.NavigateContent(new AdminPendingBooksView());
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Xóa sách thất bại: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            NavigationService.Instance.NavigateContent(new AuthorBooksView());
         }
     }
 }

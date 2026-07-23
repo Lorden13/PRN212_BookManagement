@@ -23,13 +23,16 @@ namespace BookManagement.Views.Reader
         private readonly IReaderReviewService _reviewService;
 
         private BookModel _book;
+        private readonly bool _isReadOnly;
 
         public ReaderBookDetailView(BookModel book, bool isReadOnly = false)
         {
             InitializeComponent();
 
             _book = book;
+            _isReadOnly = isReadOnly;
             actionButtonsPanel.Visibility = isReadOnly ? Visibility.Collapsed : Visibility.Visible;
+            txtStock.Visibility = isReadOnly ? Visibility.Collapsed : Visibility.Visible;
 
             _bookService = App.Current.Services.GetRequiredService<IBookService>();
             _purchaseService = App.Current.Services.GetRequiredService<IPurchaseTransactionService>();
@@ -54,6 +57,33 @@ namespace BookManagement.Views.Reader
             txtRating.Text = $"{_book.Rating:F1} / 5.0";
             txtPrice.Text = $"${_book.Price:F2}";
             txtDescription.Text = _book.Description;
+
+            // Stock display
+            if (_isReadOnly)
+            {
+                txtStock.Visibility = Visibility.Collapsed;
+            }
+            else if (_book.Stock > 0)
+            {
+                txtStock.Visibility = Visibility.Visible;
+                txtStock.Text = $"Còn {_book.Stock} cuốn";
+                txtStock.Foreground = new System.Windows.Media.SolidColorBrush(
+                    (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#16A34A"));
+            }
+            else
+            {
+                txtStock.Visibility = Visibility.Visible;
+                txtStock.Text = "Hết hàng";
+                txtStock.Foreground = new System.Windows.Media.SolidColorBrush(
+                    (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#DC2626"));
+            }
+
+            // Disable buy/cart when out of stock
+            if (!_isReadOnly)
+            {
+                btnBuy.IsEnabled = _book.Stock > 0;
+                btnAddToCart.IsEnabled = _book.Stock > 0;
+            }
 
             try
             {
@@ -92,7 +122,11 @@ namespace BookManagement.Views.Reader
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
             var nav = NavigationService.GetNavigationService();
-            if (nav != null && nav.CanGoBack())
+            if (_isReadOnly)
+            {
+                nav?.NavigateContent(new BookManagement.WPF.Views.Reader.PurchaseHistoryView());
+            }
+            else if (nav != null && nav.CanGoBack())
             {
                 nav.GoBack();
             }
