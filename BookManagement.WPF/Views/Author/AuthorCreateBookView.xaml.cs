@@ -36,6 +36,7 @@ namespace BookManagement.Views.Author
 
                 txtTitle.Text = _editingBook.Title;
                 txtPrice.Text = _editingBook.Price.ToString("F2");
+                txtStock.Text = _editingBook.Stock.ToString();
                 txtDescription.Text = _editingBook.Description;
                 
                 // Select category in ComboBox
@@ -51,6 +52,7 @@ namespace BookManagement.Views.Author
             else
             {
                 cbCategory.SelectedIndex = 0;
+                txtStock.Text = "10";
             }
         }
 
@@ -59,6 +61,7 @@ namespace BookManagement.Views.Author
             string title = txtTitle.Text.Trim();
             string category = (cbCategory.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "Novel";
             string priceText = txtPrice.Text.Trim();
+            string stockText = txtStock.Text.Trim();
             string description = txtDescription.Text.Trim();
 
             if (string.IsNullOrEmpty(title))
@@ -70,6 +73,13 @@ namespace BookManagement.Views.Author
             if (!double.TryParse(priceText, out double price) || price < 0)
             {
                 MessageBox.Show("Giá bán không hợp lệ. Vui lòng nhập số dương.", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            int stock = 10;
+            if (!string.IsNullOrEmpty(stockText) && (!int.TryParse(stockText, out stock) || stock < 0))
+            {
+                MessageBox.Show("Số lượng tồn kho không hợp lệ. Vui lòng nhập số nguyên lớn hơn hoặc bằng 0.", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -93,6 +103,7 @@ namespace BookManagement.Views.Author
                         Author = authorName,
                         Category = category,
                         Price = price,
+                        Stock = stock,
                         Description = description,
                       //  FilePath = "Manuscripts/default_manuscript.pdf",
                         Status = "Pending"
@@ -107,6 +118,7 @@ namespace BookManagement.Views.Author
                     _editingBook.Title = title;
                     _editingBook.Category = category;
                     _editingBook.Price = price;
+                    _editingBook.Stock = stock;
                     _editingBook.Description = description;
                     _editingBook.Status = "Pending"; // reset status to Pending upon editing
 
@@ -138,6 +150,7 @@ namespace BookManagement.Views.Author
                 txtTitle.Text = string.Empty;
                 cbCategory.SelectedIndex = 0;
                 txtPrice.Text = string.Empty;
+                txtStock.Text = "10";
                 txtDescription.Text = string.Empty;
             }
         }

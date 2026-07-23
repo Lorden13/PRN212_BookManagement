@@ -72,12 +72,14 @@
                              Tag="Nhập tiêu đề tác phẩm..." 
                              Margin="0,0,0,20"/>
 
-                    <!-- Row 3: Category & Price -->
+                    <!-- Row 3: Category, Price & Stock -->
                     <Grid Margin="0,0,0,20">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="24"/>
-                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="140"/>
                         </Grid.ColumnDefinitions>
 
                         <!-- Category -->
@@ -99,6 +101,13 @@
                             <TextBlock Text="Giá bán (USD) *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
                             <TextBox x:Name="txtPrice" Style="{StaticResource ModernTextBox}" 
                                      Tag="0.00"/>
+                        </StackPanel>
+
+                        <!-- Stock -->
+                        <StackPanel Grid.Column="4">
+                            <TextBlock Text="Số lượng tồn kho *" Style="{StaticResource TextBlockSmallHeader}" Margin="0,0,0,8"/>
+                            <TextBox x:Name="txtStock" Style="{StaticResource ModernTextBox}" 
+                                     Tag="10"/>
                         </StackPanel>
                     </Grid>
 
@@ -173,16 +182,8 @@
                                 Click="BtnCancel_Click"
                                 Margin="0,0,12,0"/>
 
-                        <!-- Delete -->
-                        <Button Style="{StaticResource DangerButton}" 
-                                Content="Xóa sách" 
-                                Width="120" 
-                                Height="40"
-                                Click="BtnAdminDelete_Click"
-                                Margin="0,0,12,0"/>
-
                         <!-- Reject -->
-                        <Button Style="{StaticResource DangerButton}" 
+                        <Button x:Name="btnReject" Style="{StaticResource DangerButton}" 
                                 Content="Từ chối" 
                                 Width="120" 
                                 Height="40"
@@ -190,7 +191,7 @@
                                 Margin="0,0,12,0"/>
 
                         <!-- Approve -->
-                        <Button Style="{StaticResource SuccessButton}" 
+                        <Button x:Name="btnApprove" Style="{StaticResource SuccessButton}" 
                                 Content="Phê duyệt" 
                                 Width="140" 
                                 Height="40"

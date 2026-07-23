@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
@@ -134,6 +134,7 @@ public partial class ProjectPrnContext : DbContext
             //    .HasMaxLength(255)
             //    .IsUnicode(false);
             entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.Stock).HasDefaultValue(10);
             entity.Property(e => e.Status).HasDefaultValueSql("(NULL)");
             entity.Property(e => e.Title).HasMaxLength(255);
 
@@ -221,6 +222,7 @@ public partial class ProjectPrnContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.IsBought).HasDefaultValue(true);
+            entity.Property(e => e.Quantity).HasDefaultValue(1);
            // entity.Property(e => e.Payment).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.PurchasedAt)
                 .HasDefaultValueSql("(getdate())")

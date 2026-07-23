@@ -17,6 +17,21 @@ namespace BookManagement.Services.Repository
         {
             _dbContext = new ProjectPrnContext();
             EnsureReaderReviewsTable();
+            EnsureStockAndQuantityColumns();
+        }
+
+        private void EnsureStockAndQuantityColumns()
+        {
+            _dbContext.Database.ExecuteSqlRaw(@"
+IF COL_LENGTH('Books', 'Stock') IS NULL
+BEGIN
+    ALTER TABLE [dbo].[Books] ADD [Stock] INT NOT NULL CONSTRAINT [DF_Books_Stock] DEFAULT 10;
+END
+
+IF COL_LENGTH('Purchases', 'Quantity') IS NULL
+BEGIN
+    ALTER TABLE [dbo].[Purchases] ADD [Quantity] INT NOT NULL CONSTRAINT [DF_Purchases_Quantity] DEFAULT 1;
+END");
         }
 
         private void EnsureReaderReviewsTable()
@@ -60,6 +75,7 @@ END");
                 Description = entity.Description,
                 SubmittedDate = entity.CreatedAt.ToString("yyyy-MM-dd HH:mm"),
                 IsDeleted = entity.IsDeleted,
+                Stock = entity.Stock,
                 CoverImagePath = "/Assets/Covers/placeholder.jpg",
                 Rating = entity.ReaderReviews.Count == 0
                     ? 0
@@ -162,7 +178,7 @@ END");
                 Description = bookModel.Description,
                 Category = bookModel.Category,
                 Price = (decimal)bookModel.Price,
-                
+                Stock = 10,
                 Status = null,
                 IsDeleted = false,
                 CreatedAt = DateTime.Now
@@ -185,6 +201,7 @@ END");
                 existing.Description = bookModel.Description;
                 existing.Category = bookModel.Category;
                 existing.Price = (decimal)bookModel.Price;
+                existing.Stock = bookModel.Stock;
 
                 // Reset Status to null (Pending) if it was Rejected (false) so Admin can re-evaluate the updated manuscript
                 if (existing.Status == false)

@@ -64,7 +64,7 @@
                 </StackPanel>
             </Grid>
 
-            <!-- Title & Author -->
+            <!-- Title, Author & Stock -->
             <StackPanel Grid.Row="2">
                 <TextBlock Text="{Binding Title, FallbackValue='Clean Code'}" 
                            Style="{StaticResource TextBlockBold}" 
@@ -75,6 +75,12 @@
                 <TextBlock Text="{Binding Author, FallbackValue='Unknown Author'}" 
                            Foreground="{DynamicResource TextMutedBrush}" 
                            FontSize="{StaticResource FontSizeSmall}" 
+                           Margin="0,2,0,0"
+                           FontFamily="{DynamicResource MainFontFamily}"/>
+                <TextBlock Text="{Binding StockDisplay, FallbackValue='Còn 10 cuốn'}" 
+                           Foreground="{DynamicResource TextSecondaryBrush}" 
+                           FontSize="11" 
+                           FontWeight="SemiBold"
                            Margin="0,2,0,0"
                            FontFamily="{DynamicResource MainFontFamily}"/>
             </StackPanel>
@@ -99,6 +105,7 @@
                         Style="{StaticResource SecondaryButton}"
                         Content="+"
                         ToolTip="Thêm vào giỏ hàng"
+                        IsEnabled="{Binding IsInStock}"
                         FontSize="18"
                         FontWeight="Bold"
                         Height="32"
@@ -110,6 +117,7 @@
                 <Button Grid.Column="2"
                         Style="{StaticResource PrimaryButton}" 
                         Content="Mua" 
+                        IsEnabled="{Binding IsInStock}"
                         Height="32" 
                         Padding="12,0"
                         VerticalAlignment="Top" Click="BtnBuy_Click"/>

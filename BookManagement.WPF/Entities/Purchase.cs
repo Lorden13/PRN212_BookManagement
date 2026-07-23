@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace BookManagement.WPF.Entities;
@@ -15,7 +15,9 @@ public partial class Purchase
 
     public bool IsBought { get; set; }
 
-   // public decimal Payment { get; set; }
+    public int Quantity { get; set; }
+
+
 
     public DateTime PurchasedAt { get; set; }
 

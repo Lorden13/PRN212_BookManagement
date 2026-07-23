@@ -98,16 +98,14 @@
                         </DataGridTemplateColumn>
 
                         <!-- Actions -->
-                        <DataGridTemplateColumn Header="Thao tác" Width="240">
+                        <DataGridTemplateColumn Header="Thao tác" Width="170">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <Button Style="{StaticResource OutlinedButton}" Content="Chi tiết" Height="28" Padding="12,0" Margin="0,0,8,0"
                                                 Click="BtnViewDetail_Click"/>
-                                        <Button Style="{StaticResource OutlinedButton}" Content="Sửa" Height="28" Padding="12,0" Margin="0,0,8,0"
+                                        <Button Style="{StaticResource OutlinedButton}" Content="Sửa" Height="28" Padding="12,0"
                                                 Click="BtnEditUser_Click"/>
-                                        <Button Style="{StaticResource OutlinedButton}" Content="Xóa" Height="28" Padding="12,0" Foreground="{DynamicResource DangerBrush}" BorderBrush="{DynamicResource DangerBrush}"
-                                                Click="BtnDeleteUser_Click"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

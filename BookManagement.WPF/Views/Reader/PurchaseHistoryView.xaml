@@ -18,8 +18,9 @@
                               AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="TÊN SÁCH" Binding="{Binding Book.Title}" Width="*" MinWidth="200"/>
-                            <DataGridTextColumn Header="THỂ LOẠI" Binding="{Binding Book.Category}" Width="150"/>
-                            <DataGridTextColumn Header="NGÀY MUA" Binding="{Binding PurchasedAt, StringFormat='{}{0:dd/MM/yyyy HH:mm}'}" Width="150"/>
+                            <DataGridTextColumn Header="THỂ LOẠI" Binding="{Binding Book.Category}" Width="120"/>
+                            <DataGridTextColumn Header="SỐ LƯỢNG MUA" Binding="{Binding Quantity}" Width="110"/>
+                            <DataGridTextColumn Header="NGÀY MUA" Binding="{Binding PurchasedAt, StringFormat='{}{0:dd/MM/yyyy HH:mm}'}" Width="140"/>
                             <DataGridTemplateColumn Header="GIÁ" Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

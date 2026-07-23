@@ -27,6 +27,22 @@ namespace BookManagement.Models.Entities
         public string Description { get; set; } = string.Empty;
         public string SubmittedDate { get; set; } = string.Empty;
         public bool IsDeleted { get; set; }
+        private int _stock = 10;
+        public int Stock
+        {
+            get => _stock;
+            set
+            {
+                if (_stock == value) return;
+                _stock = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(StockDisplay));
+                OnPropertyChanged(nameof(IsInStock));
+            }
+        }
+
+        public string StockDisplay => Stock > 0 ? $"Còn {Stock} cuốn" : "Hết hàng";
+        public bool IsInStock => Stock > 0;
 
         public Guid BookId { get; set; }
 
