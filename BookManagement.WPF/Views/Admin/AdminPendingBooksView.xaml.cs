@@ -88,7 +88,7 @@ namespace BookManagement.Views.Admin
             if (sender is Button btn && btn.DataContext is BookModel book)
             {
                 var nav = NavigationService.Instance;
-                nav.NavigateContent(new AuthorBookDetailView(book, BookDetailMode.AdminReview));
+                nav.NavigateContent(new AdminBookDetailView(book, typeof(AdminPendingBooksView)));
             }
         }
 

@@ -55,15 +55,16 @@ namespace BookManagement.Services.Navigation
         {
             return Instance;
         }
-        public bool CanGoBack()
-        {
-            return _contentFrame != null && _contentFrame.CanGoBack;
-        }
+            public bool CanGoBack()
+            {
+                return _contentFrame != null && _contentFrame.CanGoBack;
+            }
 
-        public void GoBack()
-        {
+            public void GoBack()
+            {
+            MessageBox.Show($"CanGoBack = {_contentFrame?.CanGoBack}");
             if (_contentFrame != null && _contentFrame.CanGoBack)
-                _contentFrame.GoBack();
-        }
+                    _contentFrame.GoBack();
+            }
     }
 }

@@ -83,7 +83,7 @@ namespace BookManagement.Views.Admin
 
                 bool matchStatus = statusFilter == "Tất cả trạng thái" || b.Status.Equals(statusFilter, StringComparison.OrdinalIgnoreCase);
 
-                return matchQuery && matchCategory && matchStatus;
+                return matchQuery && matchCategory && matchStatus;          
             }).ToList();
 
             dgBooks.ItemsSource = filtered;
@@ -95,7 +95,7 @@ namespace BookManagement.Views.Admin
             if (sender is Button btn && btn.DataContext is BookModel book)
             {
                 var nav = BookManagement.Services.Navigation.NavigationService.Instance;
-                nav.NavigateContent(new AuthorBookDetailView(book, BookDetailMode.AdminReview));
+                nav.NavigateContent(new AdminBookDetailView(book, typeof(AdminAllBooksView)));
             }
         }
 
