@@ -72,11 +72,11 @@
                                     <ColumnDefinition Width="12"/>
                                     <ColumnDefinition Width="110"/>
                                 </Grid.ColumnDefinitions>
-                                <Button x:Name="btnBuy" Grid.Row="0" Grid.Column="0"
+                                <!--<Button x:Name="btnBuy" Grid.Row="0" Grid.Column="0"
                                         Style="{StaticResource PrimaryButton}"
                                         Content="Mua ngay"
                                         Click="BtnBuy_Click"
-                                        Height="40"/>
+                                        Height="40"/>-->
                                 <Button x:Name="btnAddToCart" Grid.Row="0" Grid.Column="2"
                                         Style="{StaticResource SecondaryButton}"
                                         Click="BtnAddToCart_Click"

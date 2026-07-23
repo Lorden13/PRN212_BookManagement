@@ -31,14 +31,6 @@ public sealed class PurchaseTransactionService : IPurchaseTransactionService
         if (book.Stock < 1)
             throw new InvalidOperationException($"Sách \"{book.Title}\" đã hết hàng.");
 
-        var existing = await _context.Purchases.SingleOrDefaultAsync(
-            p => p.ReaderId == readerId && p.BookId == bookId && p.IsBought, cancellationToken);
-        if (existing is not null)
-        {
-            await transaction.CommitAsync(cancellationToken);
-            return existing;
-        }
-
         var purchase = await _context.Purchases.FirstOrDefaultAsync(
             p => p.ReaderId == readerId && p.BookId == bookId && !p.IsBought,
             cancellationToken);
@@ -77,15 +69,6 @@ public sealed class PurchaseTransactionService : IPurchaseTransactionService
             throw new InvalidOperationException("Chỉ có thể thêm sách đã được duyệt vào giỏ hàng.");
         if (book.Stock < 1)
             throw new InvalidOperationException($"Sách \"{book.Title}\" đã hết hàng.");
-
-        // Check if already bought
-        if (await _context.Purchases.AnyAsync(
-                p => p.ReaderId == readerId && p.BookId == bookId && p.IsBought,
-                cancellationToken))
-        {
-            await transaction.CommitAsync(cancellationToken);
-            return false; // Already purchased
-        }
 
         // Check if already in cart — increment quantity
         var cartItem = await _context.Purchases.FirstOrDefaultAsync(

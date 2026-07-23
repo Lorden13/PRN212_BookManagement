@@ -78,12 +78,12 @@ namespace BookManagement.Views.Reader
                     (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#DC2626"));
             }
 
-            // Disable buy/cart when out of stock
-            if (!_isReadOnly)
-            {
-                btnBuy.IsEnabled = _book.Stock > 0;
-                btnAddToCart.IsEnabled = _book.Stock > 0;
-            }
+            //// Disable buy/cart when out of stock
+            //if (!_isReadOnly)
+            //{
+            //    btnBuy.IsEnabled = _book.Stock > 0;
+            //    btnAddToCart.IsEnabled = _book.Stock > 0;
+            //}
 
             try
             {
@@ -136,28 +136,28 @@ namespace BookManagement.Views.Reader
             }
         }
 
-        private async void BtnBuy_Click(object sender, RoutedEventArgs e)
-        {
-            var user = UserSession.CurrentUser;
-            if (user == null) return;
+        //private async void BtnBuy_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var user = UserSession.CurrentUser;
+        //    if (user == null) return;
 
-            var answer = MessageBox.Show(
-                $"Bạn muốn mua sách {_book.Title}?",
-                "Xác nhận mua sách",
-                MessageBoxButton.OKCancel,
-                MessageBoxImage.Question);
-            if (answer != MessageBoxResult.OK) return;
+        //    var answer = MessageBox.Show(
+        //        $"Bạn muốn mua sách {_book.Title}?",
+        //        "Xác nhận mua sách",
+        //        MessageBoxButton.OKCancel,
+        //        MessageBoxImage.Question);
+        //    if (answer != MessageBoxResult.OK) return;
 
-            try
-            {
-                await _purchaseService.PurchaseAsync(user.AccountId, _book.Id);
-                MessageBox.Show($"Đã mua sách thành công: {_book.Title}", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Mua sách thất bại: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+        //    try
+        //    {
+        //        await _purchaseService.PurchaseAsync(user.AccountId, _book.Id);
+        //        MessageBox.Show($"Đã mua sách thành công: {_book.Title}", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Mua sách thất bại: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
 
         private async void BtnAddToCart_Click(object sender, RoutedEventArgs e)
         {
@@ -166,11 +166,9 @@ namespace BookManagement.Views.Reader
 
             try
             {
-                var added = await _purchaseService.AddToCartAsync(user.AccountId, _book.Id);
+                await _purchaseService.AddToCartAsync(user.AccountId, _book.Id);
                 MessageBox.Show(
-                    added
-                        ? $"Đã thêm {_book.Title} vào giỏ hàng."
-                        : $"{_book.Title} đã có trong giỏ hàng hoặc đã được mua.",
+                    $"Đã thêm \"{_book.Title}\" vào giỏ hàng thành công.",
                     "Thông báo",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);

@@ -19,33 +19,33 @@ namespace BookManagement.Controls
 
       
 
-        private async void BtnBuy_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.DataContext is BookModel book)
-            {
-                var user = UserSession.CurrentUser;
-                if (user is null) return;
+        //private async void BtnBuy_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (this.DataContext is BookModel book)
+        //    {
+        //        var user = UserSession.CurrentUser;
+        //        if (user is null) return;
 
-                var answer = MessageBox.Show(
-                    $"Bạn muốn mua sách {book.Title}?",
-                    "Xác nhận mua sách",
-                    MessageBoxButton.OKCancel,
-                    MessageBoxImage.Question);
-                if (answer != MessageBoxResult.OK) return;
+        //        var answer = MessageBox.Show(
+        //            $"Bạn muốn mua sách {book.Title}?",
+        //            "Xác nhận mua sách",
+        //            MessageBoxButton.OKCancel,
+        //            MessageBoxImage.Question);
+        //        if (answer != MessageBoxResult.OK) return;
 
-                try
-                {
-                    var service = App.Current.Services.GetRequiredService<IPurchaseTransactionService>();
-                    await service.PurchaseAsync(user.AccountId, book.Id);
-                    MessageBox.Show($"Đã mua sách thành công: {book.Title}", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Mua sách thất bại: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-            e.Handled = true;
-        }
+        //        try
+        //        {
+        //            var service = App.Current.Services.GetRequiredService<IPurchaseTransactionService>();
+        //            await service.PurchaseAsync(user.AccountId, book.Id);
+        //            MessageBox.Show($"Đã mua sách thành công: {book.Title}", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            MessageBox.Show($"Mua sách thất bại: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        }
+        //    }
+        //    e.Handled = true;
+        //}
 
         public static bool IsActionButtonClick(MouseButtonEventArgs e)
         {
@@ -69,11 +69,9 @@ namespace BookManagement.Controls
             try
             {
                 var service = App.Current.Services.GetRequiredService<IPurchaseTransactionService>();
-                var added = await service.AddToCartAsync(user.AccountId, book.Id);
+                await service.AddToCartAsync(user.AccountId, book.Id);
                 MessageBox.Show(
-                    added
-                        ? $"Đã thêm {book.Title} vào giỏ hàng."
-                        : $"{book.Title} đã có trong giỏ hàng hoặc đã được mua.",
+                    $"Đã thêm \"{book.Title}\" vào giỏ hàng thành công.",
                     "Thông báo",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
