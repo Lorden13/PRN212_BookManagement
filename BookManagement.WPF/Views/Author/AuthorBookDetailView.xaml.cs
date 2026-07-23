@@ -230,17 +230,13 @@ namespace BookManagement.Views.Author
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             var nav = BookManagement.Services.Navigation.NavigationService.Instance;
-            if (_mode == BookDetailMode.AdminReview)
-            {
-                nav.NavigateContent(new AdminPendingBooksView());
-            }
-            else if (nav.CanGoBack())
+            if (nav.CanGoBack())
             {
                 nav.GoBack();
             }
             else
             {
-                nav.NavigateContent(new AuthorBooksView());
+                nav.NavigateContent(new AdminPendingBooksView());
             }
         }
 
@@ -264,7 +260,16 @@ namespace BookManagement.Views.Author
                 _reviewService.SubmitReview(review);
 
                 MessageBox.Show($"Đã phê duyệt cuốn sách \"{_book.Title}\" thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
-                BookManagement.Services.Navigation.NavigationService.Instance.NavigateContent(new AdminPendingBooksView());
+                
+                var nav = BookManagement.Services.Navigation.NavigationService.Instance;
+                if (nav.CanGoBack())
+                {
+                    nav.GoBack();
+                }
+                else
+                {
+                    nav.NavigateContent(new AdminPendingBooksView());
+                }
             }
             catch (Exception ex)
             {
@@ -296,7 +301,16 @@ namespace BookManagement.Views.Author
                 _reviewService.SubmitReview(review);
 
                 MessageBox.Show($"Đã từ chối cuốn sách \"{_book.Title}\".", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                BookManagement.Services.Navigation.NavigationService.Instance.NavigateContent(new AdminPendingBooksView());
+
+                var nav = BookManagement.Services.Navigation.NavigationService.Instance;
+                if (nav.CanGoBack())
+                {
+                    nav.GoBack();
+                }
+                else
+                {
+                    nav.NavigateContent(new AdminPendingBooksView());
+                }
             }
             catch (Exception ex)
             {

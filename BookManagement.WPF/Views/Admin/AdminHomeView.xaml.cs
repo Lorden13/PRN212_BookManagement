@@ -51,25 +51,7 @@ namespace BookManagement.Views.Admin
                     cardTotalRevenue.Value = $"${totalRevenue:F2}";
                     cardTodaySales.Value = $"${todaySales:F2}";
 
-                    // 2. Compute status percentages
-                    int approvedCount = db.Books.Count(b => b.Status == true);
-                    int rejectedCount = db.Books.Count(b => b.Status == false);
-
-                    int totalStatusCount = approvedCount + pendingBooksCount + rejectedCount;
-                    int appPct = totalStatusCount > 0 ? (approvedCount * 100 / totalStatusCount) : 0;
-                    int penPct = totalStatusCount > 0 ? (pendingBooksCount * 100 / totalStatusCount) : 0;
-                    int rejPct = totalStatusCount > 0 ? (rejectedCount * 100 / totalStatusCount) : 0;
-
-                    pbApprovedStatus.Value = appPct;
-                    lblApprovedPercent.Text = $"{appPct}%";
-
-                    pbPendingStatus.Value = penPct;
-                    lblPendingPercent.Text = $"{penPct}%";
-
-                    pbRejectedStatus.Value = rejPct;
-                    lblRejectedPercent.Text = $"{rejPct}%";
-
-                    // 3. Load activities log dynamically
+                    // 2. Load activities log dynamically
                     var activities = new List<dynamic>();
 
                     // Fetch purchases

@@ -35,7 +35,7 @@ namespace BookManagement.Views.Admin
 
         private void InitializeFilters()
         {
-            cbRole.ItemsSource = new List<string> { "Tất cả vai trò", "Reader", "Author", "Admin" };
+            cbRole.ItemsSource = new List<string> { "Tất cả vai trò", "Reader", "Author" };
             cbRole.SelectedIndex = 0;
 
             cbStatus.ItemsSource = new List<string> { "Tất cả trạng thái", "Active", "Inactive" };
