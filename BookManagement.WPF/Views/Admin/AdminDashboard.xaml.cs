@@ -60,12 +60,6 @@ namespace BookManagement.Views.Admin
                         header.PageTitle = "Tất cả đầu sách";
                         break;
 
-                    case "ReviewHistory":
-                        frmContent.Navigate(new AdminReviewHistoryView());
-                        header.PageTitle = "Lịch sử kiểm duyệt";
-                        break;
-
-
                     case "ChangePassword":
                         frmContent.Navigate(new ChangePasswordView());
                         header.PageTitle = "Đổi mật khẩu";
