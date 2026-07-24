@@ -16,3 +16,5 @@ err.log
 out.log
 TestResults/
 packages/
+
+.vs/
